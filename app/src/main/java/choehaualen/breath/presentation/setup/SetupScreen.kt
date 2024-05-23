@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,9 +28,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import choehaualen.breath.core.ui.colors.LocalColors
+import choehaualen.breath.core.ui.components.button.UniqueButton
 import choehaualen.breath.core.ui.theme.BreathTheme
 import com.stoyanvuchev.systemuibarstweaker.LocalSystemUIBarsTweaker
-import sv.lib.squircleshape.SquircleShape
 
 @Composable
 fun SetupScreen(
@@ -138,7 +136,7 @@ fun SetupScreen(
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    Button(
+                    UniqueButton(
                         onClick = { onChangeSegment(segment, true) },
                         content = {
 
@@ -148,11 +146,7 @@ fun SetupScreen(
                             )
 
                         },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = BreathTheme.colors.text,
-                            contentColor = BreathTheme.colors.background
-                        ),
-                        shape = SquircleShape()
+                        enabled = true
                     )
 
                     Spacer(modifier = Modifier.height(100.dp))
