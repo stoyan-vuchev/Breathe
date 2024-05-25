@@ -25,7 +25,12 @@ fun BreathTheme(
     val tweaker = rememberSystemUIBarsTweaker(
         initialConfiguration = SystemUIBarsConfiguration.default(
             statusBarStyle = SystemBarStyle.defaultStatusBarStyle(
-                darkIcons = false
+                darkIcons = false,
+                enforceContrast = false
+            ),
+            navigationBarStyle = SystemBarStyle.defaultNavigationBarStyle(
+                darkIcons = false,
+                enforceContrast = false
             )
         )
     )

@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import choehaualen.breath.R
 
-val FontFam = FontFamily(
+val QuickSandFontFam = FontFamily(
     fonts = listOf(
         Font(R.font.quicksand_light, weight = FontWeight.Light),
         Font(R.font.quicksand_regular, weight = FontWeight.Normal),
@@ -18,59 +18,65 @@ val FontFam = FontFamily(
     )
 )
 
+val RobotoFontFam = FontFamily(
+    fonts = listOf(
+        Font(R.font.roboto_bold, weight = FontWeight.Bold)
+    )
+)
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = FontFam,
+        fontFamily = RobotoFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     bodyMedium = TextStyle(
-        fontFamily = FontFam,
+        fontFamily = RobotoFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.5.sp
     ),
     bodySmall = TextStyle(
-        fontFamily = FontFam,
+        fontFamily = RobotoFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     ),
     titleLarge = TextStyle(
-        fontFamily = FontFam,
+        fontFamily = QuickSandFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
     labelSmall = TextStyle(
-        fontFamily = FontFam,
+        fontFamily = RobotoFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 11.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     ),
     labelMedium = TextStyle(
-        fontFamily = FontFam,
+        fontFamily = QuickSandFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.5.sp
     ),
     labelLarge = TextStyle(
-        fontFamily = FontFam,
+        fontFamily = QuickSandFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     headlineLarge = TextStyle(
-        fontFamily = FontFam,
+        fontFamily = QuickSandFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp,
         lineHeight = 36.sp,
