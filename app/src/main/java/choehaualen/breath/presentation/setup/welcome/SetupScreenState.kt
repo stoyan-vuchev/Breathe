@@ -1,4 +1,4 @@
-package choehaualen.breath.presentation.setup
+package choehaualen.breath.presentation.setup.welcome
 
 import androidx.compose.runtime.Stable
 

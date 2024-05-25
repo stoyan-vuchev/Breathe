@@ -1,4 +1,4 @@
-package choehaualen.breath.presentation.setup
+package choehaualen.breath.presentation.setup.welcome
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
