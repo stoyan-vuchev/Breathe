@@ -1,7 +1,7 @@
 package choehaualen.breath
 
 import android.app.Application
-import choehaualen.breath.di.userModule
+import choehaualen.breath.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -15,7 +15,7 @@ class BreathApp : Application() {
             androidContext(this@BreathApp)
 
             // Install the [UserModule].
-            modules(userModule)
+            modules(appModule)
 
         }
     }

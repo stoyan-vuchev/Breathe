@@ -20,18 +20,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import choehaualen.breath.core.ui.theme.BreathTheme
-import choehaualen.breath.data.local.entity.UserEntity
 import sv.lib.squircleshape.SquircleShape
 
 @Composable
 fun UserScreen(
     modifier: Modifier = Modifier,
-    user: UserEntity?,
+    user: String?,
     name: String,
     onSetNameText: (String) -> Unit,
     onNext: () -> Unit,
     onFlush: () -> Unit
 ) {
+
+    // It gets kinda complex, but let's swap UserEntity with a string
 
     BackHandler(
         enabled = user != null,
@@ -108,7 +109,7 @@ fun UserScreen(
                 Spacer(modifier = Modifier.height(200.dp))
 
                 Text(
-                    text = "Hey ${it.name}! 👋🏼",
+                    text = "Hey $it! 👋🏼",
                     style = MaterialTheme.typography.headlineMedium
                 )
 
@@ -135,7 +136,7 @@ fun UserScreen(
 
                 // Each screen has it's own separated place.
                 // So what do you want to do first?
-                    //i just try to do the main screen layout and some setup screen layout like the first time welcome screen
+                //i just try to do the main screen layout and some setup screen layout like the first time welcome screen
                 // got it;
             }
 
