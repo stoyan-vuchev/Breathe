@@ -6,10 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import choehaualen.breath.core.ui.theme.BreathTheme
-import choehaualen.breath.presentation.welcome.WelcomeScreen
-import choehaualen.breath.presentation.welcome.WelcomeScreenViewModel
+import choehaualen.breath.presentation.user.UserScreen
+import choehaualen.breath.presentation.user.UserScreenViewModel
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -19,10 +19,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             BreathTheme {
 
-                val viewModel = viewModel<WelcomeScreenViewModel>()
+                val viewModel = koinViewModel<UserScreenViewModel>()
                 val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-                WelcomeScreen(
+                UserScreen(
                     screenState = screenState,
                     onUIAction = viewModel::onUIAction
                 )

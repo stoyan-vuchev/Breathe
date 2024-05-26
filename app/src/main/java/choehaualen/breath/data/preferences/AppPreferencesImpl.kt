@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 
 class AppPreferencesImpl(
     private val preferences: DataStore<Preferences>
@@ -17,7 +17,7 @@ class AppPreferencesImpl(
     }
 
     override suspend fun getUser(): String? {
-        return preferences.data.first()[USER_KEY]
+        return preferences.data.firstOrNull()?.let { it[USER_KEY] }
     }
 
     companion object {
