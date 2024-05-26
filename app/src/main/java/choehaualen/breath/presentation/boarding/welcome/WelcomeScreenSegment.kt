@@ -1,4 +1,4 @@
-package choehaualen.breath.presentation.welcome
+package choehaualen.breath.presentation.boarding.welcome
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

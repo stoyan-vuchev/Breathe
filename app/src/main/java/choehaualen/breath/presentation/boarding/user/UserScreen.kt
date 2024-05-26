@@ -1,8 +1,9 @@
-package choehaualen.breath.presentation.user
+package choehaualen.breath.presentation.boarding.user
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,12 +18,18 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import choehaualen.breath.core.ui.components.button.UniqueButton
@@ -35,11 +42,25 @@ fun UserScreen(
     onUIAction: (UserScreenUIAction) -> Unit
 ) {
 
+    var isScreenShown by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        isScreenShown = true
+    }
+
+    val gradientAlpha by animateFloatAsState(
+        targetValue = if (isScreenShown) 1f else 0f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioNoBouncy,
+            stiffness = Spring.StiffnessVeryLow
+        ),
+        label = ""
+    )
+
     val background by rememberUpdatedState(
         Brush.verticalGradient(
             colors = listOf(
-                BreathTheme.colors.backgroundGradientStart,
-                BreathTheme.colors.backgroundGradientEnd
+                BreathTheme.colors.backgroundGradientStart.copy(gradientAlpha),
+                BreathTheme.colors.backgroundGradientEnd.copy(gradientAlpha)
             )
         )
     )
@@ -128,8 +149,32 @@ fun UserScreen(
                                 unfocusedContainerColor = Color.Transparent,
                                 focusedIndicatorColor = BreathTheme.colors.text,
                                 unfocusedIndicatorColor = BreathTheme.colors.text,
-                                cursorColor = BreathTheme.colors.text
-                            )
+                                cursorColor = BreathTheme.colors.text,
+                                errorIndicatorColor = Color.Red,
+                                errorContainerColor = Color.Transparent
+                            ),
+                            isError = screenState.usernameValidationResult
+                                    !is UsernameValidationResult.ValidUsername
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Text(
+                            modifier = Modifier
+                                .padding(horizontal = 64.dp)
+                                .animateContentSize(
+                                    alignment = Alignment.BottomCenter,
+                                    animationSpec = spring(
+                                        dampingRatio = Spring.DampingRatioNoBouncy,
+                                        stiffness = Spring.StiffnessMediumLow
+                                    )
+                                ),
+                            text = stringResource(
+                                id = screenState.usernameValidationResult.errorMessage
+                            ),
+                            style = BreathTheme.typography.bodyMedium,
+                            color = Color.Red,
+                            textAlign = TextAlign.Center
                         )
 
                     }

@@ -1,4 +1,4 @@
-package choehaualen.breath.presentation.welcome
+package choehaualen.breath.presentation.boarding.welcome
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
