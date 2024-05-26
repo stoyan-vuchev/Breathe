@@ -36,10 +36,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import choehaualen.breath.R
+import choehaualen.breath.core.ui.BASIC_ANIMATION_DURATION
 import choehaualen.breath.core.ui.colors.LocalColors
 import choehaualen.breath.core.ui.components.button.UniqueButton
 import choehaualen.breath.core.ui.theme.BreathTheme
-import choehaualen.breath.core.ui.BASIC_ANIMATION_DURATION
 import com.stoyanvuchev.systemuibarstweaker.LocalSystemUIBarsTweaker
 
 @Composable
