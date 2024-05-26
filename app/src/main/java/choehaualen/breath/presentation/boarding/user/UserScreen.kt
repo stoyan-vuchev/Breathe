@@ -8,10 +8,13 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -28,10 +31,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import choehaualen.breath.R
 import choehaualen.breath.core.ui.components.button.UniqueButton
 import choehaualen.breath.core.ui.theme.BreathTheme
 import com.stoyanvuchev.systemuibarstweaker.LocalSystemUIBarsTweaker
@@ -43,9 +48,7 @@ fun UserScreen(
 ) {
 
     var isScreenShown by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        isScreenShown = true
-    }
+    LaunchedEffect(Unit) { isScreenShown = true }
 
     val gradientAlpha by animateFloatAsState(
         targetValue = if (isScreenShown) 1f else 0f,
@@ -102,12 +105,54 @@ fun UserScreen(
                             stiffness = Spring.StiffnessMediumLow
                         )
                     ),
-                text = screenState.username?.let { "Hey $it! 👋🏼" }
+                text = screenState.username?.let { "Welcome!" }
                     ?: "Your name is unique",
                 style = BreathTheme.typography.headlineLarge
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            AnimatedContent(
+                modifier = Modifier.fillMaxWidth(),
+                targetState = screenState.username,
+                label = "",
+            ) {
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                    if (it != null) {
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            modifier = Modifier
+                                .padding(horizontal = 32.dp)
+                                .animateContentSize(
+                                    alignment = Alignment.BottomCenter,
+                                    animationSpec = spring(
+                                        dampingRatio = Spring.DampingRatioNoBouncy,
+                                        stiffness = Spring.StiffnessMediumLow
+                                    )
+                                ),
+                            text = it,
+                            style = BreathTheme.typography.titleMedium
+                        )
+
+                        Spacer(modifier = Modifier.height(32.dp))
+
+                        Icon(
+                            painter = painterResource(id = R.drawable.happy_face),
+                            contentDescription = null
+                        )
+
+                    }
+
+                }
+
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
 
             Text(
                 modifier = Modifier
@@ -119,7 +164,7 @@ fun UserScreen(
                             stiffness = Spring.StiffnessMediumLow
                         )
                     ),
-                text = screenState.username?.let { "We're glad to see you here!" }
+                text = screenState.username?.let { "Get started on Breath!" }
                     ?: "So, what's your name?",
                 style = BreathTheme.typography.bodyLarge
             )
@@ -186,15 +231,32 @@ fun UserScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             UniqueButton(
-                onClick = { onUIAction(UserScreenUIAction.Next) },
+                onClick = {
+                    onUIAction(
+                        if (screenState.username == null) UserScreenUIAction.Next
+                        else UserScreenUIAction.GetStarted
+                    )
+                },
                 content = {
 
                     Text(
-                        text = "Next",
+                        modifier = Modifier.animateContentSize(
+                            alignment = Alignment.Center,
+                            animationSpec = spring(
+                                dampingRatio = Spring.DampingRatioNoBouncy,
+                                stiffness = Spring.StiffnessMediumLow
+                            )
+                        ),
+                        text = if (screenState.username == null) "Next"
+                        else "Get Started!",
                         style = BreathTheme.typography.labelLarge
                     )
 
-                }
+                },
+                paddingValues = PaddingValues(
+                    horizontal = 48.dp,
+                    vertical = 12.dp
+                )
             )
 
             Spacer(modifier = Modifier.height(64.dp))

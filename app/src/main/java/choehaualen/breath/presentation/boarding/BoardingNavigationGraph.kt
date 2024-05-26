@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import choehaualen.breath.core.ui.navigateSingleTop
 import choehaualen.breath.presentation.boarding.user.UserScreen
+import choehaualen.breath.presentation.boarding.user.UserScreenUIAction
 import choehaualen.breath.presentation.boarding.user.UserScreenViewModel
 import choehaualen.breath.presentation.boarding.welcome.WelcomeScreen
 import choehaualen.breath.presentation.boarding.welcome.WelcomeScreenUIAction
@@ -65,12 +66,25 @@ fun NavGraphBuilder.boardingNavigationGraph(
                     val viewModel = koinViewModel<UserScreenViewModel>()
                     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-                    LaunchedEffect(viewModel.isUserSetFlow) {
-                        viewModel.isUserSetFlow.collectLatest {
-                            navController.navigateSingleTop(
-                                route = "main_screen_route",
-                                popUpTo = BoardingNavigationDestination.Welcome.route
-                            )
+                    LaunchedEffect(viewModel.uiActionFlow) {
+                        viewModel.uiActionFlow.collectLatest { uiAction ->
+                            when (uiAction) {
+
+                                is UserScreenUIAction.PopBackStack -> {
+                                    navController.navigateSingleTop(
+                                        route = BoardingNavigationDestination.User.route,
+                                        popUpTo = BoardingNavigationDestination.Welcome.route
+                                    )
+                                }
+
+                                is UserScreenUIAction.GetStarted -> {
+                                    navController.navigateSingleTop(
+                                        route = "main_screen_route",
+                                        popUpTo = BoardingNavigationDestination.User.route
+                                    )
+                                }
+
+                            }
                         }
                     }
 
