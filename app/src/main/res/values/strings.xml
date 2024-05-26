@@ -1,3 +1,29 @@
 <resources>
+
+    <!-- Application ======================================================================= -->
+
     <string name="app_name">Breath</string>
+
+    <!-- Welcome Screen ==================================================================== -->
+
+    <!-- Welcome Segment -->
+    <string name="welcome_screen_welcome_segment_title">Breath</string>
+    <string name="welcome_screen_welcome_segment_description">An app to keep your stress away</string>
+
+    <!-- Track Sleep Segment -->
+    <string name="welcome_screen_track_sleep_segment_title">Track and Improve Sleep</string>
+    <string name="welcome_screen_track_sleep_segment_description">Tracks sleep pattern using on-device artificial intelligence model that leverages the device’s light and motion sensors and gives sleep results based on it.</string>
+
+    <!-- Breath Exercises Segment -->
+    <string name="welcome_screen_breath_exercises_segment_title">Breath Exercises</string>
+    <string name="welcome_screen_breath_exercises_segment_description">Practice breath exercises to keep stress away by using different breathing techniques which even can control how fast your heart beats."</string>
+
+    <!-- Soundscape Segment -->
+    <string name="welcome_screen_soundscape_segment_title">Soundscape</string>
+    <string name="welcome_screen_soundscape_segment_description">Curated library with nature \n ambient sound which</string>
+
+    <!-- Privacy Segment -->
+    <string name="welcome_screen_privacy_segment_title">Privacy</string>
+    <string name="welcome_screen_privacy_segment_description">Breath won’t share any data it processes, \n everything is processed on device.</string>
+
 </resources>
