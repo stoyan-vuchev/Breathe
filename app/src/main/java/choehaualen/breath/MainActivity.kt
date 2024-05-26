@@ -7,13 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import choehaualen.breath.core.ui.theme.BreathTheme
-import choehaualen.breath.presentation.setup.SetupNavigationDestinations
-import choehaualen.breath.presentation.setup.setupNavigationGraph
-import choehaualen.breath.presentation.setup.welcome.SetupScreen
-import choehaualen.breath.presentation.setup.welcome.SetupScreenViewModel
+import choehaualen.breath.presentation.welcome.WelcomeScreen
+import choehaualen.breath.presentation.welcome.WelcomeScreenViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -21,19 +17,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
-            val navController = rememberNavController()
-
             BreathTheme {
 
-                NavHost(
-                    navController = navController,
-                    startDestination = SetupNavigationDestinations.NAV_ROUTE
-                ) {
+                val viewModel = viewModel<WelcomeScreenViewModel>()
+                val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-                    setupNavigationGraph(navHostController = navController)
-
-                }
+                WelcomeScreen(
+                    screenState = screenState,
+                    onUIAction = viewModel::onUIAction
+                )
 
             }
         }

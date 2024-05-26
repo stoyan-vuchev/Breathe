@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -40,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import choehaualen.breath.core.ui.colors.swapColor
 import choehaualen.breath.core.ui.components.rememberBreathRipple
 import choehaualen.breath.core.ui.theme.BreathTheme
-import choehaualen.breath.presentation.setup.BASIC_ANIMATION_DURATION
+import choehaualen.breath.core.ui.BASIC_ANIMATION_DURATION
 import sv.lib.squircleshape.SquircleShape
 
 /**
