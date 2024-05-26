@@ -66,13 +66,11 @@ fun NavGraphBuilder.boardingNavigationGraph(
                     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
                     LaunchedEffect(viewModel.isUserSetFlow) {
-                        viewModel.isUserSetFlow.collectLatest { isUserSet ->
-                            isUserSet?.let { isSet ->
-                                navController.navigateSingleTop(
-                                    route = if (isSet) "main_screen_route"
-                                    else BoardingNavigationDestination.Welcome.route
-                                )
-                            }
+                        viewModel.isUserSetFlow.collectLatest {
+                            navController.navigateSingleTop(
+                                route = "main_screen_route",
+                                popUpTo = BoardingNavigationDestination.Welcome.route
+                            )
                         }
                     }
 

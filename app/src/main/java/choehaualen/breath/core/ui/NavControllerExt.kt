@@ -3,17 +3,9 @@ package choehaualen.breath.core.ui
 import androidx.navigation.NavHostController
 
 fun NavHostController.navigateSingleTop(
-    route: String
-) = navigate(
-    route = route,
-    builder = {
-
-        popBackStack(
-            route = "start_route",
-            inclusive = true
-        )
-
-        launchSingleTop = true
-
-    }
-)
+    route: String,
+    popUpTo: String
+) = navigate(route) {
+    launchSingleTop = true
+    popUpTo(popUpTo) { inclusive = true }
+}

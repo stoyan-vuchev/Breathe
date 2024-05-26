@@ -42,15 +42,29 @@ class UserScreenViewModel(
     }
 
     private fun saveUsernameOrNavigate() {
-        if (screenState.value.username == null) saveUsernameToPreferences()
+        if (screenState.value.username == null) checkUsernameForFlaws()
         else viewModelScope.launch { _isUserSetChannel.send(true) }
+    }
+
+    private fun checkUsernameForFlaws() {
+
+        val result = UsernameValidator.validateUsername(screenState.value.nameText)
+
+        _screenState.update { currentState ->
+            currentState.copy(usernameValidationResult = result)
+        }
+
+        if (result is UsernameValidationResult.ValidUsername) {
+            saveUsernameToPreferences()
+        }
+
     }
 
     private fun saveUsernameToPreferences() {
         viewModelScope.launch {
             val username = screenState.value.nameText
             withContext(Dispatchers.IO) { preferences.setUser(username) }
-                .also { _screenState.update { it.copy(username = username) } }
+                .also { viewModelScope.launch { _isUserSetChannel.send(true) } }
         }
     }
 

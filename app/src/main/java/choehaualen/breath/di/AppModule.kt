@@ -1,9 +1,9 @@
 package choehaualen.breath.di
 
-import choehaualen.breath.MainActivityViewModel
 import choehaualen.breath.data.preferences.AppPreferences
 import choehaualen.breath.data.preferences.AppPreferencesImpl
 import choehaualen.breath.data.preferences.AppPreferencesImpl.Companion.preferences
+import choehaualen.breath.presentation.MainActivityViewModel
 import choehaualen.breath.presentation.boarding.user.UserScreenViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
