@@ -1,4 +1,4 @@
-package choehaualen.breath.presentation.welcome
+package choehaualen.breath.presentation.boarding.welcome
 
 import androidx.compose.runtime.Stable
 
@@ -12,5 +12,7 @@ sealed interface WelcomeScreenUIAction {
     data class Back(
         val currentSegment: WelcomeScreenSegment
     ) : WelcomeScreenUIAction
+
+    data object NavigateToUser : WelcomeScreenUIAction
 
 }

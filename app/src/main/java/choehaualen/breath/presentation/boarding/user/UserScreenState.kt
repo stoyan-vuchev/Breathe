@@ -1,4 +1,4 @@
-package choehaualen.breath.presentation.user
+package choehaualen.breath.presentation.boarding.user
 
 import androidx.compose.runtime.Stable
 
