@@ -71,7 +71,9 @@ fun WelcomeScreen(
     val primaryBgColor by animateColorAsState(
         targetValue = if (screenState.segment is WelcomeScreenSegment.Welcome) {
             BreathTheme.colors.background
-        } else BreathTheme.colors.backgroundGradientStart,
+        } else {
+            BreathTheme.colors.backgroundGradientStart
+        },
         label = "",
         animationSpec = tween(durationMillis = BASIC_ANIMATION_DURATION)
     )
@@ -79,7 +81,9 @@ fun WelcomeScreen(
     val secondaryBgColor by animateColorAsState(
         targetValue = if (screenState.segment is WelcomeScreenSegment.Welcome) {
             BreathTheme.colors.background
-        } else BreathTheme.colors.backgroundGradientEnd,
+        } else {
+            BreathTheme.colors.backgroundGradientEnd
+        },
         label = "",
         animationSpec = tween(durationMillis = BASIC_ANIMATION_DURATION)
     )
