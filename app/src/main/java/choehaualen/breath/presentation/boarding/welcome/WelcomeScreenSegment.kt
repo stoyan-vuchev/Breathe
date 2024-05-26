@@ -7,6 +7,7 @@ import choehaualen.breath.R
 import choehaualen.breath.core.ui.colors.BreathDefaultColors
 import choehaualen.breath.core.ui.colors.Colors
 import choehaualen.breath.core.ui.colors.DreamyNightColors
+import choehaualen.breath.core.ui.colors.MangoColors
 import choehaualen.breath.core.ui.colors.MelonColors
 import choehaualen.breath.core.ui.colors.SilverColors
 import choehaualen.breath.core.ui.colors.SleepColors
@@ -45,6 +46,13 @@ sealed class WelcomeScreenSegment(
         description = R.string.welcome_screen_soundscape_segment_description,
         icon = R.drawable.sound_wave,
         colors = DreamyNightColors
+    )
+
+    data object Puzzle : WelcomeScreenSegment(
+        title = R.string.welcome_screen_puzzle_segment_title,
+        description = R.string.welcome_screen_puzzle_segment_description,
+        icon = R.drawable.puzzle,
+        colors = MangoColors
     )
 
     data object Privacy : WelcomeScreenSegment(

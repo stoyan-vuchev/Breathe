@@ -6,6 +6,8 @@ import androidx.compose.runtime.Immutable
 interface UserScreenUIAction {
 
     data object Next : UserScreenUIAction
+    data object GetStarted : UserScreenUIAction
+    data object PopBackStack : UserScreenUIAction
 
     data class SetNameText(
         val text: String

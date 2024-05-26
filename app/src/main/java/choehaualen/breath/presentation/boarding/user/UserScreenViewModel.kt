@@ -19,12 +19,13 @@ class UserScreenViewModel(
     private val _screenState = MutableStateFlow(UserScreenState())
     val screenState = _screenState.asStateFlow()
 
-    private val _isUserSetChannel = Channel<Boolean?>()
-    val isUserSetFlow = _isUserSetChannel.receiveAsFlow()
+    private val _uiActionChannel = Channel<UserScreenUIAction>()
+    val uiActionFlow = _uiActionChannel.receiveAsFlow()
 
     fun onUIAction(uiAction: UserScreenUIAction) = when (uiAction) {
-        is UserScreenUIAction.Next -> saveUsernameOrNavigate()
+        is UserScreenUIAction.Next -> checkUsernameForFlaws()
         is UserScreenUIAction.SetNameText -> onSetUsernameText(uiAction.text)
+        is UserScreenUIAction.GetStarted -> sendUIAction(UserScreenUIAction.GetStarted)
         else -> Unit // Unit basically returns nothing.
     }
 
@@ -39,11 +40,6 @@ class UserScreenViewModel(
         _screenState.update { currentState ->
             currentState.copy(nameText = text)
         }
-    }
-
-    private fun saveUsernameOrNavigate() {
-        if (screenState.value.username == null) checkUsernameForFlaws()
-        else viewModelScope.launch { _isUserSetChannel.send(true) }
     }
 
     private fun checkUsernameForFlaws() {
@@ -64,8 +60,13 @@ class UserScreenViewModel(
         viewModelScope.launch {
             val username = screenState.value.nameText
             withContext(Dispatchers.IO) { preferences.setUser(username) }
-                .also { viewModelScope.launch { _isUserSetChannel.send(true) } }
+                .also { sendUIAction(UserScreenUIAction.PopBackStack) }
+                .also { _screenState.update { it.copy(username = username) } }
         }
+    }
+
+    private fun sendUIAction(uiAction: UserScreenUIAction) {
+        viewModelScope.launch { _uiActionChannel.send(uiAction) }
     }
 
 }

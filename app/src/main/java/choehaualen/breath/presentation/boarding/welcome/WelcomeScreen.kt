@@ -56,12 +56,10 @@ fun WelcomeScreen(
     )
 
     DisposableEffect(screenState.segment, tweaker) {
-        tweaker.tweakSystemBarsStyle(
-            statusBarStyle = tweaker.statusBarStyle.copy(
-                darkIcons = true
-            ),
+        tweaker.tweakNavigationBarStyle(
             navigationBarStyle = tweaker.navigationBarStyle.copy(
-                darkIcons = screenState.segment !is WelcomeScreenSegment.Soundscape
+                darkIcons = screenState.segment !is WelcomeScreenSegment.TrackSleep
+                        && screenState.segment !is WelcomeScreenSegment.Soundscape
                         && screenState.segment !is WelcomeScreenSegment.Privacy
             )
         )
@@ -191,7 +189,6 @@ fun WelcomeScreen(
                         ),
                         text = when (screenState.segment) {
                             is WelcomeScreenSegment.Welcome -> "Get Started"
-                            is WelcomeScreenSegment.Privacy -> "Back"
                             else -> "Next"
                         },
                         style = BreathTheme.typography.labelMedium

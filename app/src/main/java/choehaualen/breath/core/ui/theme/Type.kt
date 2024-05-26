@@ -31,56 +31,56 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = (-0.75).sp
     ),
     bodyMedium = TextStyle(
         fontFamily = RobotoFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = (-0.75).sp
     ),
     bodySmall = TextStyle(
         fontFamily = RobotoFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
         lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = (-0.75).sp
     ),
     titleLarge = TextStyle(
         fontFamily = QuickSandFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
-        letterSpacing = 0.sp
+        letterSpacing = (-0.75).sp
     ),
     labelSmall = TextStyle(
         fontFamily = RobotoFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 11.sp,
         lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = (-0.75).sp
     ),
     labelMedium = TextStyle(
         fontFamily = QuickSandFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = (-0.75).sp
     ),
     labelLarge = TextStyle(
         fontFamily = QuickSandFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = (-0.75).sp
     ),
     headlineLarge = TextStyle(
         fontFamily = QuickSandFontFam,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp,
         lineHeight = 36.sp,
-        letterSpacing = 0.01.sp
+        letterSpacing = (-0.75).sp
     ),
 )
 

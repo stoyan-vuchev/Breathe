@@ -44,6 +44,16 @@ val MelonColors = Colors(
     text = Color(0xFF121212)
 )
 
+val MangoColors = Colors(
+    primarySoul = Color(0xFFFFD3D3),
+    secondarySoul = Color(0xFFBBD6FF),
+    background = Color(0xFFFFFFFF),
+    backgroundGradientStart = Color(0xFFFFF5C3),
+    backgroundGradientEnd = Color(0xFFFFB862),
+    card = Color(0xFFEAEBF7),
+    text = Color(0xFF121212)
+)
+
 val SilverColors = Colors(
     primarySoul = Color(0xFFFFD3D3),
     secondarySoul = Color(0xFFBBD6FF),

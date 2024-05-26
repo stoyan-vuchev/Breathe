@@ -31,7 +31,8 @@ class WelcomeScreenViewModel : ViewModel() {
                         is WelcomeScreenSegment.Welcome -> WelcomeScreenSegment.TrackSleep
                         is WelcomeScreenSegment.TrackSleep -> WelcomeScreenSegment.BreathExercises
                         is WelcomeScreenSegment.BreathExercises -> WelcomeScreenSegment.Soundscape
-                        is WelcomeScreenSegment.Soundscape -> WelcomeScreenSegment.Privacy
+                        is WelcomeScreenSegment.Soundscape -> WelcomeScreenSegment.Puzzle
+                        is WelcomeScreenSegment.Puzzle -> WelcomeScreenSegment.Privacy
                         else -> segment
                     }
                 )
@@ -43,7 +44,8 @@ class WelcomeScreenViewModel : ViewModel() {
         _screenState.update { currentState ->
             currentState.copy(
                 segment = when (segment) {
-                    is WelcomeScreenSegment.Privacy -> WelcomeScreenSegment.Soundscape
+                    is WelcomeScreenSegment.Privacy -> WelcomeScreenSegment.Puzzle
+                    is WelcomeScreenSegment.Puzzle -> WelcomeScreenSegment.Soundscape
                     is WelcomeScreenSegment.Soundscape -> WelcomeScreenSegment.BreathExercises
                     is WelcomeScreenSegment.BreathExercises -> WelcomeScreenSegment.TrackSleep
                     is WelcomeScreenSegment.TrackSleep -> WelcomeScreenSegment.Welcome
