@@ -116,7 +116,6 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             Image(
-
                 painter = painterResource(id = screenState.segment.icon),
                 contentDescription = null
             )
