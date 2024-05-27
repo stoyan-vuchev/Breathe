@@ -15,8 +15,8 @@ val BreathDefaultColors = Colors(
 )
 
 val DreamyNightColors = Colors(
-    primarySoul = Color(0xFFFFD3D3),
-    secondarySoul = Color(0xFFBBD6FF),
+    primarySoul = Color(0xFF8DADFF),
+    secondarySoul = Color(0xFF002686),
     background = Color(0xFFFFFFFF),
     backgroundGradientStart = Color(0xFFC5D3F8),
     backgroundGradientEnd = Color(0xFF1A3C92),
@@ -25,8 +25,8 @@ val DreamyNightColors = Colors(
 )
 
 val SleepColors = Colors(
-    primarySoul = Color(0xFFFFD3D3),
-    secondarySoul = Color(0xFFBBD6FF),
+    primarySoul = Color(0xFFA9A1DD),
+    secondarySoul = Color(0xFF5856B7),
     background = Color(0xFFFFFFFF),
     backgroundGradientStart = Color(0xFFE8E6F7),
     backgroundGradientEnd = Color(0xFF8B88E6),
@@ -35,8 +35,8 @@ val SleepColors = Colors(
 )
 
 val MelonColors = Colors(
-    primarySoul = Color(0xFFFFD3D3),
-    secondarySoul = Color(0xFFBBD6FF),
+    primarySoul = Color(0xFF96D3A9),
+    secondarySoul = Color(0xFF438980),
     background = Color(0xFFFFFFFF),
     backgroundGradientStart = Color(0xFFCDEFD9),
     backgroundGradientEnd = Color(0xFF85D6C8),
@@ -45,8 +45,8 @@ val MelonColors = Colors(
 )
 
 val MangoColors = Colors(
-    primarySoul = Color(0xFFFFD3D3),
-    secondarySoul = Color(0xFFBBD6FF),
+    primarySoul = Color(0xFFF3CC0F),
+    secondarySoul = Color(0xFFE38001),
     background = Color(0xFFFFFFFF),
     backgroundGradientStart = Color(0xFFFFF5C3),
     backgroundGradientEnd = Color(0xFFFFB862),

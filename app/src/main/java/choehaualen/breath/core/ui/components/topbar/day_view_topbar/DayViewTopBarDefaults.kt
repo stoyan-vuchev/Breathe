@@ -91,8 +91,8 @@ object DayViewTopBarDefaults {
     @Composable
     internal fun largeContainerHeight(
         scrollBehavior: DayViewTopBarScrollBehavior? = null,
-        // 1/3 of the window height by default.
-        factor: Float = 1f / 3f
+        // 1/4 of the window height by default.
+        factor: Float = 1f / 4f
     ): Dp {
 
         val minHeight = 175.dp
