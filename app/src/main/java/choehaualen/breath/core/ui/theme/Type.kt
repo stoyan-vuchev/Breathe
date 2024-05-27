@@ -82,6 +82,13 @@ val Typography = Typography(
         lineHeight = 36.sp,
         letterSpacing = (-0.75).sp
     ),
+    displayLarge = TextStyle(
+        fontFamily = QuickSandFontFam,
+        fontWeight = FontWeight.Bold,
+        fontSize = 80.sp,
+        lineHeight = 42.sp,
+        letterSpacing = (-0.75).sp
+    ),
 )
 
 // Wait ....
