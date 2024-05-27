@@ -15,6 +15,7 @@ import choehaualen.breath.presentation.boarding.user.UserScreenViewModel
 import choehaualen.breath.presentation.boarding.welcome.WelcomeScreen
 import choehaualen.breath.presentation.boarding.welcome.WelcomeScreenUIAction
 import choehaualen.breath.presentation.boarding.welcome.WelcomeScreenViewModel
+import choehaualen.breath.presentation.main.MainNavigationDestinations
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
@@ -79,7 +80,7 @@ fun NavGraphBuilder.boardingNavigationGraph(
 
                                 is UserScreenUIAction.GetStarted -> {
                                     navController.navigateSingleTop(
-                                        route = "main_screen_route",
+                                        route = MainNavigationDestinations.Home.route,
                                         popUpTo = BoardingNavigationDestination.User.route
                                     )
                                 }

@@ -64,7 +64,7 @@ class BreathRipple(
 
         var alpha = Animatable(0f)
         var alphaFactor = Animatable(.1f)
-        val animatedScalePercent = Animatable(1.075f)
+        val animatedScalePercent = Animatable(1f)
 
         private suspend fun animateToPressed(
             pressPosition: Offset
