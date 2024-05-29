@@ -19,6 +19,13 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
 
                 HomeScreen()
 
+                // So, what's next?, you sure u have time and have a mood to continue?
+                // So - so, 50/50 how abt u take some break? Yes, I think my b*t will merge
+                // with the chair :DDDDDDol yes take break see ya :)
+                // Oke, dm me on Discord , see ya!~   , or u send me msg when u are free
+                // Oke, I'll do some exercises outside, and cut the grass. So half an hour will be
+                // quite refreshing. Great! Oke, see ya soon!, :)
+
             }
         )
 
