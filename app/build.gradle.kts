@@ -131,6 +131,10 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.compose.navigation)
 
+    androidTestImplementation(platform(libs.koin.bom))
+    androidTestImplementation(libs.koin.test)
+    androidTestImplementation(libs.koin.test.junit4)
+
     // Networking Dependencies
 
     implementation(libs.ktor.client.android)

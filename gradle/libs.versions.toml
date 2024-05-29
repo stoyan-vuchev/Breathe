@@ -106,6 +106,8 @@ koin-android = { module = "io.insert-koin:koin-android" }
 koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
 koin-androidx-compose-navigation = { module = "io.insert-koin:koin-androidx-compose-navigation" }
+koin-test = { module = "io.insert-koin:koin-test" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4" }
 
 # Networking Lib Dependencies
 ktor-client-android = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
