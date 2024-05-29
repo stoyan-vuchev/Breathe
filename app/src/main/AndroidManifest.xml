@@ -23,8 +23,8 @@
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Breath"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.Breath"
             tools:ignore="DiscouragedApi,LockedOrientationActivity">
 
             <intent-filter>
