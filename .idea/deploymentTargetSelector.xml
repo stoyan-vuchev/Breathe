@@ -33,7 +33,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="AppPreferencesTest">
+      <SelectionState runConfigName="AppDatabaseSleepTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
