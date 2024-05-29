@@ -3,6 +3,7 @@
     <!-- Application ======================================================================= -->
 
     <string name="app_name">Breath</string>
+    <string name="something_went_wrong">Something went wrong.</string>
 
     <!-- Welcome Screen ==================================================================== -->
 
