@@ -8,18 +8,20 @@ import choehaualen.breath.data.preferences.AppPreferencesImpl
 import choehaualen.breath.data.preferences.AppPreferencesImpl.Companion.preferences
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.testing.TestInstallIn
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.TestDispatcher
 import javax.inject.Singleton
 
-/**
- * A DI module containing all the necessary dependencies related to the core application.
- */
 @Module
-@InstallIn(SingletonComponent::class)
-object AppModule {
+@TestInstallIn(
+    components = [SingletonComponent::class],
+    replaces = [AppModule::class]
+)
+object TestAppModule {
 
     @Provides
     @Singleton
@@ -32,16 +34,25 @@ object AppModule {
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return AppDatabase.createInstance(
             context = context.applicationContext,
-            inMemory = false
+            inMemory = true
         )
     }
 
     @Provides
     @Singleton
-    fun provideSleepManager(appDatabase: AppDatabase): SleepManager {
+    fun provideTestCoroutineScheduler(): TestDispatcher {
+        return StandardTestDispatcher(TestCoroutineScheduler())
+    }
+
+    @Provides
+    @Singleton
+    fun provideSleepManager(
+        appDatabase: AppDatabase,
+        testDispatcher: TestDispatcher
+    ): SleepManager {
         return SleepManager(
             sleepDao = appDatabase.sleepDao,
-            ioDispatcher = Dispatchers.IO
+            ioDispatcher = testDispatcher
         )
     }
 

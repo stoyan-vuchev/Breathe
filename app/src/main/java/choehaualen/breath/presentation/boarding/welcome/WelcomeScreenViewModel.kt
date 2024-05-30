@@ -2,14 +2,17 @@ package choehaualen.breath.presentation.boarding.welcome
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class WelcomeScreenViewModel : ViewModel() {
+@HiltViewModel
+class WelcomeScreenViewModel @Inject constructor() : ViewModel() {
 
     private val _screenState = MutableStateFlow(WelcomeScreenState())
     val screenState = _screenState.asStateFlow()

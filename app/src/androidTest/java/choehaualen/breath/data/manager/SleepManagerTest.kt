@@ -61,7 +61,7 @@ class SleepManagerTest {
             )
         )
 
-        sleepManager.saveSleepData(expected.data!!.first())
+        sleepManager.saveSleepData(expected.data!!)
 
         when (val actual = sleepManager.readSleepData()) {
             is Result.Success -> assertThat(actual.data).isEqualTo(expected.data)
@@ -84,7 +84,7 @@ class SleepManagerTest {
             )
         )
 
-        sleepList.forEach { entity -> sleepManager.saveSleepData(entity) }
+        sleepManager.saveSleepData(sleepList)
             .also { sleepManager.deleteAllSleepData() }
 
         when (val actual = sleepManager.readSleepData()) {

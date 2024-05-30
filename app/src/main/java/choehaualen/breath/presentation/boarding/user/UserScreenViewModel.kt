@@ -3,6 +3,7 @@ package choehaualen.breath.presentation.boarding.user
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import choehaualen.breath.data.preferences.AppPreferences
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,8 +12,10 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class UserScreenViewModel(
+@HiltViewModel
+class UserScreenViewModel @Inject constructor(
     private val preferences: AppPreferences
 ) : ViewModel() {
 

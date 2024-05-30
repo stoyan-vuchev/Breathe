@@ -6,16 +6,17 @@ import choehaualen.breath.data.local.dao.SleepDao
 import choehaualen.breath.data.local.entity.SleepEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class SleepManager(
+class SleepManager @Inject constructor(
     private val sleepDao: SleepDao,
     private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun saveSleepData(sleepEntity: SleepEntity): Result<Unit> = try {
+    suspend fun saveSleepData(sleepEntities: List<SleepEntity>): Result<Unit> = try {
 
         // Attempt to save the sleep data.
-        withContext(ioDispatcher) { sleepDao.insertSleepEntity(sleepEntity) }
+        withContext(ioDispatcher) { sleepDao.insertSleepEntities(sleepEntities) }
 
         // The data was saved successfully, now return a successful result.
         Result.Success()
@@ -31,7 +32,7 @@ class SleepManager(
 
         // Attempt to obtain the sleep data.
         val sleepData = withContext(ioDispatcher) {
-            sleepDao.getAllSleepEntities() ?: emptyList()
+            sleepDao.getAllSleepEntities() ?: listOf()
         }
 
         // Return the successfully obtained data.

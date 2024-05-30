@@ -5,11 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import choehaualen.breath.core.ui.theme.BreathTheme
-import org.koin.androidx.compose.koinViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            val viewModel = koinViewModel<MainActivityViewModel>()
+            val viewModel = hiltViewModel<MainActivityViewModel>()
             val isUserAuthenticated by viewModel.isUserAuthenticated.collectAsStateWithLifecycle()
             val navController = rememberNavController()
 

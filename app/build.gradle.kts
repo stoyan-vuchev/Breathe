@@ -1,8 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.dagger.hilt.android)
 }
 
 android {
@@ -18,7 +20,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "choehaualen.breath.HiltTestRunner"
         vectorDrawables.useSupportLibrary = true
 
     }
@@ -41,20 +43,15 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        jvmToolchain(17)
     }
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = extra["compose.compiler.version"] as String
     }
 
     packaging {
@@ -123,17 +120,14 @@ dependencies {
 
     // Dependency Injection Dependencies
 
-    implementation(platform(libs.koin.bom))
-    implementation(libs.koin.core)
-    implementation(libs.koin.core.coroutines)
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.workmanager)
-    implementation(libs.koin.androidx.compose)
-    implementation(libs.koin.androidx.compose.navigation)
+    implementation(libs.dagger.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.work)
 
-    androidTestImplementation(platform(libs.koin.bom))
-    androidTestImplementation(libs.koin.test)
-    androidTestImplementation(libs.koin.test.junit4)
+    ksp(libs.androidx.hilt.compiler)
+    ksp(libs.dagger.hilt.compiler)
+
+    androidTestImplementation(libs.dagger.hilt.android.testing)
 
     // Networking Dependencies
 

@@ -48,7 +48,7 @@ class AppDatabaseSleepTest {
             totalSleepDuration = totalSleepDuration
         )
 
-        sleepDao.insertSleepEntity(expected)
+        sleepDao.insertSleepEntities(listOf(expected))
 
         val actual = sleepDao.getSleepEntity(expected.sleepStartTimestamp)
 
@@ -72,7 +72,7 @@ class AppDatabaseSleepTest {
             )
         )
 
-        sleepDao.insertSleepEntity(expected.first())
+        sleepDao.insertSleepEntities(expected)
 
         val actual = sleepDao.getAllSleepEntities()
 
@@ -94,7 +94,7 @@ class AppDatabaseSleepTest {
             totalSleepDuration = totalSleepDuration
         )
 
-        sleepDao.insertSleepEntity(expected)
+        sleepDao.insertSleepEntities(listOf(expected))
         sleepDao.deleteSleepEntity(expected)
 
         val actual = sleepDao.getSleepEntity(expected.sleepStartTimestamp)
@@ -117,7 +117,7 @@ class AppDatabaseSleepTest {
             totalSleepDuration = totalSleepDuration
         )
 
-        sleepDao.insertSleepEntity(expected)
+        sleepDao.insertSleepEntities(listOf(expected))
         sleepDao.deleteSleepEntity(expected)
 
         val actual = sleepDao.getAllSleepEntities()

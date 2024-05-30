@@ -2,27 +2,27 @@
 
 # Plugin Versions
 agp = "8.4.1"
-kotlin = "1.9.24"
-ksp = "1.9.24-1.0.20"
+kotlin = "2.0.0"
+ksp = "2.0.0-1.0.21"
 
 # GMS Lib Versions
-gmsLocation = "21.2.0"
+gmsLocation = "21.3.0"
 
 # Core Lib Versions
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.7.0"
+lifecycleRuntimeKtx = "2.8.1"
 material = "1.12.0"
 
 # Jetpack Compose Lib Versions
 composeBom = "2024.05.00"
-composeVersion = "1.7.0-beta01"
+composeVersion = "1.7.0-beta02"
 activityCompose = "1.9.0"
 navigationCompose = "2.7.7"
-lifecycleRuntimeCompose = "2.7.0"
-material3Compose = "1.3.0-beta01"
+lifecycleRuntimeCompose = "2.8.1"
+material3Compose = "1.3.0-beta02"
 
 # Fancy UI Stuff Lib Versions :d
 haze = "0.7.1"
@@ -34,7 +34,10 @@ dataStore = "1.1.1"
 room = "2.6.1"
 
 # Dependency Injection Lib Versions
-koin-bom = "3.5.6"
+daggerHilt = "2.51"
+androidxHiltNavigationCompose = "1.2.0"
+androidxHiltWork = "1.2.0"
+androidxHiltCompiler = "1.2.0"
 
 # Networking Lib Versions
 ktor = "2.3.11"
@@ -99,15 +102,12 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 # Dependency Injection Lib Dependencies
-koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
-koin-core = { module = "io.insert-koin:koin-core" }
-koin-core-coroutines = { module = "io.insert-koin:koin-core-coroutines" }
-koin-android = { module = "io.insert-koin:koin-android" }
-koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager" }
-koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
-koin-androidx-compose-navigation = { module = "io.insert-koin:koin-androidx-compose-navigation" }
-koin-test = { module = "io.insert-koin:koin-test" }
-koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4" }
+dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "daggerHilt" }
+dagger-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "daggerHilt" }
+dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "daggerHilt" }
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "androidxHiltWork" }
+androidx-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "androidxHiltCompiler" }
 
 # Networking Lib Dependencies
 ktor-client-android = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
@@ -134,9 +134,13 @@ coroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-t
 # Base Plugins
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 # Annotation / Symbol Proccessing Plugins
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 # Serialization Plugins
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+# Dependency Injection
+dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
