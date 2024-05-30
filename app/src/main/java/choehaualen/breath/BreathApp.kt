@@ -1,23 +1,9 @@
 package choehaualen.breath
 
 import android.app.Application
-import choehaualen.breath.di.appModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
+import dagger.hilt.android.HiltAndroidApp
 
-class BreathApp : Application() {
+@HiltAndroidApp
+class HiltBreathApp : BreathApp()
 
-    override fun onCreate() {
-        super.onCreate()
-        startKoin {
-
-            // Provide the Application context.
-            androidContext(this@BreathApp)
-
-            // Install the [UserModule].
-            modules(appModule)
-
-        }
-    }
-
-}
+open class BreathApp : Application()

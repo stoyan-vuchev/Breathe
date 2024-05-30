@@ -2,8 +2,8 @@ package choehaualen.breath.presentation.boarding
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -17,7 +17,6 @@ import choehaualen.breath.presentation.boarding.welcome.WelcomeScreenUIAction
 import choehaualen.breath.presentation.boarding.welcome.WelcomeScreenViewModel
 import choehaualen.breath.presentation.main.MainNavigationDestinations
 import kotlinx.coroutines.flow.collectLatest
-import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.boardingNavigationGraph(
     navController: NavHostController
@@ -32,7 +31,7 @@ fun NavGraphBuilder.boardingNavigationGraph(
                 route = BoardingNavigationDestination.Welcome.route,
                 content = {
 
-                    val viewModel = viewModel<WelcomeScreenViewModel>()
+                    val viewModel = hiltViewModel<WelcomeScreenViewModel>()
                     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
                     LaunchedEffect(viewModel.uiActionFlow) {
@@ -64,7 +63,7 @@ fun NavGraphBuilder.boardingNavigationGraph(
                 route = BoardingNavigationDestination.User.route,
                 content = {
 
-                    val viewModel = koinViewModel<UserScreenViewModel>()
+                    val viewModel = hiltViewModel<UserScreenViewModel>()
                     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
                     LaunchedEffect(viewModel.uiActionFlow) {

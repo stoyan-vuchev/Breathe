@@ -10,7 +10,7 @@ import choehaualen.breath.data.local.entity.SleepEntity
 interface SleepDao {
 
     @Insert
-    suspend fun insertSleepEntity(sleepEntity: SleepEntity)
+    suspend fun insertSleepEntities(sleepEntities: List<SleepEntity>)
 
     @Query("SELECT * FROM sleep_table WHERE sleepStartTimestamp = :sleepStartTimestamp")
     suspend fun getSleepEntity(sleepStartTimestamp: Long): SleepEntity?

@@ -1,30 +1,33 @@
 package choehaualen.breath.framework.receiver
 
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import choehaualen.breath.data.local.entity.SleepEntity
 import choehaualen.breath.data.manager.SleepManager
 import com.google.android.gms.location.SleepSegmentEvent
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import javax.inject.Inject
 
-class SleepDataReceiver : BroadcastReceiver(), KoinComponent {
+@AndroidEntryPoint
+class SleepDataReceiver : BroadcastReceiver() {
 
-    private val sleepManager by inject<SleepManager>()
+    @Inject
+    lateinit var sleepManager: SleepManager
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onReceive(context: Context?, intent: Intent?) {
 
         intent?.let { safeIntent ->
 
             if (SleepSegmentEvent.hasEvents(safeIntent)) {
 
-                val scope = GlobalScope
+                val scope = CoroutineScope(Dispatchers.Default)
                 val sleepData = SleepSegmentEvent.extractEvents(safeIntent)
                     .map {
 
@@ -40,13 +43,33 @@ class SleepDataReceiver : BroadcastReceiver(), KoinComponent {
 
                     }
 
-                sleepData.forEach { entity ->
-                    scope.launch { sleepManager.saveSleepData(sleepEntity = entity) }
-                        .invokeOnCompletion { scope.cancel() }
-
-                }
+                scope.launch { sleepManager.saveSleepData(sleepData) }
+                    .invokeOnCompletion { scope.cancel() }
 
             }
+
+        }
+
+    }
+
+    companion object {
+
+        fun createSleepReceiverPendingIntent(context: Context): PendingIntent {
+
+            // Prepare intent flags
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_MUTABLE
+            } else {
+                PendingIntent.FLAG_CANCEL_CURRENT
+            }
+
+            // Create the PendingIntent
+            return PendingIntent.getBroadcast(
+                context,
+                0,
+                Intent(context, SleepDataReceiver::class.java),
+                flags
+            )
 
         }
 
