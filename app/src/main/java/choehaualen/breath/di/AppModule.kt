@@ -6,6 +6,8 @@ import choehaualen.breath.data.manager.SleepManager
 import choehaualen.breath.data.preferences.AppPreferences
 import choehaualen.breath.data.preferences.AppPreferencesImpl
 import choehaualen.breath.data.preferences.AppPreferencesImpl.Companion.preferences
+import com.google.android.gms.location.ActivityRecognition
+import com.google.android.gms.location.ActivityRecognitionClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

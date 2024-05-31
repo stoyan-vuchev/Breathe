@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import choehaualen.breath.data.local.entity.SleepEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SleepDao {
@@ -17,6 +18,9 @@ interface SleepDao {
 
     @Query("SELECT * FROM sleep_table")
     suspend fun getAllSleepEntities(): List<SleepEntity>?
+
+    @Query("SELECT * FROM sleep_table")
+    fun getAllSleepEntitiesFlow(): Flow<List<SleepEntity>>?
 
     @Delete
     suspend fun deleteSleepEntity(sleepEntity: SleepEntity)

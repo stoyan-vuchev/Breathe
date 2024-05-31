@@ -39,6 +39,9 @@ import androidx.compose.ui.text.lerp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import choehaualen.breath.core.etc.transformFraction
+import choehaualen.breath.core.ui.components.topbar.TopBarDefaults
+import choehaualen.breath.core.ui.components.topbar.TopBarScrollBehavior
+import choehaualen.breath.core.ui.components.topbar.settleAppBar
 import choehaualen.breath.core.ui.theme.BreathTheme
 import choehaualen.breath.core.utils.TimestampUtils
 import kotlinx.coroutines.CoroutineScope
@@ -61,12 +64,12 @@ import kotlinx.coroutines.CoroutineScope
 fun DayViewTopBar(
     modifier: Modifier = Modifier,
     actions: @Composable (RowScope.() -> Unit)? = null,
-    scrollBehavior: DayViewTopBarScrollBehavior? = null,
+    scrollBehavior: TopBarScrollBehavior? = null,
     backgroundColor: Color = Color.Unspecified,
     contentColor: Color = BreathTheme.colors.text,
     largeTitleTextStyle: TextStyle = BreathTheme.typography.displayLarge,
     smallTitleTextStyle: TextStyle = BreathTheme.typography.headlineLarge,
-    windowInsets: WindowInsets = DayViewTopBarDefaults.windowInsets()
+    windowInsets: WindowInsets = TopBarDefaults.windowInsets()
 ) = DayViewTopBarLayout(
     modifier = modifier,
     largeTitleTextStyle = largeTitleTextStyle,
@@ -75,8 +78,8 @@ fun DayViewTopBar(
     windowInsets = windowInsets,
     backgroundColor = backgroundColor,
     contentColor = contentColor,
-    maxHeight = DayViewTopBarDefaults.largeContainerHeight(scrollBehavior),
-    pinnedHeight = DayViewTopBarDefaults.smallContainerHeight,
+    maxHeight = TopBarDefaults.largeContainerHeight(scrollBehavior),
+    pinnedHeight = TopBarDefaults.smallContainerHeight,
     scrollBehavior = scrollBehavior
 )
 
@@ -91,7 +94,7 @@ private fun DayViewTopBarLayout(
     contentColor: Color,
     maxHeight: Dp,
     pinnedHeight: Dp,
-    scrollBehavior: DayViewTopBarScrollBehavior?
+    scrollBehavior: TopBarScrollBehavior?
 ) = CompositionLocalProvider(LocalContentColor provides contentColor) {
 
     val density = LocalDensity.current

@@ -1,4 +1,4 @@
-package choehaualen.breath.core.ui.components.topbar.day_view_topbar
+package choehaualen.breath.core.ui.components.topbar
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.AnimationState
@@ -14,13 +14,13 @@ import kotlin.math.abs
 
 /**
  *
- * A [DayViewTopBarScrollBehavior] that adjusts its properties to affect the colors and height of a top bar.
+ * A [TopBarScrollBehavior] that adjusts its properties to affect the colors and height of a top bar.
  *
- * A top bar that is set up with this [DayViewTopBarScrollBehavior] will immediately collapse when
+ * A top bar that is set up with this [TopBarScrollBehavior] will immediately collapse when
  * the nested content is pulled up, and will expand back the collapsed area when the content is
  * pulled all the way down.
  *
- * @param state a [DayViewTopBarState].
+ * @param state a [TopBarState].
  * @param snapAnimationSpec an optional [AnimationSpec] that defines how the top bar snaps to
  * either fully collapsed or fully extended state when a fling or a drag scrolled it into an
  * intermediate position.
@@ -34,11 +34,11 @@ import kotlin.math.abs
  */
 @Stable
 internal class ExitUntilCollapsedScrollBehavior(
-    override val state: DayViewTopBarState,
+    override val state: TopBarState,
     override val snapAnimationSpec: AnimationSpec<Float>?,
     override val flingAnimationSpec: DecayAnimationSpec<Float>?,
     val canScroll: () -> Boolean = { true }
-) : DayViewTopBarScrollBehavior {
+) : TopBarScrollBehavior {
 
     override val isPinned: Boolean = false
 
@@ -113,7 +113,7 @@ internal class ExitUntilCollapsedScrollBehavior(
  */
 @Stable
 internal suspend fun settleAppBar(
-    state: DayViewTopBarState,
+    state: TopBarState,
     velocity: Float,
     flingAnimationSpec: DecayAnimationSpec<Float>?,
     snapAnimationSpec: AnimationSpec<Float>?
@@ -171,13 +171,13 @@ internal suspend fun settleAppBar(
 }
 
 @Stable
-interface DayViewTopBarScrollBehavior {
+interface TopBarScrollBehavior {
 
     /**
-     * A [DayViewTopBarState] that is attached to this behavior and is read and updated when scrolling
+     * A [TopBarState] that is attached to this behavior and is read and updated when scrolling
      * happens.
      */
-    val state: DayViewTopBarState
+    val state: TopBarState
 
     /**
      * Indicates whether the top bar is pinned.

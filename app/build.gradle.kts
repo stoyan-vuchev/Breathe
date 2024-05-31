@@ -47,7 +47,15 @@ android {
     }
 
     kotlin {
+
         jvmToolchain(17)
+
+        sourceSets.all {
+            languageSettings.apply {
+                languageSettings.enableLanguageFeature("ExplicitBackingFields")
+            }
+        }
+
     }
 
     buildFeatures {
