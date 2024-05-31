@@ -5,6 +5,8 @@ import choehaualen.breath.core.etc.Result.Companion.extractErrorFromException
 import choehaualen.breath.data.local.dao.SleepDao
 import choehaualen.breath.data.local.entity.SleepEntity
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -42,6 +44,13 @@ class SleepManager @Inject constructor(
 
         // Notify the user of an occurred error.
         Result.Error(error = extractErrorFromException(e))
+
+    }
+
+    fun readSleepDataFlow(): Flow<List<SleepEntity>> {
+
+        // Attempt to obtain the sleep data.
+        return  sleepDao.getAllSleepEntitiesFlow() ?: flowOf()
 
     }
 

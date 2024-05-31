@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.firstOrNull
@@ -21,9 +22,21 @@ class AppPreferencesImpl @Inject constructor(
         return preferences.data.firstOrNull()?.let { it[USER_KEY] }
     }
 
+    override suspend fun setSleepGoal(sleepGoalDuration: Long) {
+        preferences.edit { it[SLEEP_GOAL_KEY] = sleepGoalDuration }
+    }
+
+    override suspend fun getSleepGoal(): Long? {
+        return preferences.data.firstOrNull()?.let { it[SLEEP_GOAL_KEY] }
+    }
+
     companion object {
+
         private val USER_KEY = stringPreferencesKey("user")
+        private val SLEEP_GOAL_KEY = longPreferencesKey("sleep_goal")
+
         val Context.preferences by preferencesDataStore(name = "app_preferences")
+
     }
 
 }

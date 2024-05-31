@@ -1,4 +1,4 @@
-package choehaualen.breath.core.ui.components.topbar.day_view_topbar
+package choehaualen.breath.core.ui.components.topbar
 
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import androidx.compose.animation.core.AnimationSpec
@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 /**
  * Useful utilities for a top bar UI components.
  */
-object DayViewTopBarDefaults {
+object TopBarDefaults {
 
     /**
      * Default insets to be used and consumed by the top bars.
@@ -41,15 +41,15 @@ object DayViewTopBarDefaults {
 
     /**
      *
-     * Returns a [DayViewTopBarScrollBehavior] that adjusts its properties to affect the colors and
+     * Returns a [TopBarScrollBehavior] that adjusts its properties to affect the colors and
      * height of the top app bar.
      *
-     * A top app bar that is set up with this [DayViewTopBarScrollBehavior] will immediately collapse
+     * A top app bar that is set up with this [TopBarScrollBehavior] will immediately collapse
      * when the nested content is pulled up, and will expand back the collapsed area when the
      * content is  pulled all the way down.
      *
      * @param state the state object to be used to control or observe the top app bar's scroll
-     * state. See [rememberDayViewTopBarState] for a state that is remembered across compositions.
+     * state. See [rememberTopBarState] for a state that is remembered across compositions.
      *
      * @param canScroll a callback used to determine whether scroll events are to be
      * handled by this [ExitUntilCollapsedScrollBehavior].
@@ -64,11 +64,11 @@ object DayViewTopBarDefaults {
      */
     @Composable
     fun exitUntilCollapsedScrollBehavior(
-        state: DayViewTopBarState = rememberDayViewTopBarState(),
+        state: TopBarState = rememberTopBarState(),
         canScroll: () -> Boolean = { true },
         snapAnimationSpec: AnimationSpec<Float>? = spring(),
         flingAnimationSpec: DecayAnimationSpec<Float>? = rememberSplineBasedDecay()
-    ): DayViewTopBarScrollBehavior = ExitUntilCollapsedScrollBehavior(
+    ): TopBarScrollBehavior = ExitUntilCollapsedScrollBehavior(
         state = state,
         snapAnimationSpec = snapAnimationSpec,
         flingAnimationSpec = flingAnimationSpec,
@@ -90,7 +90,7 @@ object DayViewTopBarDefaults {
      */
     @Composable
     internal fun largeContainerHeight(
-        scrollBehavior: DayViewTopBarScrollBehavior? = null,
+        scrollBehavior: TopBarScrollBehavior? = null,
         // 1/4 of the window height by default.
         factor: Float = 1f / 4f
     ): Dp {

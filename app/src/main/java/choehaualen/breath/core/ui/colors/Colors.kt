@@ -1,8 +1,12 @@
 package choehaualen.breath.core.ui.colors
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 
 val BreathDefaultColors = Colors(
     primarySoul = Color(0xFFFFD3D3),
@@ -129,3 +133,26 @@ fun Colors.swapColor(color: Color) = when (color) {
     text -> background
     else -> Color.Unspecified
 }
+
+@Composable
+fun ProvideBreathColors(
+    colors: Colors = BreathDefaultColors,
+    content: @Composable () -> Unit
+) = CompositionLocalProvider(
+    value = LocalColors provides colors,
+    content = content
+)
+
+/**
+ * A custom function to apply background gradient with an optional overlay
+ * from the theme itself.
+ */
+fun Colors.backgroundBrush(
+    startOverlay: Color = Color.Unspecified,
+    endOverlay: Color = Color.Unspecified
+) = Brush.verticalGradient(
+    colors = listOf(
+        startOverlay.compositeOver(backgroundGradientStart),
+        endOverlay.compositeOver(backgroundGradientEnd)
+    )
+)

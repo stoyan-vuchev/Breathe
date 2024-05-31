@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-05-29T12:15:33.375898200Z">
+        <DropdownSelection timestamp="2024-05-31T10:07:06.301736700Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\stfir\.android\avd\Pixel_8_Pro_API_34.avd" />
@@ -17,15 +17,6 @@
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="SleepDataReceiverTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="testOnReceive_withoutSleepEvents_doesNotSaveData()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="testOnReceive_withSleepEvents_savesSleepData()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="receive_sleep_segment_events()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

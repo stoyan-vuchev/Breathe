@@ -38,7 +38,7 @@ import choehaualen.breath.core.ui.colors.DreamyNightColors
 import choehaualen.breath.core.ui.colors.MelonColors
 import choehaualen.breath.core.ui.colors.SleepColors
 import choehaualen.breath.core.ui.components.topbar.day_view_topbar.DayViewTopBar
-import choehaualen.breath.core.ui.components.topbar.day_view_topbar.DayViewTopBarDefaults
+import choehaualen.breath.core.ui.components.topbar.TopBarDefaults
 import choehaualen.breath.core.ui.theme.BreathTheme
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
@@ -47,9 +47,11 @@ import dev.chrisbanes.haze.hazeChild
 import sv.lib.squircleshape.SquircleShape
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onUIAction: (HomeScreenUIAction) -> Unit
+) {
 
-    val topBarScrollBehavior = DayViewTopBarDefaults.exitUntilCollapsedScrollBehavior()
+    val topBarScrollBehavior = TopBarDefaults.exitUntilCollapsedScrollBehavior()
 
     val bgAlpha by remember(topBarScrollBehavior.state.collapsedFraction) {
         derivedStateOf { topBarScrollBehavior.state.collapsedFraction }
@@ -129,7 +131,7 @@ fun HomeScreen() {
 
             quotesItem()
 
-            togglesItem()
+            togglesItem(onUIAction = onUIAction)
 
         }
 
@@ -180,7 +182,9 @@ private fun LazyListScope.quotesItem(
 
 }
 
-private fun LazyListScope.togglesItem() = item(key = "toggles") {
+private fun LazyListScope.togglesItem(
+    onUIAction: (HomeScreenUIAction) -> Unit
+) = item(key = "toggles") {
 
     Column(
         modifier = Modifier
@@ -206,7 +210,7 @@ private fun LazyListScope.togglesItem() = item(key = "toggles") {
                         SleepColors.secondarySoul
                     )
                 ),
-                onClick = {}
+                onClick = { onUIAction(HomeScreenUIAction.NavigateToSleep()) }
             )
 
             HomeScreenToggle(
@@ -266,5 +270,5 @@ private fun LazyListScope.togglesItem() = item(key = "toggles") {
 @Preview
 @Composable
 private fun HomeScreenPreview() = BreathTheme {
-    HomeScreen()
+    HomeScreen(onUIAction = {})
 }

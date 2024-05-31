@@ -1,4 +1,4 @@
-package choehaualen.breath.core.ui.components.topbar.day_view_topbar
+package choehaualen.breath.core.ui.components.topbar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -14,29 +14,29 @@ import kotlin.math.roundToInt
 
 /**
  *
- * Creates a [DayViewTopBarState] that is remembered across compositions.
+ * Creates a [TopBarState] that is remembered across compositions.
  *
- * @param initialHeightOffsetLimit the initial value for [DayViewTopBarState.heightOffsetLimit],
+ * @param initialHeightOffsetLimit the initial value for [TopBarState.heightOffsetLimit],
  * which represents the pixel limit that a top app bar is allowed to collapse when the scrollable
  * content is scrolled.
  *
- * @param initialHeightOffset the initial value for [DayViewTopBarState.heightOffset]. The initial
+ * @param initialHeightOffset the initial value for [TopBarState.heightOffset]. The initial
  * offset height offset should be between zero and [initialHeightOffsetLimit].
  *
  */
 @Composable
-fun rememberDayViewTopBarState(
+fun rememberTopBarState(
     initialHeightOffsetLimit: Float = -Float.MAX_VALUE,
     initialHeightOffset: Float = 0f
-): DayViewTopBarState = rememberSaveable(saver = DayViewTopBarState.Saver) {
-    DayViewTopBarState(
+): TopBarState = rememberSaveable(saver = TopBarState.Saver) {
+    TopBarState(
         initialHeightOffsetLimit,
         initialHeightOffset
     )
 }
 
 @Stable
-class DayViewTopBarState(
+class TopBarState(
     initialHeightOffsetLimit: Float,
     initialHeightOffset: Float
 ) {
@@ -87,12 +87,12 @@ class DayViewTopBarState(
     companion object {
 
         /**
-         * The default [Saver] implementation for [DayViewTopBarState].
+         * The default [Saver] implementation for [TopBarState].
          */
-        val Saver: Saver<DayViewTopBarState, *> = listSaver(
+        val Saver: Saver<TopBarState, *> = listSaver(
             save = { listOf(it.heightOffsetLimit, it.heightOffset) },
             restore = {
-                DayViewTopBarState(
+                TopBarState(
                     initialHeightOffsetLimit = it[0],
                     initialHeightOffset = it[1]
                 )

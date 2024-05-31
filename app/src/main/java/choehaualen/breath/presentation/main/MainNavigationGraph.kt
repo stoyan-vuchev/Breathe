@@ -1,10 +1,20 @@
 package choehaualen.breath.presentation.main
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import choehaualen.breath.core.ui.colors.ProvideBreathColors
+import choehaualen.breath.core.ui.colors.SleepColors
 import choehaualen.breath.presentation.main.home.HomeScreen
+import choehaualen.breath.presentation.main.home.HomeScreenUIAction
+import choehaualen.breath.presentation.main.home.HomeScreenViewModel
+import choehaualen.breath.presentation.main.sleep.SleepScreen
+import choehaualen.breath.presentation.main.sleep.SleepScreenUIAction
+import choehaualen.breath.presentation.main.sleep.SleepScreenViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
 
@@ -17,14 +27,46 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
             route = MainNavigationDestinations.Home.route,
             content = {
 
-                HomeScreen()
+                val viewModel = hiltViewModel<HomeScreenViewModel>()
 
-                // So, what's next?, you sure u have time and have a mood to continue?
-                // So - so, 50/50 how abt u take some break? Yes, I think my b*t will merge
-                // with the chair :DDDDDDol yes take break see ya :)
-                // Oke, dm me on Discord , see ya!~   , or u send me msg when u are free
-                // Oke, I'll do some exercises outside, and cut the grass. So half an hour will be
-                // quite refreshing. Great! Oke, see ya soon!, :)
+                LaunchedEffect(viewModel.uiActionFlow) {
+                    viewModel.uiActionFlow.collectLatest { uiAction ->
+                        when (uiAction) {
+                            is HomeScreenUIAction.NavigateToSleep -> navController.navigate(
+                                route = uiAction.route
+                            ) { launchSingleTop = true }
+                        }
+                    }
+                }
+
+                HomeScreen(
+                    onUIAction = viewModel::onUIAction
+                )
+
+            }
+        )
+
+        composable(
+            route = MainNavigationDestinations.Sleep.route,
+            content = {
+
+                ProvideBreathColors(SleepColors) {
+
+                    val viewModel = hiltViewModel<SleepScreenViewModel>()
+
+                    LaunchedEffect(viewModel.uiActionFlow) {
+                        viewModel.uiActionFlow.collectLatest { uiAction ->
+                            when (uiAction) {
+                                is SleepScreenUIAction.NavigateUp -> navController.navigateUp()
+                            }
+                        }
+                    }
+
+                    SleepScreen(
+                        onUIAction = viewModel::onUIAction
+                    )
+
+                }
 
             }
         )
