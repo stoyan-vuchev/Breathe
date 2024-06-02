@@ -1,5 +1,6 @@
-package choehaualen.breath.presentation.main.sleep.sleep_goal
+package choehaualen.breath.presentation.main.sleep.set_sleep_goal
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -35,6 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
+import choehaualen.breath.core.etc.UiString
+import choehaualen.breath.core.etc.UiString.Companion.asComposeString
 import choehaualen.breath.core.ui.colors.ProvideBreathColors
 import choehaualen.breath.core.ui.colors.SleepColors
 import choehaualen.breath.core.ui.theme.BreathTheme
@@ -53,14 +56,17 @@ fun SleepScreenSetSleepGoalUIComponent(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
-            .heightIn(min = 150.dp)
             .clip(SquircleShape(24.dp))
             .background(BreathTheme.colors.card),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
 
+        Spacer(modifier = Modifier.height(32.dp))
+
         Text(text = "Enter your sleep goal")
+
+        Spacer(modifier = Modifier.height(32.dp))
 
         Row(
             modifier = Modifier
@@ -104,30 +110,71 @@ fun SleepScreenSetSleepGoalUIComponent(
 
         }
 
+        Spacer(modifier = Modifier.height(32.dp))
+
+        AnimatedContent(
+            modifier = Modifier.fillMaxWidth(),
+            targetState = state.error != UiString.Empty,
+            label = ""
+        ) { isError ->
+
+            if (isError) {
+
+                Column(modifier = Modifier.fillMaxWidth()) {
+
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        text = state.error.asComposeString(),
+                        style = BreathTheme.typography.bodyMedium,
+                        color = Color.Red,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                }
+
+            }
+
+        }
+
     }
 
-    Row(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxWidth()
-            .clip(SquircleShape(24.dp))
-            .background(BreathTheme.colors.card)
-            .padding(horizontal = 24.dp, vertical = 18.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(24.dp)
-    ) {
+    AnimatedContent(
+        targetState = state.isSupportAlertShown,
+        label = ""
+    ) { isAlertShown ->
 
-        Icon(
-            modifier = Modifier.size(24.dp),
-            imageVector = Icons.Rounded.Info,
-            contentDescription = null,
-            tint = BreathTheme.colors.secondarySoul
-        )
+        if (isAlertShown) {
 
-        Text(
-            text = "Automated sleep time detection only works on supported Android 11+ devices.",
-            style = BreathTheme.typography.bodyMedium
-        )
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
+                    .clip(SquircleShape(24.dp))
+                    .background(BreathTheme.colors.card)
+                    .padding(horizontal = 24.dp, vertical = 18.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    imageVector = Icons.Rounded.Info,
+                    contentDescription = null,
+                    tint = Color.Red
+                )
+
+                Text(
+                    text = "Automated sleep time detection only works on supported Android 11+ devices.",
+                    style = BreathTheme.typography.bodyMedium
+                )
+
+            }
+
+        }
 
     }
 
