@@ -6,8 +6,8 @@ import androidx.compose.ui.res.stringResource
 
 sealed interface UiString {
 
-    data class StringResource(@StringRes val resId: Int): UiString
-    data class BasicString(val value: String): UiString
+    data class StringResource(@StringRes val resId: Int) : UiString
+    data class BasicString(val value: String) : UiString
 
     @Composable
     fun UiString.asComposeString(): String {
@@ -15,6 +15,10 @@ sealed interface UiString {
             is StringResource -> stringResource(id = this.resId)
             is BasicString -> this.value
         }
+    }
+
+    companion object {
+        val Empty: UiString get() = BasicString("")
     }
 
 }
