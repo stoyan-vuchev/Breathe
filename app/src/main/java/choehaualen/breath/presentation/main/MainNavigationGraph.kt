@@ -1,7 +1,9 @@
 package choehaualen.breath.presentation.main
 
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -53,16 +55,19 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                 ProvideBreathColors(SleepColors) {
 
                     val viewModel = hiltViewModel<SleepScreenViewModel>()
+                    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
                     LaunchedEffect(viewModel.uiActionFlow) {
                         viewModel.uiActionFlow.collectLatest { uiAction ->
                             when (uiAction) {
                                 is SleepScreenUIAction.NavigateUp -> navController.navigateUp()
+                                else -> Unit
                             }
                         }
                     }
 
                     SleepScreen(
+                        screenState = screenState,
                         onUIAction = viewModel::onUIAction
                     )
 

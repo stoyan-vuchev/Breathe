@@ -6,6 +6,7 @@ import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.lerp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import choehaualen.breath.core.etc.transformFraction
 import choehaualen.breath.core.ui.components.topbar.TopBarDefaults
 import choehaualen.breath.core.ui.components.topbar.TopBarScrollBehavior
 import choehaualen.breath.core.ui.components.topbar.settleAppBar
@@ -50,7 +52,8 @@ fun BasicTopBar(
     contentColor: Color = BreathTheme.colors.text,
     largeTitleTextStyle: TextStyle = BreathTheme.typography.headlineLarge,
     smallTitleTextStyle: TextStyle = BreathTheme.typography.titleLarge,
-    windowInsets: WindowInsets = TopBarDefaults.windowInsets()
+    windowInsets: WindowInsets = TopBarDefaults.windowInsets(),
+    spanFactor: Float = 1f / 3f
 ) = BasicTopBarLayout(
     modifier = modifier,
     largeTitleTextStyle = largeTitleTextStyle,
@@ -61,7 +64,7 @@ fun BasicTopBar(
     windowInsets = windowInsets,
     backgroundColor = backgroundColor,
     contentColor = contentColor,
-    maxHeight = TopBarDefaults.largeContainerHeight(scrollBehavior),
+    maxHeight = TopBarDefaults.largeContainerHeight(scrollBehavior, spanFactor),
     pinnedHeight = TopBarDefaults.smallContainerHeight,
     scrollBehavior = scrollBehavior
 )
@@ -135,6 +138,27 @@ private fun BasicTopBarLayout(
         }
     }
 
+    val titlePadding by remember(collapsedFraction, statusBarHeight) {
+        derivedStateOf {
+            PaddingValues(
+                top = transformFraction(
+                    value = 1f - collapsedFraction(),
+                    startX = 0f,
+                    endX = 1f,
+                    startY = 0f,
+                    endY = statusBarHeight.value
+                ).dp,
+                bottom = transformFraction(
+                    value = 1f - collapsedFraction(),
+                    startX = 0f,
+                    endX = 1f,
+                    startY = 0f,
+                    endY = TopBarDefaults.smallContainerHeight.value
+                ).dp
+            )
+        }
+    }
+
     val draggableState = rememberDraggableState { delta ->
         if (scrollBehavior != null && !scrollBehavior.isPinned) {
             scrollBehavior.state.heightOffset += delta
@@ -181,7 +205,14 @@ private fun BasicTopBarLayout(
 
                 ProvideTextStyle(
                     value = titleTextStyle,
-                    content = { Text(text = titleText) }
+                    content = {
+
+                        Text(
+                            modifier = Modifier.padding(titlePadding),
+                            text = titleText
+                        )
+
+                    }
                 )
 
             }
