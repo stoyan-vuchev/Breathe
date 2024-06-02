@@ -1,4 +1,4 @@
-package choehaualen.breath.presentation.main.sleep.sleep_goal
+package choehaualen.breath.presentation.main.sleep.set_sleep_goal
 
 import androidx.compose.runtime.Immutable
 

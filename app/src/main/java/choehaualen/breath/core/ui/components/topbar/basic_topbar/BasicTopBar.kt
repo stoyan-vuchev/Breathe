@@ -220,7 +220,7 @@ private fun BasicTopBarLayout(
             if (navigationIcon != null) {
                 Row(
                     modifier = Modifier
-                        .padding(start = 16.dp)
+                        .padding(horizontal = 8.dp)
                         .height(pinnedHeight)
                         .align(Alignment.BottomStart),
                     horizontalArrangement = Arrangement.Start,

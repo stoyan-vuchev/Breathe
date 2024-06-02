@@ -4,7 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -23,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -32,7 +36,9 @@ import choehaualen.breath.core.ui.components.button.UniqueButton
 import choehaualen.breath.core.ui.components.topbar.TopBarDefaults
 import choehaualen.breath.core.ui.components.topbar.basic_topbar.BasicTopBar
 import choehaualen.breath.core.ui.theme.BreathTheme
-import choehaualen.breath.presentation.main.sleep.sleep_goal.SleepScreenSetSleepGoalUIComponent
+import choehaualen.breath.presentation.main.sleep.set_sleep_goal.SleepScreenSetSleepGoalUIComponent
+import choehaualen.breath.presentation.main.sleep.sleep_goal_graph.SleepGoalGraph
+import sv.lib.squircleshape.SquircleShape
 
 @Composable
 fun SleepScreen(
@@ -105,40 +111,93 @@ fun SleepScreen(
 
         Box(modifier = Modifier.fillMaxSize()) {
 
+            if (screenState.sleepGoalDuration != null) {
+                Box(
+                    modifier = Modifier
+                        .padding(
+                            PaddingValues(
+                                top = insetsPadding.calculateTopPadding()
+                            )
+                        )
+                        .fillMaxSize()
+                        .clip(SquircleShape(topStart = 32.dp, topEnd = 32.dp))
+                        .background(BreathTheme.colors.background)
+                )
+            }
+
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 state = lazyListState,
                 contentPadding = insetsPadding
             ) {
 
-                item(key = "set_sleep_goal_ui_component") {
+                if (screenState.sleepGoalDuration == null) {
 
-                    SleepScreenSetSleepGoalUIComponent(
-                        state = screenState.sleepGoalUIComponentState,
-                        onUIAction = {
-                            onUIAction(SleepScreenUIAction.SleepGoalUIAction(it))
-                        }
-                    )
+                    item(key = "set_sleep_goal_ui_component") {
+
+                        SleepScreenSetSleepGoalUIComponent(
+                            state = screenState.sleepGoalUIComponentState,
+                            onUIAction = {
+                                onUIAction(SleepScreenUIAction.SleepGoalUIAction(it))
+                            }
+                        )
+
+                    }
+
+                } else {
+
+                    item(key = "sleep_goal_graph_ui_component") {
+
+                        SleepGoalGraph(
+                            modifier = Modifier
+                                .padding(48.dp)
+                                .fillMaxWidth()
+                                .padding(top = 16.dp),
+                            sleepGoalDuration = screenState.sleepGoalDuration,
+                            currentSleepDuration = screenState.currentSleepDuration
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Text(
+                            modifier = Modifier
+                                .padding(horizontal = 32.dp)
+                                .fillMaxWidth()
+                                .clip(SquircleShape(24.dp))
+                                .background(BreathTheme.colors.card)
+                                .padding(horizontal = 24.dp, vertical = 12.dp),
+                            text = "Lack of sleep can have a negative impact " +
+                                    "on the ability to think clearly, form memories, " +
+                                    "learn well, and function optimally during the day. " +
+                                    "Breathe recommends you to sleep at least 7-8h.",
+                            style = BreathTheme.typography.bodySmall
+                        )
+
+                    }
 
                 }
 
             }
 
-            Column(
-                modifier = Modifier
-                    .systemBarsPadding()
-                    .padding(bottom = 64.dp)
-                    .align(Alignment.BottomCenter)
-            ) {
+            if (screenState.sleepGoalDuration == null) {
 
-                UniqueButton(
-                    onClick = { /*TODO*/ },
-                    content = { Text(text = "Next") },
-                    paddingValues = PaddingValues(
-                        horizontal = 48.dp,
-                        vertical = 12.dp
+                Column(
+                    modifier = Modifier
+                        .systemBarsPadding()
+                        .padding(bottom = 64.dp)
+                        .align(Alignment.BottomCenter)
+                ) {
+
+                    UniqueButton(
+                        onClick = { onUIAction(SleepScreenUIAction.Next) },
+                        content = { Text(text = "Next") },
+                        paddingValues = PaddingValues(
+                            horizontal = 48.dp,
+                            vertical = 12.dp
+                        )
                     )
-                )
+
+                }
 
             }
 

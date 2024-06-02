@@ -2,16 +2,19 @@ package choehaualen.breath.presentation.main.sleep
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import choehaualen.breath.core.etc.UiString
 import choehaualen.breath.data.manager.SleepManager
 import choehaualen.breath.data.preferences.AppPreferences
-import choehaualen.breath.presentation.main.sleep.sleep_goal.SleepScreenSetSleepGoalUIComponentUIAction
+import choehaualen.breath.presentation.main.sleep.set_sleep_goal.SleepScreenSetSleepGoalUIComponentUIAction
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +32,59 @@ class SleepScreenViewModel @Inject constructor(
     fun onUIAction(uiAction: SleepScreenUIAction) = when (uiAction) {
         is SleepScreenUIAction.NavigateUp -> sendUIAction(uiAction)
         is SleepScreenUIAction.SleepGoalUIAction -> onSleepGoalUIAction(uiAction)
+        is SleepScreenUIAction.Next -> setSleepGoal()
+    }
+
+    init {
+        viewModelScope.launch {
+            val sleepGoal = withContext(Dispatchers.IO) { appPreferences.getSleepGoal() }
+            _screenState.update { currentState ->
+                currentState.copy(
+                    sleepGoalDuration = sleepGoal,
+                    sleepGoalUIComponentState = currentState.sleepGoalUIComponentState.copy(
+                        isSupportAlertShown = sleepGoal == null
+                    )
+                )
+            }
+        }
+    }
+
+    private fun setSleepGoal() {
+
+        val hours = _screenState.value.sleepGoalUIComponentState.sleepTimeHours
+        val minutes = _screenState.value.sleepGoalUIComponentState.sleepTimeMinutes
+
+        when (val result = SleepGoalValidator.validate(hours, minutes)) {
+
+            is SleepGoalValidatorResult.ShortDuration -> showError(result.error)
+            is SleepGoalValidatorResult.LongDuration -> showError(result.error)
+
+            is SleepGoalValidatorResult.Valid -> {
+                val sleepGoal = convertHoursAndMinutesStringToMillis(hours, minutes)
+                saveSleepGoal(sleepGoal)
+            }
+
+        }
+
+    }
+
+    private fun showError(error: UiString) {
+        _screenState.update { currentState ->
+            currentState.copy(
+                sleepGoalUIComponentState = currentState.sleepGoalUIComponentState.copy(
+                    error = error
+                )
+            )
+        }
+    }
+
+    private fun saveSleepGoal(sleepGoal: Long) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) { appPreferences.setSleepGoal(sleepGoal) }
+            _screenState.update { currentState ->
+                currentState.copy(sleepGoalDuration = sleepGoal)
+            }
+        }
     }
 
     private fun onSleepGoalUIAction(
