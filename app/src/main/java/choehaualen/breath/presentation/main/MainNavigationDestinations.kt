@@ -12,6 +12,8 @@ sealed class MainNavigationDestinations(
     data object Breathe : MainNavigationDestinations("main_breathe_screen")
     data object Soundscape : MainNavigationDestinations("main_soundscape_screen")
 
+    data object Settings : MainNavigationDestinations("main_settings_screen")
+
     companion object {
         const val NAV_ROUTE = "main_navigation"
     }

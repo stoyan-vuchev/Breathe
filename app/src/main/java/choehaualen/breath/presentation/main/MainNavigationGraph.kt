@@ -21,6 +21,9 @@ import choehaualen.breath.presentation.main.breathe.BreatheScreenViewModel
 import choehaualen.breath.presentation.main.home.HomeScreen
 import choehaualen.breath.presentation.main.home.HomeScreenUIAction
 import choehaualen.breath.presentation.main.home.HomeScreenViewModel
+import choehaualen.breath.presentation.main.settings.SettingsScreen
+import choehaualen.breath.presentation.main.settings.SettingsScreenUIAction
+import choehaualen.breath.presentation.main.settings.SettingsScreenViewModel
 import choehaualen.breath.presentation.main.sleep.SleepScreen
 import choehaualen.breath.presentation.main.sleep.SleepScreenUIAction
 import choehaualen.breath.presentation.main.sleep.SleepScreenViewModel
@@ -50,6 +53,10 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                             ) { launchSingleTop = true }
 
                             is HomeScreenUIAction.NavigateToBreathe -> navController.navigate(
+                                route = uiAction.route
+                            ) { launchSingleTop = true }
+
+                            is HomeScreenUIAction.NavigateToSettings -> navController.navigate(
                                 route = uiAction.route
                             ) { launchSingleTop = true }
 
@@ -125,6 +132,37 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                     )
 
                 }
+
+            }
+        )
+
+        composable(
+            route = MainNavigationDestinations.Settings.route,
+            content = {
+
+                val viewModel = hiltViewModel<SettingsScreenViewModel>()
+                val snackbarHostState = remember { SnackbarHostState() }
+                val context = LocalContext.current
+
+                LaunchedEffect(viewModel.uiActionFlow) {
+                    viewModel.uiActionFlow.collectLatest { uiAction ->
+                        when (uiAction) {
+                            is SettingsScreenUIAction.NavigateUp -> navController.navigateUp()
+                            else -> Unit
+                        }
+                    }
+                }
+
+                LaunchedEffect(viewModel.snackBarFlow) {
+                    viewModel.snackBarFlow.collect { msg ->
+                        snackbarHostState.showSnackbar(msg.asString(context))
+                    }
+                }
+
+                SettingsScreen(
+                    snackbarHostState = snackbarHostState,
+                    onUIAction = viewModel::onUIAction
+                )
 
             }
         )

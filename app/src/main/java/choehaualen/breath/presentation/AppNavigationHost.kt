@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import choehaualen.breath.R
 import choehaualen.breath.core.ui.ScreenTransitions
+import choehaualen.breath.core.ui.colors.backgroundBrush
 import choehaualen.breath.core.ui.navigateSingleTop
 import choehaualen.breath.core.ui.theme.BreathTheme
 import choehaualen.breath.presentation.boarding.BoardingNavigationDestination
@@ -32,7 +33,7 @@ fun AppNavigationHost(
     NavHost(
         modifier = Modifier
             .fillMaxSize()
-            .background(BreathTheme.colors.background),
+            .background(BreathTheme.colors.backgroundBrush()),
         navController = navController,
         startDestination = "start_route",
         enterTransition = { ScreenTransitions.enterTransition },
