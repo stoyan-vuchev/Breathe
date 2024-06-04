@@ -2,7 +2,7 @@
 
     <!-- Application ======================================================================= -->
 
-    <string name="app_name">Breath</string>
+    <string name="app_name">Breathe</string>
     <string name="something_went_wrong">Something went wrong.</string>
 
     <!-- Welcome Screen ==================================================================== -->
@@ -36,5 +36,17 @@
     <string name="username_validation_short_username">The username must be at least 2 characters long.</string>
     <string name="username_validation_long_username">The username must be at most 64 characters long.</string>
     <string name="username_validation_valid_username" />
+
+    <!-- Breathe ========================================================================== -->
+    <string name="breathe_segment_main_title">Breathe</string>
+    <string name="breathe_segment_deep_breathing_mode_title">Deep Breathing</string>
+    <string name="breathe_segment_alert_mode_title">Alert Mode</string>
+    <string name="breathe_segment_calm_mode_title">Calm Mode</string>
+
+    <!-- Breathe Phase ==================================================================== -->
+    <string name="breathe_phase_inhale_label">Breathe in</string>
+    <string name="breathe_phase_force_inhale_label">Force breath in</string>
+    <string name="breathe_phase_exhale_label">Breathe out</string>
+    <string name="breathe_phase_hold_label">Hold your\nbreath</string>
 
 </resources>

@@ -8,8 +8,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import choehaualen.breath.core.ui.colors.MelonColors
 import choehaualen.breath.core.ui.colors.ProvideBreathColors
 import choehaualen.breath.core.ui.colors.SleepColors
+import choehaualen.breath.presentation.main.breathe.BreatheScreen
+import choehaualen.breath.presentation.main.breathe.BreatheScreenUIAction
+import choehaualen.breath.presentation.main.breathe.BreatheScreenViewModel
 import choehaualen.breath.presentation.main.home.HomeScreen
 import choehaualen.breath.presentation.main.home.HomeScreenUIAction
 import choehaualen.breath.presentation.main.home.HomeScreenViewModel
@@ -34,9 +38,15 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                 LaunchedEffect(viewModel.uiActionFlow) {
                     viewModel.uiActionFlow.collectLatest { uiAction ->
                         when (uiAction) {
+
                             is HomeScreenUIAction.NavigateToSleep -> navController.navigate(
                                 route = uiAction.route
                             ) { launchSingleTop = true }
+
+                            is HomeScreenUIAction.NavigateToBreathe -> navController.navigate(
+                                route = uiAction.route
+                            ) { launchSingleTop = true }
+
                         }
                     }
                 }
@@ -67,6 +77,34 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                     }
 
                     SleepScreen(
+                        screenState = screenState,
+                        onUIAction = viewModel::onUIAction
+                    )
+
+                }
+
+            }
+        )
+
+        composable(
+            route = MainNavigationDestinations.Breathe.route,
+            content = {
+
+                ProvideBreathColors(MelonColors) {
+
+                    val viewModel = hiltViewModel<BreatheScreenViewModel>()
+                    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+                    LaunchedEffect(viewModel.uiActionFlow) {
+                        viewModel.uiActionFlow.collectLatest { uiAction ->
+                            when (uiAction) {
+                                is BreatheScreenUIAction.NavigateUp -> navController.navigateUp()
+                                else -> Unit
+                            }
+                        }
+                    }
+
+                    BreatheScreen(
                         screenState = screenState,
                         onUIAction = viewModel::onUIAction
                     )

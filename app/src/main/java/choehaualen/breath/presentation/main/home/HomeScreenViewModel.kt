@@ -16,6 +16,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
 
     fun onUIAction(uiAction: HomeScreenUIAction) = when (uiAction) {
         is HomeScreenUIAction.NavigateToSleep -> sendUIAction(uiAction)
+        is HomeScreenUIAction.NavigateToBreathe -> sendUIAction(uiAction)
     }
 
     private fun sendUIAction(uiAction: HomeScreenUIAction) {

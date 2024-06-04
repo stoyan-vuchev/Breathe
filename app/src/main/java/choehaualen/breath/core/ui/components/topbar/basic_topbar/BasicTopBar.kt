@@ -53,7 +53,7 @@ fun BasicTopBar(
     largeTitleTextStyle: TextStyle = BreathTheme.typography.headlineLarge,
     smallTitleTextStyle: TextStyle = BreathTheme.typography.titleLarge,
     windowInsets: WindowInsets = TopBarDefaults.windowInsets(),
-    spanFactor: Float = 1f / 3f
+    spanFactor: Float = 1f / 4f
 ) = BasicTopBarLayout(
     modifier = modifier,
     largeTitleTextStyle = largeTitleTextStyle,

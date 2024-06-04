@@ -78,7 +78,7 @@ fun DayViewTopBar(
     windowInsets = windowInsets,
     backgroundColor = backgroundColor,
     contentColor = contentColor,
-    maxHeight = TopBarDefaults.largeContainerHeight(scrollBehavior),
+    maxHeight = TopBarDefaults.largeContainerHeight(scrollBehavior, 1f / 5f),
     pinnedHeight = TopBarDefaults.smallContainerHeight,
     scrollBehavior = scrollBehavior
 )
@@ -189,11 +189,9 @@ private fun DayViewTopBarLayout(
     val firstLineWidth by remember(expandedSubTitleAlpha) {
         derivedStateOf {
             transformFraction(
-                value = expandedSubTitleAlpha,
-                startX = 1f,
-                endX = 0f,
-                startY = 32f,
-                endY = 24f
+                value = (expandedSubTitleAlpha * .5f).coerceIn(0f, 1f),
+                startY = 48f,
+                endY = 16f
             ).dp
         }
     }

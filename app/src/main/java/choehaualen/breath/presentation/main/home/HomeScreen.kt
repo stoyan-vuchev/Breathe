@@ -37,8 +37,8 @@ import choehaualen.breath.core.etc.transformFraction
 import choehaualen.breath.core.ui.colors.DreamyNightColors
 import choehaualen.breath.core.ui.colors.MelonColors
 import choehaualen.breath.core.ui.colors.SleepColors
-import choehaualen.breath.core.ui.components.topbar.day_view_topbar.DayViewTopBar
 import choehaualen.breath.core.ui.components.topbar.TopBarDefaults
+import choehaualen.breath.core.ui.components.topbar.day_view_topbar.DayViewTopBar
 import choehaualen.breath.core.ui.theme.BreathTheme
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
@@ -216,14 +216,14 @@ private fun LazyListScope.togglesItem(
             HomeScreenToggle(
                 modifier = Modifier.weight(1f),
                 icon = painterResource(id = R.drawable.leaf),
-                label = "Breath",
+                label = "Breathe",
                 background = Brush.verticalGradient(
                     colors = listOf(
                         MelonColors.primarySoul,
                         MelonColors.secondarySoul
                     )
                 ),
-                onClick = {}
+                onClick = { onUIAction(HomeScreenUIAction.NavigateToBreathe()) }
             )
 
         }
