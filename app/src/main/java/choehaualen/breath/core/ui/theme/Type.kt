@@ -96,6 +96,13 @@ val Typography = Typography(
         lineHeight = 42.sp,
         letterSpacing = (-0.75).sp
     ),
+    titleMedium = TextStyle(
+        fontFamily = QuickSandFontFam,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
+        lineHeight = 28.sp,
+        letterSpacing = (-0.75).sp
+    ),
 )
 
 // Wait ....

@@ -10,4 +10,8 @@ sealed interface HomeScreenUIAction {
         val route: String = MainNavigationDestinations.Sleep.route
     ) : HomeScreenUIAction
 
+    data class NavigateToBreathe(
+        val route: String = MainNavigationDestinations.Breathe.route
+    ) : HomeScreenUIAction
+
 }
