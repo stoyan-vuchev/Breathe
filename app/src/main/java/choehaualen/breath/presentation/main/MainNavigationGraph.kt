@@ -1,13 +1,17 @@
 package choehaualen.breath.presentation.main
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import choehaualen.breath.core.etc.UiString.Companion.asString
 import choehaualen.breath.core.ui.colors.MelonColors
 import choehaualen.breath.core.ui.colors.ProvideBreathColors
 import choehaualen.breath.core.ui.colors.SleepColors
@@ -34,6 +38,8 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
             content = {
 
                 val viewModel = hiltViewModel<HomeScreenViewModel>()
+                val snackBarHostState = remember { SnackbarHostState() }
+                val context = LocalContext.current
 
                 LaunchedEffect(viewModel.uiActionFlow) {
                     viewModel.uiActionFlow.collectLatest { uiAction ->
@@ -47,11 +53,20 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                                 route = uiAction.route
                             ) { launchSingleTop = true }
 
+                            else -> Unit
+
                         }
                     }
                 }
 
+                LaunchedEffect(viewModel.snackBarFlow) {
+                    viewModel.snackBarFlow.collect { msg ->
+                        snackBarHostState.showSnackbar(msg.asString(context))
+                    }
+                }
+
                 HomeScreen(
+                    snackBarHostState = snackBarHostState,
                     onUIAction = viewModel::onUIAction
                 )
 
