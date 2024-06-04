@@ -1,6 +1,8 @@
 package choehaualen.breath.presentation.main.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +18,8 @@ import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -37,6 +41,8 @@ import choehaualen.breath.core.etc.transformFraction
 import choehaualen.breath.core.ui.colors.DreamyNightColors
 import choehaualen.breath.core.ui.colors.MelonColors
 import choehaualen.breath.core.ui.colors.SleepColors
+import choehaualen.breath.core.ui.components.rememberBreathRipple
+import choehaualen.breath.core.ui.components.snackbar.SnackBar
 import choehaualen.breath.core.ui.components.topbar.TopBarDefaults
 import choehaualen.breath.core.ui.components.topbar.day_view_topbar.DayViewTopBar
 import choehaualen.breath.core.ui.theme.BreathTheme
@@ -48,6 +54,7 @@ import sv.lib.squircleshape.SquircleShape
 
 @Composable
 fun HomeScreen(
+    snackBarHostState: SnackbarHostState,
     onUIAction: (HomeScreenUIAction) -> Unit
 ) {
 
@@ -105,7 +112,7 @@ fun HomeScreen(
                 actions = {
 
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { onUIAction(HomeScreenUIAction.Settings) },
                         content = {
 
                             Icon(
@@ -119,6 +126,14 @@ fun HomeScreen(
                 }
             )
 
+        },
+        snackbarHost = {
+
+            SnackbarHost(
+                hostState = snackBarHostState,
+                snackbar = { SnackBar(it) }
+            )
+
         }
     ) { insetsPadding ->
 
@@ -129,7 +144,7 @@ fun HomeScreen(
             contentPadding = insetsPadding
         ) {
 
-            quotesItem()
+            quotesItem(onUIAction = onUIAction)
 
             togglesItem(onUIAction = onUIAction)
 
@@ -141,11 +156,18 @@ fun HomeScreen(
 
 private fun LazyListScope.quotesItem(
     quote: String = "You will face many defeats in life, but never let yourself be defeated.",
-    author: String = "Maya Angelov"
+    author: String = "Maya Angelov",
+    onUIAction: (HomeScreenUIAction) -> Unit
 ) = item(key = "daily_quote") {
 
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberBreathRipple(color = BreathTheme.colors.primarySoul),
+                onClick = { onUIAction(HomeScreenUIAction.ExpandQuote) }
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -245,7 +267,7 @@ private fun LazyListScope.togglesItem(
                         DreamyNightColors.secondarySoul
                     )
                 ),
-                onClick = {}
+                onClick = { onUIAction(HomeScreenUIAction.NavigateToSoundscape()) }
             )
 
             HomeScreenToggle(
@@ -258,7 +280,7 @@ private fun LazyListScope.togglesItem(
                         Color.DarkGray
                     )
                 ),
-                onClick = {}
+                onClick = { onUIAction(HomeScreenUIAction.ShowMore) }
             )
 
         }
@@ -270,5 +292,8 @@ private fun LazyListScope.togglesItem(
 @Preview
 @Composable
 private fun HomeScreenPreview() = BreathTheme {
-    HomeScreen(onUIAction = {})
+    HomeScreen(
+        snackBarHostState = SnackbarHostState(),
+        onUIAction = {}
+    )
 }

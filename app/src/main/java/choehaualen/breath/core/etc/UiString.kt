@@ -1,5 +1,6 @@
 package choehaualen.breath.core.etc
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -17,6 +18,13 @@ sealed interface UiString {
         fun UiString.asComposeString(): String {
             return when (this) {
                 is StringResource -> stringResource(id = this.resId)
+                is BasicString -> this.value
+            }
+        }
+
+        fun UiString.asString(context: Context): String {
+            return when (this) {
+                is StringResource -> context.getString(this.resId)
                 is BasicString -> this.value
             }
         }

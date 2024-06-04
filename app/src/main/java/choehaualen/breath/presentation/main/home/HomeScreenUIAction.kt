@@ -14,4 +14,12 @@ sealed interface HomeScreenUIAction {
         val route: String = MainNavigationDestinations.Breathe.route
     ) : HomeScreenUIAction
 
+    data class NavigateToSoundscape(
+        val route: String = MainNavigationDestinations.Soundscape.route
+    ) : HomeScreenUIAction
+
+    data object ShowMore : HomeScreenUIAction
+    data object ExpandQuote : HomeScreenUIAction
+    data object Settings : HomeScreenUIAction
+
 }
