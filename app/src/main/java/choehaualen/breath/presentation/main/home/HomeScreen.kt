@@ -25,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -64,14 +63,10 @@ fun HomeScreen(
         derivedStateOf { topBarScrollBehavior.state.collapsedFraction }
     }
 
-    val gradientAlpha by remember(bgAlpha) {
-        derivedStateOf { 1f - bgAlpha }
-    }
-
-    val topBarBgAlpha by remember(gradientAlpha) { // this ensures smooth color transition
+    val topBarBgAlpha by remember(bgAlpha) { // this ensures smooth color transition
         derivedStateOf {
             transformFraction(
-                value = 1f - gradientAlpha,
+                value = bgAlpha,
                 startX = .8f,
                 endX = 1f,
                 startY = 0f,
@@ -80,21 +75,11 @@ fun HomeScreen(
         }
     }
 
-    val background by rememberUpdatedState(
-        Brush.verticalGradient(
-            colors = listOf(
-                BreathTheme.colors.backgroundGradientStart.copy(gradientAlpha),
-                BreathTheme.colors.backgroundGradientEnd.copy(gradientAlpha)
-            )
-        )
-    )
-
     val hazeState = remember { HazeState() }
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(background)
             .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
         containerColor = BreathTheme.colors.background.copy(bgAlpha),
         contentColor = BreathTheme.colors.text,
@@ -112,7 +97,7 @@ fun HomeScreen(
                 actions = {
 
                     IconButton(
-                        onClick = { onUIAction(HomeScreenUIAction.Settings) },
+                        onClick = { onUIAction(HomeScreenUIAction.NavigateToSettings()) },
                         content = {
 
                             Icon(

@@ -20,6 +20,9 @@ sealed interface HomeScreenUIAction {
 
     data object ShowMore : HomeScreenUIAction
     data object ExpandQuote : HomeScreenUIAction
-    data object Settings : HomeScreenUIAction
+
+    data class NavigateToSettings(
+        val route: String = MainNavigationDestinations.Settings.route
+    ) : HomeScreenUIAction
 
 }

@@ -22,12 +22,13 @@ import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.node.DelegatableNode
 import androidx.compose.ui.node.DrawModifierNode
+import choehaualen.breath.core.ui.theme.BreathTheme
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun rememberBreathRipple(color: Color): BreathRipple {
+fun rememberBreathRipple(color: Color = BreathTheme.colors.primarySoul): BreathRipple {
     val colorState by rememberUpdatedState(color)
     return remember { BreathRipple(colorState) }
 }

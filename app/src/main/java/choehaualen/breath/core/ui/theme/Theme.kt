@@ -3,12 +3,12 @@ package choehaualen.breath.core.ui.theme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ReadOnlyComposable
 import choehaualen.breath.core.ui.colors.BreathDefaultColors
 import choehaualen.breath.core.ui.colors.Colors
 import choehaualen.breath.core.ui.colors.LocalColors
+import choehaualen.breath.core.ui.colors.ProvideBreathColors
 import com.stoyanvuchev.systemuibarstweaker.LocalSystemUIBarsTweaker
 import com.stoyanvuchev.systemuibarstweaker.ProvideSystemUIBarsTweaker
 
@@ -31,17 +31,14 @@ fun BreathTheme(content: @Composable () -> Unit) = ProvideSystemUIBarsTweaker {
         onDispose {}
     }
 
-    CompositionLocalProvider(
-        LocalColors provides BreathDefaultColors,
-        content = {
+    ProvideBreathColors(BreathDefaultColors) {
 
-            MaterialTheme(
-                typography = Typography,
-                content = content
-            )
+        MaterialTheme(
+            typography = Typography,
+            content = content
+        )
 
-        }
-    )
+    }
 
 }
 
