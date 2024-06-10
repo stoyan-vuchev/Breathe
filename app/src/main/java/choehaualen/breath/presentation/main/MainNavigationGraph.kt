@@ -26,6 +26,9 @@ import choehaualen.breath.presentation.main.breathe.BreatheScreenViewModel
 import choehaualen.breath.presentation.main.home.HomeScreen
 import choehaualen.breath.presentation.main.home.HomeScreenUIAction
 import choehaualen.breath.presentation.main.home.HomeScreenViewModel
+import choehaualen.breath.presentation.main.productivity.ProductivityScreenUIAction
+import choehaualen.breath.presentation.main.productivity.ProductivityScreenViewModel
+import choehaualen.breath.presentation.main.productivity.components.ProductivityScreen
 import choehaualen.breath.presentation.main.settings.SettingsScreen
 import choehaualen.breath.presentation.main.settings.SettingsScreenUIAction.DismissDeleteDataDialog
 import choehaualen.breath.presentation.main.settings.SettingsScreenUIAction.NavigateUp
@@ -67,6 +70,10 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                             ) { launchSingleTop = true }
 
                             is HomeScreenUIAction.NavigateToSoundscape -> navController.navigate(
+                                route = uiAction.route
+                            ) { launchSingleTop = true }
+
+                            is HomeScreenUIAction.NavigateToProductivity -> navController.navigate(
                                 route = uiAction.route
                             ) { launchSingleTop = true }
 
@@ -180,7 +187,27 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
             content = {
                 ProvideBreathColors(SkyBlueColors) {
 
-                    //
+                    val viewModel = hiltViewModel<ProductivityScreenViewModel>()
+                    val screenState by viewModel.state.collectAsStateWithLifecycle()
+
+                    LaunchedEffect(viewModel.uiActionFlow) {
+                        viewModel.uiActionFlow.collectLatest { uiAction ->
+                            when (uiAction) {
+
+                                is ProductivityScreenUIAction.NavigateUp -> {
+                                    navController.navigateUp()
+                                }
+
+                                else -> Unit
+
+                            }
+                        }
+                    }
+
+                    ProductivityScreen(
+                        screenState = screenState,
+                        onUIAction = viewModel::onUIAction
+                    )
 
                 }
             }

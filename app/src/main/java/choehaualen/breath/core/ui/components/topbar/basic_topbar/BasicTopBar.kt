@@ -1,5 +1,7 @@
 package choehaualen.breath.core.ui.components.topbar.basic_topbar
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -32,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.lerp
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import choehaualen.breath.core.etc.transformFraction
@@ -208,8 +211,14 @@ private fun BasicTopBarLayout(
                     content = {
 
                         Text(
-                            modifier = Modifier.padding(titlePadding),
-                            text = titleText
+                            modifier = Modifier
+                                .padding(titlePadding)
+                                .animateContentSize(
+                                    animationSpec = spring(),
+                                    alignment = Alignment.Center
+                                ),
+                            text = titleText,
+                            textAlign = TextAlign.Center
                         )
 
                     }
