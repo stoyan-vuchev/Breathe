@@ -27,6 +27,7 @@ import choehaualen.breath.core.ui.theme.BreathTheme
 @Composable
 fun SettingsScreen(
     snackbarHostState: SnackbarHostState,
+    isDeleteDataDialogVisible: Boolean,
     onUIAction: (SettingsScreenUIAction) -> Unit
 ) {
 
@@ -51,7 +52,6 @@ fun SettingsScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            // .background(BreathTheme.colors.backgroundBrush())
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = BreathTheme.colors.background.copy(bgAlpha),
         contentColor = BreathTheme.colors.text,
@@ -100,6 +100,11 @@ fun SettingsScreen(
 
     }
 
+    SettingsScreenDeleteDataDialog(
+        isVisible = isDeleteDataDialogVisible,
+        onUIAction = onUIAction
+    )
+
 }
 
 @Preview
@@ -107,6 +112,7 @@ fun SettingsScreen(
 private fun SettingsScreenPreview() = BreathTheme {
     SettingsScreen(
         snackbarHostState = SnackbarHostState(),
+        isDeleteDataDialogVisible = false,
         onUIAction = {}
     )
 }

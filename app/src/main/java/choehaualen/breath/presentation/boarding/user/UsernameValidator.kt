@@ -15,7 +15,7 @@ object UsernameValidator {
 }
 
 sealed class UsernameValidationResult(
-    @StringRes val errorMessage: Int
+    @StringRes val errorMessage: Int?
 ) {
 
     data object BlankUsername : UsernameValidationResult(
@@ -31,7 +31,7 @@ sealed class UsernameValidationResult(
     )
 
     data object ValidUsername : UsernameValidationResult(
-        errorMessage = R.string.username_validation_valid_username
+        errorMessage = null
     )
 
 }

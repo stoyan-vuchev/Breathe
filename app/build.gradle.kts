@@ -85,6 +85,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // Media3 Dependencies
+
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.exoplayer.dash)
+    implementation(libs.media3.ui)
+
     // Jetpack Compose Dependencies
 
     implementation(platform(libs.compose.bom))

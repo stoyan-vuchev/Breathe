@@ -1,5 +1,6 @@
 package choehaualen.breath.presentation.boarding
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -10,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import choehaualen.breath.core.ui.navigateSingleTop
 import choehaualen.breath.presentation.boarding.user.UserScreen
+import choehaualen.breath.presentation.boarding.user.UserScreenSegment
 import choehaualen.breath.presentation.boarding.user.UserScreenUIAction
 import choehaualen.breath.presentation.boarding.user.UserScreenViewModel
 import choehaualen.breath.presentation.boarding.welcome.WelcomeScreen
@@ -65,6 +67,21 @@ fun NavGraphBuilder.boardingNavigationGraph(
 
                     val viewModel = hiltViewModel<UserScreenViewModel>()
                     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+                    BackHandler(
+                        enabled = screenState.currentSegment !is UserScreenSegment.Username
+                                && screenState.username == null,
+                        onBack = {
+
+                            viewModel.onUIAction(
+                                when (screenState.currentSegment) {
+                                    is UserScreenSegment.UsualWakeUpTime -> UserScreenUIAction.GoToBedtimeSegment
+                                    else -> UserScreenUIAction.GoToUsernameSegment
+                                }
+                            )
+
+                        }
+                    )
 
                     LaunchedEffect(viewModel.uiActionFlow) {
                         viewModel.uiActionFlow.collectLatest { uiAction ->

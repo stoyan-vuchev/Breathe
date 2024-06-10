@@ -11,6 +11,7 @@ sealed class MainNavigationDestinations(
     data object Sleep : MainNavigationDestinations("main_sleep_screen")
     data object Breathe : MainNavigationDestinations("main_breathe_screen")
     data object Soundscape : MainNavigationDestinations("main_soundscape_screen")
+    data object Productivity : MainNavigationDestinations("main_productivity_screen")
 
     data object Settings : MainNavigationDestinations("main_settings_screen")
 

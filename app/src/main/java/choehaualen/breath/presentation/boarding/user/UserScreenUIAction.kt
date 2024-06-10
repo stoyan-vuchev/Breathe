@@ -5,12 +5,17 @@ import androidx.compose.runtime.Immutable
 @Immutable
 interface UserScreenUIAction {
 
-    data object Next : UserScreenUIAction
+    data class SetUsernameText(val text: String) : UserScreenUIAction
+    data object GoToUsernameSegment : UserScreenUIAction
+    data object GoToBedtimeSegment : UserScreenUIAction
+
+    data class SetBedtime(val hour: Int, val minute: Int) : UserScreenUIAction
+    data object GoToWakeUpSegment : UserScreenUIAction
+
+    data class SetWakeUp(val hour: Int, val minute: Int) : UserScreenUIAction
+    data object GoToGreetSegment : UserScreenUIAction
+
     data object GetStarted : UserScreenUIAction
     data object PopBackStack : UserScreenUIAction
-
-    data class SetNameText(
-        val text: String
-    ) : UserScreenUIAction
 
 }
