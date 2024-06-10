@@ -13,7 +13,10 @@ import com.stoyanvuchev.systemuibarstweaker.LocalSystemUIBarsTweaker
 import com.stoyanvuchev.systemuibarstweaker.ProvideSystemUIBarsTweaker
 
 @Composable
-fun BreathTheme(content: @Composable () -> Unit) = ProvideSystemUIBarsTweaker {
+fun BreathTheme(
+    colors: Colors = BreathDefaultColors,
+    content: @Composable () -> Unit
+) = ProvideSystemUIBarsTweaker {
 
     val tweaker = LocalSystemUIBarsTweaker.current
 
@@ -31,7 +34,7 @@ fun BreathTheme(content: @Composable () -> Unit) = ProvideSystemUIBarsTweaker {
         onDispose {}
     }
 
-    ProvideBreathColors(BreathDefaultColors) {
+    ProvideBreathColors(colors) {
 
         MaterialTheme(
             typography = Typography,

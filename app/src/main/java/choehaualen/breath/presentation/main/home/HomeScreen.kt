@@ -4,12 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -37,8 +39,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import choehaualen.breath.R
 import choehaualen.breath.core.etc.transformFraction
-import choehaualen.breath.core.ui.colors.DreamyNightColors
 import choehaualen.breath.core.ui.colors.MelonColors
+import choehaualen.breath.core.ui.colors.SkyBlueColors
 import choehaualen.breath.core.ui.colors.SleepColors
 import choehaualen.breath.core.ui.components.rememberBreathRipple
 import choehaualen.breath.core.ui.components.snackbar.SnackBar
@@ -118,6 +120,19 @@ fun HomeScreen(
                 hostState = snackBarHostState,
                 snackbar = { SnackBar(it) }
             )
+
+        },
+        bottomBar = {
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .hazeChild(hazeState)
+            ) {
+
+                Spacer(modifier = Modifier.navigationBarsPadding())
+
+            }
 
         }
     ) { insetsPadding ->
@@ -244,15 +259,15 @@ private fun LazyListScope.togglesItem(
 
             HomeScreenToggle(
                 modifier = Modifier.weight(1f),
-                icon = painterResource(id = R.drawable.sound_wave),
-                label = "Soundscape",
+                icon = painterResource(id = R.drawable.productivity),
+                label = "Reminders",
                 background = Brush.verticalGradient(
                     colors = listOf(
-                        DreamyNightColors.primarySoul,
-                        DreamyNightColors.secondarySoul
+                        SkyBlueColors.primarySoul,
+                        SkyBlueColors.secondarySoul
                     )
                 ),
-                onClick = { onUIAction(HomeScreenUIAction.NavigateToSoundscape()) }
+                onClick = { onUIAction(HomeScreenUIAction.NavigateToProductivity()) }
             )
 
             HomeScreenToggle(
