@@ -22,10 +22,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
 
         is HomeScreenUIAction.NavigateToSleep -> sendUIAction(uiAction)
         is HomeScreenUIAction.NavigateToBreathe -> sendUIAction(uiAction)
-
-        is HomeScreenUIAction.NavigateToSoundscape -> showSnackbar(
-            msg = UiString.BasicString("Soundscape is coming soon! :)")
-        )
+        is HomeScreenUIAction.NavigateToSoundscape -> sendUIAction(uiAction)
 
         is HomeScreenUIAction.ExpandQuote -> showSnackbar(
             msg = UiString.BasicString("Quotes are coming soon! :)")

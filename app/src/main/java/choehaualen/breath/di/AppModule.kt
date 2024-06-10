@@ -1,13 +1,12 @@
 package choehaualen.breath.di
 
 import android.content.Context
+import androidx.media3.exoplayer.ExoPlayer
 import choehaualen.breath.data.local.AppDatabase
 import choehaualen.breath.data.manager.SleepManager
 import choehaualen.breath.data.preferences.AppPreferences
 import choehaualen.breath.data.preferences.AppPreferencesImpl
 import choehaualen.breath.data.preferences.AppPreferencesImpl.Companion.preferences
-import com.google.android.gms.location.ActivityRecognition
-import com.google.android.gms.location.ActivityRecognitionClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,6 +44,12 @@ object AppModule {
             sleepDao = appDatabase.sleepDao,
             ioDispatcher = Dispatchers.IO
         )
+    }
+
+    @Singleton
+    @Provides
+    fun provideExoPlayer(@ApplicationContext context: Context): ExoPlayer {
+        return ExoPlayer.Builder(context).build()
     }
 
 }

@@ -3,11 +3,13 @@ package choehaualen.breath.core.etc
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.res.stringResource
 
+@Stable
 sealed interface UiString {
 
-    data class StringResource(@StringRes val resId: Int) : UiString
+    class StringResource(@StringRes val resId: Int, vararg val args: Any) : UiString
     data class BasicString(val value: String) : UiString
 
     companion object {
@@ -17,7 +19,7 @@ sealed interface UiString {
         @Composable
         fun UiString.asComposeString(): String {
             return when (this) {
-                is StringResource -> stringResource(id = this.resId)
+                is StringResource -> stringResource(id = this.resId, *this.args)
                 is BasicString -> this.value
             }
         }

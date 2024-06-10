@@ -68,6 +68,16 @@ val SilverColors = Colors(
     text = Color(0xFF121212)
 )
 
+val SkyBlueColors = Colors(
+    primarySoul = Color(0xFF6DCADB),
+    secondarySoul = Color(0xFF1C7FC4),
+    background = Color(0xFFFFFFFF),
+    backgroundGradientStart = Color(0xFF6DCADB),
+    backgroundGradientEnd = Color(0xFF1C7FC4),
+    card = Color(0xFFE7EEF3),
+    text = Color(0xFF121212)
+)
+
 @Immutable
 class Colors(
     val primarySoul: Color,
