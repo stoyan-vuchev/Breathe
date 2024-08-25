@@ -16,7 +16,7 @@ android {
 
         applicationId = "choehaualen.breath"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -47,15 +47,7 @@ android {
     }
 
     kotlin {
-
         jvmToolchain(17)
-
-        sourceSets.all {
-            languageSettings.apply {
-                languageSettings.enableLanguageFeature("ExplicitBackingFields")
-            }
-        }
-
     }
 
     buildFeatures {
@@ -119,6 +111,7 @@ dependencies {
     implementation(libs.chrisbanes.haze)
     implementation(libs.stoyanvuchev.squircleShape)
     implementation(libs.stoyanvuchev.systemUiBarsTweaker)
+    implementation(libs.lottie.compose)
 
     // Coroutines Dependencies
 
@@ -158,6 +151,7 @@ dependencies {
 
     implementation(libs.workManager.runtime)
     implementation(libs.workManager.runtime.ktx)
+    implementation(libs.workManager.multiprocess)
 
     // Testing Dependencies
 

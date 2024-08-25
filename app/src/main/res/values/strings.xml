@@ -61,5 +61,8 @@
     <string name="user_screen_set_wakeup_time_description">Please set your usual\nwake up time below.</string>
     <string name="user_screen_greet_title">Hi %s</string>
     <string name="user_screen_greet_description">Welcome to Breathe!</string>
+    <string name="water_intake_reminder_channel_name">Water intake reminders</string>
+    <string name="water_intake_reminder_text">Drink a glass of water</string>
+    <string name="water_intake_reminder_title">Water intake reminder</string>
 
 </resources>
