@@ -1,7 +1,6 @@
 package choehaualen.breath.di
 
 import android.content.Context
-import androidx.media3.exoplayer.ExoPlayer
 import choehaualen.breath.data.local.AppDatabase
 import choehaualen.breath.data.manager.SleepManager
 import choehaualen.breath.data.preferences.AppPreferences
@@ -46,10 +45,10 @@ object AppModule {
         )
     }
 
-    @Singleton
-    @Provides
-    fun provideExoPlayer(@ApplicationContext context: Context): ExoPlayer {
-        return ExoPlayer.Builder(context).build()
-    }
+    // @Singleton
+    //@Provides
+    // fun provideExoPlayer(@ApplicationContext context: Context): ExoPlayer {
+    //     return ExoPlayer.Builder(context).build()
+    // }
 
 }

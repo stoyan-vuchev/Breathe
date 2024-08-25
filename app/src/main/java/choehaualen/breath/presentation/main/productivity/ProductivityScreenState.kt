@@ -4,5 +4,5 @@ import androidx.compose.runtime.Stable
 
 @Stable
 data class ProductivityScreenState(
-    val remindersList: List<ProductivityReminder> = emptyList()
+    val isWaterIntakeReminderEnabled: Boolean = false
 )

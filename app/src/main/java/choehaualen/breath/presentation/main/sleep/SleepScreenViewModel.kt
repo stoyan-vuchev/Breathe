@@ -2,6 +2,8 @@ package choehaualen.breath.presentation.main.sleep
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import choehaualen.breath.core.etc.Result
+import choehaualen.breath.core.etc.Result.Companion.DefaultError
 import choehaualen.breath.core.etc.UiString
 import choehaualen.breath.data.manager.SleepManager
 import choehaualen.breath.data.preferences.AppPreferences
@@ -16,6 +18,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.hours
+
+// What should we do now? bro i just remembered, very long ago the sleep segment data
+//showed on breathe, I remember that , so the issue is not on our end xd.yes anyways
+//lets do that productivity reminder thing, similar to water the other ones also push notifications.
+// let's fix the reminders showing within the awake time.
+// yeah we have the sleep and wake time :)(usual) yep
 
 @HiltViewModel
 class SleepScreenViewModel @Inject constructor(
@@ -36,6 +45,7 @@ class SleepScreenViewModel @Inject constructor(
     }
 
     init {
+        getSleepData()
         viewModelScope.launch {
             val sleepGoal = withContext(Dispatchers.IO) { appPreferences.getSleepGoal() }
             _screenState.update { currentState ->
@@ -66,6 +76,36 @@ class SleepScreenViewModel @Inject constructor(
 
         }
 
+    }
+
+    private fun getSleepData() {
+        viewModelScope.launch {
+
+            when (val result = sleepManager.readSleepData()) {
+
+                is Result.Success -> {
+
+                    // We don't have any sleep data here.
+                    // how abt test it on a device which recorded it?
+
+                    var totalSleepDuration = 6.hours.inWholeMilliseconds
+                    result.data
+                        ?.mapNotNull { it.totalSleepDuration }
+                        ?.forEach { totalSleepDuration += it }
+
+                    _screenState.update { currentState ->
+                        currentState.copy(
+                            currentSleepDuration = totalSleepDuration
+                        )
+                    }
+
+                }
+
+                is Result.Error -> showError(result.error ?: DefaultError)
+
+            }
+
+        }
     }
 
     private fun showError(error: UiString) {

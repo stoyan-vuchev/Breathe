@@ -22,10 +22,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -40,6 +37,8 @@ import choehaualen.breath.core.ui.theme.BreathTheme
 import choehaualen.breath.presentation.main.productivity.ProductivityReminderInterval
 import choehaualen.breath.presentation.main.productivity.ProductivityReminderInterval.Companion.stepDown
 import choehaualen.breath.presentation.main.productivity.ProductivityReminderInterval.Companion.stepUp
+import choehaualen.breath.presentation.main.productivity.ProductivityReminders
+import choehaualen.breath.presentation.main.productivity.ProductivityScreenUIAction
 import sv.lib.squircleshape.SquircleShape
 
 @Composable
@@ -47,12 +46,13 @@ fun ProductivityScreenReminder(
     modifier: Modifier = Modifier,
     shape: Shape = SquircleShape(24.dp),
     state: ProductivityScreenReminderState,
+    id: String,
     icon: Painter,
     label: String,
     description: String,
     minInterval: ProductivityReminderInterval = ProductivityReminderInterval.FortyFiveMinutes,
     maxInterval: ProductivityReminderInterval = ProductivityReminderInterval.SixtyMinutes,
-    onUIAction: (ProductivityScreenReminderUIAction) -> Unit
+    onUIAction: (ProductivityScreenUIAction) -> Unit
 ) {
 
     Column(
@@ -61,7 +61,12 @@ fun ProductivityScreenReminder(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberBreathRipple(),
                 onClick = {
-                    onUIAction(ProductivityScreenReminderUIAction.SetEnabled(!state.enabled))
+                    onUIAction(
+                        ProductivityScreenUIAction.SetReminderEnabled(
+                            id = id,
+                            enabled = !state.enabled
+                        )
+                    )
                 }
             )
             .background(
@@ -116,7 +121,12 @@ fun ProductivityScreenReminder(
                     checkedThumbColor = BreathTheme.colors.background,
                 ),
                 onCheckedChange = { enabled ->
-                    onUIAction(ProductivityScreenReminderUIAction.SetEnabled(enabled))
+                    onUIAction(
+                        ProductivityScreenUIAction.SetReminderEnabled(
+                            id = id,
+                            enabled = !enabled
+                        )
+                    )
                 }
             )
 
@@ -147,8 +157,11 @@ fun ProductivityScreenReminder(
                             indication = rememberBreathRipple(),
                             onClick = {
                                 onUIAction(
-                                    ProductivityScreenReminderUIAction.SetInterval(
-                                        state.interval.stepDown(minInterval)
+                                    ProductivityScreenUIAction.SetReminderInterval(
+                                        id = id,
+                                        interval = state.interval
+                                            .stepDown(minInterval)
+                                            .inMilliseconds
                                     )
                                 )
                             }
@@ -185,8 +198,11 @@ fun ProductivityScreenReminder(
                             indication = rememberBreathRipple(),
                             onClick = {
                                 onUIAction(
-                                    ProductivityScreenReminderUIAction.SetInterval(
-                                        state.interval.stepUp(maxInterval)
+                                    ProductivityScreenUIAction.SetReminderInterval(
+                                        id = id,
+                                        interval = state.interval
+                                            .stepUp(maxInterval)
+                                            .inMilliseconds
                                     )
                                 )
                             }
@@ -218,39 +234,14 @@ fun ProductivityScreenReminder(
 @Composable
 private fun ProductivityScreenReminderPreview() = BreathTheme(SkyBlueColors) {
 
-    var state by remember {
-        mutableStateOf(
-            ProductivityScreenReminderState(
-                interval = ProductivityReminderInterval.FortyFiveMinutes
-            )
-        )
-    }
-
-    val onUIAction = remember<(ProductivityScreenReminderUIAction) -> Unit> {
-        { uiAction ->
-
-            state = when (uiAction) {
-
-                is ProductivityScreenReminderUIAction.SetEnabled -> {
-                    state.copy(enabled = uiAction.enabled)
-                }
-
-                is ProductivityScreenReminderUIAction.SetInterval -> {
-                    state.copy(interval = uiAction.interval)
-                }
-
-            }
-
-        }
-    }
-
     ProductivityScreenReminder(
         modifier = Modifier.fillMaxWidth(),
-        state = state,
+        state = ProductivityScreenReminderState(),
+        id = ProductivityReminders.WATER_INTAKE,
         icon = painterResource(id = R.drawable.water_glass),
         label = "Water intake",
         description = "Reminds you to drink water\nevery interval to stay hydrated",
-        onUIAction = onUIAction
+        onUIAction = {}
     )
 
 }

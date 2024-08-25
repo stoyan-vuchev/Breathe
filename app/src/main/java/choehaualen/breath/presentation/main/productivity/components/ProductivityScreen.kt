@@ -36,12 +36,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import choehaualen.breath.R
 import choehaualen.breath.core.etc.transformFraction
-import choehaualen.breath.core.ui.colors.ProvideBreathColors
 import choehaualen.breath.core.ui.colors.SkyBlueColors
 import choehaualen.breath.core.ui.components.topbar.TopBarDefaults
 import choehaualen.breath.core.ui.components.topbar.basic_topbar.BasicTopBar
 import choehaualen.breath.core.ui.theme.BreathTheme
-import choehaualen.breath.presentation.main.productivity.ProductivityReminderInterval
+import choehaualen.breath.presentation.main.productivity.ProductivityReminders
 import choehaualen.breath.presentation.main.productivity.ProductivityScreenState
 import choehaualen.breath.presentation.main.productivity.ProductivityScreenUIAction
 import dev.chrisbanes.haze.HazeState
@@ -55,6 +54,31 @@ fun ProductivityScreen(
     screenState: ProductivityScreenState,
     onUIAction: (ProductivityScreenUIAction) -> Unit
 ) {
+
+    // Working? i guess its now working find also the latency seems nice.
+    // i've noticed that :)
+
+    // So what should we do now. I don't feel confident in writing
+    // the sleep logic _._, i mean we can try to connect the value.
+    // throught the converter, and the get data button we can add that to this screen
+    // so the process will be easy.
+    // we already did the converter if i remember correctly
+    //so, sleep result from api could be connected to this variable.
+    // but did we find which function gives the result?
+    // We did, but we need to clamp the timestamps to a specific range (the sleep duration)
+    // and somehow calculate the total sleep duration. Which must be done when retrieving the
+    // sleep data itself. Because the API emits timestamps for a small time duration
+    // like a minute or few hours. Which ain't helpful at all XD
+    // bro take the variable which gets the info, then timestamp convertion can
+    // give the result right? also it will be like in hours 'only'.
+
+    // let me write what I just brainstormed.
+
+    // for each sleep segment {
+    // val duration = end - start
+    // val total = for each duration . inWholeHours
+    // so we basically map that and add each segment duration to get a total sleep time
+    // right? yes! Got it. We'll need to make some refactoring tho.
 
     var isScreenShown by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) { isScreenShown = true }
@@ -164,7 +188,10 @@ fun ProductivityScreen(
             contentPadding = insetsPadding,
         ) {
 
-            reminderItems()
+            reminderItems(
+                screenState = screenState,
+                onUIAction = onUIAction
+            )
 
         }
 
@@ -173,36 +200,11 @@ fun ProductivityScreen(
 }
 
 private fun LazyListScope.reminderItems(
-    // fixme: will fix this later: onUIAction: (ProductivityScreenUIAction) -> Unit
+    screenState: ProductivityScreenState,
+    onUIAction: (ProductivityScreenUIAction) -> Unit
 ) {
 
     item(key = "water_intake_reminder") {
-
-        var state by remember {
-            mutableStateOf(
-                ProductivityScreenReminderState(
-                    interval = ProductivityReminderInterval.FortyFiveMinutes
-                )
-            )
-        }
-
-        val onUIAction = remember<(ProductivityScreenReminderUIAction) -> Unit> {
-            { uiAction ->
-
-                state = when (uiAction) {
-
-                    is ProductivityScreenReminderUIAction.SetEnabled -> {
-                        state.copy(enabled = uiAction.enabled)
-                    }
-
-                    is ProductivityScreenReminderUIAction.SetInterval -> {
-                        state.copy(interval = uiAction.interval)
-                    }
-
-                }
-
-            }
-        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -210,13 +212,16 @@ private fun LazyListScope.reminderItems(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            state = state,
+            state = ProductivityScreenReminderState(
+                enabled = screenState.isWaterIntakeReminderEnabled,
+            ),
             shape = SquircleShape(
                 topStart = 24.dp,
                 topEnd = 24.dp,
                 bottomEnd = 8.dp,
                 bottomStart = 8.dp,
             ),
+            id = ProductivityReminders.WATER_INTAKE,
             icon = painterResource(id = R.drawable.water_glass),
             label = "Water intake",
             description = "Reminds you to drink water\n" +
@@ -228,31 +233,15 @@ private fun LazyListScope.reminderItems(
 
     item(key = "read_book_reminder") {
 
-        var state by remember { mutableStateOf(ProductivityScreenReminderState()) }
-        val onUIAction = remember<(ProductivityScreenReminderUIAction) -> Unit> {
-            { uiAction ->
-
-                state = when (uiAction) {
-
-                    is ProductivityScreenReminderUIAction.SetEnabled -> {
-                        state.copy(enabled = uiAction.enabled)
-                    }
-
-                    else -> state
-
-                }
-
-            }
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         ProductivityScreenReminder(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            state = state,
+            state = ProductivityScreenReminderState(),
             shape = SquircleShape(8.dp),
+            id = ProductivityReminders.READ_BOOK,
             icon = painterResource(id = R.drawable.book),
             label = "Read a Book",
             description = "Reading daily enhances brain strength " +
@@ -268,31 +257,15 @@ private fun LazyListScope.reminderItems(
 
     item(key = "basic_workout_reminder") {
 
-        var state by remember { mutableStateOf(ProductivityScreenReminderState()) }
-        val onUIAction = remember<(ProductivityScreenReminderUIAction) -> Unit> {
-            { uiAction ->
-
-                state = when (uiAction) {
-
-                    is ProductivityScreenReminderUIAction.SetEnabled -> {
-                        state.copy(enabled = uiAction.enabled)
-                    }
-
-                    else -> state
-
-                }
-
-            }
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         ProductivityScreenReminder(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            state = state,
+            state = ProductivityScreenReminderState(),
             shape = SquircleShape(8.dp),
+            id = ProductivityReminders.BASIC_WORKOUT,
             icon = painterResource(id = R.drawable.activity),
             label = "Basic Workout",
             description = "For a basic workout, include " +
@@ -305,36 +278,20 @@ private fun LazyListScope.reminderItems(
 
     item(key = "touch_grass_reminder") {
 
-        var state by remember { mutableStateOf(ProductivityScreenReminderState()) }
-        val onUIAction = remember<(ProductivityScreenReminderUIAction) -> Unit> {
-            { uiAction ->
-
-                state = when (uiAction) {
-
-                    is ProductivityScreenReminderUIAction.SetEnabled -> {
-                        state.copy(enabled = uiAction.enabled)
-                    }
-
-                    else -> state
-
-                }
-
-            }
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         ProductivityScreenReminder(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            state = state,
+            state = ProductivityScreenReminderState(),
             shape = SquircleShape(
                 topStart = 8.dp,
                 topEnd = 8.dp,
                 bottomEnd = 24.dp,
                 bottomStart = 24.dp,
             ),
+            id = ProductivityReminders.TOUCH_GRASS,
             icon = painterResource(id = R.drawable.touch_grass),
             label = "Touch Grass",
             description = "Breathe recommends short breaks " +
@@ -352,16 +309,11 @@ private fun LazyListScope.reminderItems(
 
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun ProductivityScreenPreview() = BreathTheme {
-    ProvideBreathColors(SkyBlueColors) {
-        ProductivityScreen(
-            screenState = ProductivityScreenState(),
-            onUIAction = {}
-        )
-    }
+private fun ProductivityScreenPreview() = BreathTheme(SkyBlueColors) {
+    ProductivityScreen(
+        screenState = ProductivityScreenState(),
+        onUIAction = {}
+    )
 }
-
-// Okkayyy, now we need to push the UI and start working on the backend. yes,
-// But firstly, lemme fix sth.

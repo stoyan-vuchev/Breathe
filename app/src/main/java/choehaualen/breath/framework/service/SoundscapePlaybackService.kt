@@ -15,8 +15,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SoundscapePlaybackService : Service() {
 
-    @Inject
-    lateinit var exoPlayer: ExoPlayer
+   // @Inject
+   // lateinit var exoPlayer: ExoPlayer
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -52,10 +52,10 @@ class SoundscapePlaybackService : Service() {
 
                 createNotification(nonNullTitle)
 
-                exoPlayer.release()
-                exoPlayer.setMediaItem(mediaItem)
-                exoPlayer.prepare()
-                exoPlayer.play()
+              //  exoPlayer.release()
+              //  exoPlayer.setMediaItem(mediaItem)
+              //  exoPlayer.prepare()
+               // exoPlayer.play()
 
 
             } ?: Unit
@@ -67,7 +67,7 @@ class SoundscapePlaybackService : Service() {
     }
 
     override fun onDestroy() {
-        exoPlayer.release()
+       // exoPlayer.release()
         super.onDestroy()
     }
 
