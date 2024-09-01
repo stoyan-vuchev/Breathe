@@ -22,7 +22,7 @@ sealed interface HomeScreenUIAction {
         val route: String = MainNavigationDestinations.Productivity.route
     ) : HomeScreenUIAction
 
-    data object ShowMore : HomeScreenUIAction
+    data object Zone : HomeScreenUIAction
     data object ExpandQuote : HomeScreenUIAction
 
     data class NavigateToSettings(

@@ -78,6 +78,16 @@ val SkyBlueColors = Colors(
     text = Color(0xFF121212)
 )
 
+val ZoneColors = Colors(
+    primarySoul = Color(0xFFF49692),
+    secondarySoul = Color(0xFFD3425D),
+    background = Color(0xFFFFFFFF),
+    backgroundGradientStart = Color(0xFFF9D2D2),
+    backgroundGradientEnd = Color(0xFFECACB6),
+    card = Color(0xFFEAEBF7),
+    text = Color(0xFF121212)
+)
+
 @Immutable
 class Colors(
     val primarySoul: Color,
