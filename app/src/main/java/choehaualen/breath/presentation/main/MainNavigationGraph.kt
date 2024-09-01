@@ -20,9 +20,13 @@ import choehaualen.breath.core.ui.colors.MelonColors
 import choehaualen.breath.core.ui.colors.ProvideBreathColors
 import choehaualen.breath.core.ui.colors.SkyBlueColors
 import choehaualen.breath.core.ui.colors.SleepColors
+import choehaualen.breath.core.ui.colors.ZoneColors
 import choehaualen.breath.presentation.main.breathe.BreatheScreen
 import choehaualen.breath.presentation.main.breathe.BreatheScreenUIAction
 import choehaualen.breath.presentation.main.breathe.BreatheScreenViewModel
+import choehaualen.breath.presentation.main.habit.main.HabitMainScreen
+import choehaualen.breath.presentation.main.habit.main.HabitMainScreenUIAction
+import choehaualen.breath.presentation.main.habit.main.HabitMainScreenViewModel
 import choehaualen.breath.presentation.main.home.HomeScreen
 import choehaualen.breath.presentation.main.home.HomeScreenUIAction
 import choehaualen.breath.presentation.main.home.HomeScreenViewModel
@@ -70,6 +74,10 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                             ) { launchSingleTop = true }
 
                             is HomeScreenUIAction.NavigateToSoundscape -> navController.navigate(
+                                route = uiAction.route
+                            ) { launchSingleTop = true }
+
+                            is HomeScreenUIAction.NavigateToHabitControl -> navController.navigate(
                                 route = uiAction.route
                             ) { launchSingleTop = true }
 
@@ -174,6 +182,32 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                     }
 
                     SoundScapeScreen(
+                        screenState = screenState,
+                        onUIAction = viewModel::onUIAction
+                    )
+
+                }
+            }
+        )
+
+        composable(
+            route = MainNavigationDestinations.HabitControl.route,
+            content = {
+                ProvideBreathColors(ZoneColors) {
+
+                    val viewModel = hiltViewModel<HabitMainScreenViewModel>()
+                    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+                    LaunchedEffect(viewModel.uiActionFlow) {
+                        viewModel.uiActionFlow.collectLatest { uiAction ->
+                            when (uiAction) {
+                                is HabitMainScreenUIAction.NavigateUp -> navController.navigateUp()
+                                else -> Unit
+                            }
+                        }
+                    }
+
+                    HabitMainScreen(
                         screenState = screenState,
                         onUIAction = viewModel::onUIAction
                     )

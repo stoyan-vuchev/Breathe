@@ -85,25 +85,7 @@ class BreatheScreenViewModel @Inject constructor() : ViewModel() {
                     _screenState.update {
                         it.copy(
                             segmentState = it.segmentState.copy(
-                                phase = BreathePhase.Hold(1f),
-                                modeDurationInSeconds = 5
-                            )
-                        )
-                    }
-                    countDown()
-                    _screenState.update {
-                        it.copy(
-                            segmentState = it.segmentState.copy(
                                 phase = BreathePhase.Exhale(0f),
-                                modeDurationInSeconds = 5
-                            )
-                        )
-                    }
-                    countDown()
-                    _screenState.update {
-                        it.copy(
-                            segmentState = it.segmentState.copy(
-                                phase = BreathePhase.Hold(0f),
                                 modeDurationInSeconds = 5
                             )
                         )
@@ -131,15 +113,6 @@ class BreatheScreenViewModel @Inject constructor() : ViewModel() {
                         )
                     }
                     countDown(5)
-                    _screenState.update {
-                        it.copy(
-                            segmentState = it.segmentState.copy(
-                                phase = BreathePhase.Hold(1f),
-                                modeDurationInSeconds = 1
-                            )
-                        )
-                    }
-                    countDown(1)
                     _screenState.update {
                         it.copy(
                             segmentState = it.segmentState.copy(
@@ -184,15 +157,6 @@ class BreatheScreenViewModel @Inject constructor() : ViewModel() {
                         it.copy(
                             segmentState = it.segmentState.copy(
                                 phase = BreathePhase.Exhale(0f),
-                                modeDurationInSeconds = 5
-                            )
-                        )
-                    }
-                    countDown()
-                    _screenState.update {
-                        it.copy(
-                            segmentState = it.segmentState.copy(
-                                phase = BreathePhase.Hold(0f),
                                 modeDurationInSeconds = 5
                             )
                         )

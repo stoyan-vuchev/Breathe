@@ -15,11 +15,6 @@ sealed class BreathePhase(
         label = R.string.breathe_phase_inhale_label
     )
 
-    data class Hold(override val fraction: Float = 1f) : BreathePhase(
-        fraction = fraction,
-        label = R.string.breathe_phase_hold_label
-    )
-
     data class ForceInhale(override val fraction: Float = 1f) : BreathePhase(
         fraction = fraction,
         label = R.string.breathe_phase_force_inhale_label

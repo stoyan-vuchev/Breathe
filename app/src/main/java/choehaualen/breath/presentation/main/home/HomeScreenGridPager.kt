@@ -131,7 +131,7 @@ fun HomeScreenGridPager(
                                     ZoneColors.secondarySoul
                                 )
                             ),
-                            onClick = { onUIAction(HomeScreenUIAction.Zone) }
+                            onClick = { onUIAction(HomeScreenUIAction.NavigateToHabitControl()) }
                         )
 
                     }
@@ -194,7 +194,7 @@ fun HomeScreenGridPager(
                                     Color.DarkGray
                                 )
                             ),
-                            onClick = { onUIAction(HomeScreenUIAction.Zone) }
+                            onClick = { onUIAction(HomeScreenUIAction.More) }
                         )
 
                         Spacer(modifier = Modifier.weight(1f))
