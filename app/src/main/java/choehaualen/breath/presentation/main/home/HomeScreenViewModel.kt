@@ -29,7 +29,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
             msg = UiString.BasicString("Quotes are coming soon! :)")
         )
 
-        is HomeScreenUIAction.ShowMore -> showSnackbar(
+        is HomeScreenUIAction.Zone -> showSnackbar(
             msg = UiString.BasicString("More cool stuff is coming soon! <3")
         )
 

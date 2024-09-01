@@ -3,10 +3,8 @@ package choehaualen.breath.presentation.main.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +13,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
@@ -30,18 +29,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import choehaualen.breath.R
 import choehaualen.breath.core.etc.transformFraction
-import choehaualen.breath.core.ui.colors.MelonColors
-import choehaualen.breath.core.ui.colors.SkyBlueColors
-import choehaualen.breath.core.ui.colors.SleepColors
 import choehaualen.breath.core.ui.components.rememberBreathRipple
 import choehaualen.breath.core.ui.components.snackbar.SnackBar
 import choehaualen.breath.core.ui.components.topbar.TopBarDefaults
@@ -208,88 +200,19 @@ private fun LazyListScope.togglesItem(
     onUIAction: (HomeScreenUIAction) -> Unit
 ) = item(key = "toggles") {
 
-    Column(
+    HomeScreenGridPager(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
             .clip(SquircleShape(40.dp))
-            .background(BreathTheme.colors.card)
-            .padding(16.dp)
-    ) {
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-
-            HomeScreenToggle(
-                modifier = Modifier.weight(1f),
-                icon = painterResource(id = R.drawable.sleep),
-                label = "Sleep",
-                background = Brush.verticalGradient(
-                    colors = listOf(
-                        SleepColors.primarySoul,
-                        SleepColors.secondarySoul
-                    )
-                ),
-                onClick = { onUIAction(HomeScreenUIAction.NavigateToSleep()) }
-            )
-
-            HomeScreenToggle(
-                modifier = Modifier.weight(1f),
-                icon = painterResource(id = R.drawable.leaf),
-                label = "Breathe",
-                background = Brush.verticalGradient(
-                    colors = listOf(
-                        MelonColors.primarySoul,
-                        MelonColors.secondarySoul
-                    )
-                ),
-                onClick = { onUIAction(HomeScreenUIAction.NavigateToBreathe()) }
-            )
-
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-
-            HomeScreenToggle(
-                modifier = Modifier.weight(1f),
-                icon = painterResource(id = R.drawable.productivity),
-                label = "Reminders",
-                background = Brush.verticalGradient(
-                    colors = listOf(
-                        SkyBlueColors.primarySoul,
-                        SkyBlueColors.secondarySoul
-                    )
-                ),
-                onClick = { onUIAction(HomeScreenUIAction.NavigateToProductivity()) }
-            )
-
-            HomeScreenToggle(
-                modifier = Modifier.weight(1f),
-                icon = painterResource(id = R.drawable.more_hor),
-                label = "More",
-                background = Brush.verticalGradient(
-                    colors = listOf(
-                        Color.DarkGray,
-                        Color.DarkGray
-                    )
-                ),
-                onClick = { onUIAction(HomeScreenUIAction.ShowMore) }
-            )
-
-        }
-
-    }
+            .background(BreathTheme.colors.card),
+        state = rememberPagerState { 2 },
+        onUIAction = onUIAction
+    )
 
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() = BreathTheme {
     HomeScreen(

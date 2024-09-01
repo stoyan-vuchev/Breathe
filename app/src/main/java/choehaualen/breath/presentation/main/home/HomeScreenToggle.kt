@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +22,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import choehaualen.breath.core.ui.components.rememberBreathRipple
 import choehaualen.breath.core.ui.theme.BreathTheme
@@ -30,6 +33,8 @@ fun HomeScreenToggle(
     modifier: Modifier = Modifier,
     icon: Painter,
     label: String,
+    boundlessIcon: Boolean = false,
+    boundlessIconSize: DpSize = DpSize.Unspecified,
     background: Brush,
     onClick: () -> Unit
 ) {
@@ -54,8 +59,13 @@ fun HomeScreenToggle(
 
             Image(
                 modifier = Modifier
-                    .width(56.dp)
-                    .align(Alignment.Center),
+                    .align(Alignment.Center)
+                    .then(
+                        if (!boundlessIcon) Modifier.width(56.dp)
+                        else Modifier
+                            .defaultMinSize(minWidth = 74.dp)
+                            .size(boundlessIconSize)
+                    ),
                 painter = icon,
                 contentDescription = null
             )
