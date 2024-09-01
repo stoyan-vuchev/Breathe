@@ -55,31 +55,6 @@ fun ProductivityScreen(
     onUIAction: (ProductivityScreenUIAction) -> Unit
 ) {
 
-    // Working? i guess its now working find also the latency seems nice.
-    // i've noticed that :)
-
-    // So what should we do now. I don't feel confident in writing
-    // the sleep logic _._, i mean we can try to connect the value.
-    // throught the converter, and the get data button we can add that to this screen
-    // so the process will be easy.
-    // we already did the converter if i remember correctly
-    //so, sleep result from api could be connected to this variable.
-    // but did we find which function gives the result?
-    // We did, but we need to clamp the timestamps to a specific range (the sleep duration)
-    // and somehow calculate the total sleep duration. Which must be done when retrieving the
-    // sleep data itself. Because the API emits timestamps for a small time duration
-    // like a minute or few hours. Which ain't helpful at all XD
-    // bro take the variable which gets the info, then timestamp convertion can
-    // give the result right? also it will be like in hours 'only'.
-
-    // let me write what I just brainstormed.
-
-    // for each sleep segment {
-    // val duration = end - start
-    // val total = for each duration . inWholeHours
-    // so we basically map that and add each segment duration to get a total sleep time
-    // right? yes! Got it. We'll need to make some refactoring tho.
-
     var isScreenShown by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) { isScreenShown = true }
 
@@ -162,7 +137,8 @@ fun ProductivityScreen(
                     }
 
                 },
-                backgroundColor = BreathTheme.colors.background.copy(topBarBgAlpha)
+                backgroundColor = BreathTheme.colors.background.copy(topBarBgAlpha),
+                animateContent = true
             )
 
         },

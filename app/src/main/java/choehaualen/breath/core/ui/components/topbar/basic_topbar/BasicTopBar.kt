@@ -56,7 +56,8 @@ fun BasicTopBar(
     largeTitleTextStyle: TextStyle = BreathTheme.typography.headlineLarge,
     smallTitleTextStyle: TextStyle = BreathTheme.typography.titleLarge,
     windowInsets: WindowInsets = TopBarDefaults.windowInsets(),
-    spanFactor: Float = 1f / 4f
+    spanFactor: Float = 1f / 4f,
+    animateContent: Boolean = false
 ) = BasicTopBarLayout(
     modifier = modifier,
     largeTitleTextStyle = largeTitleTextStyle,
@@ -69,7 +70,8 @@ fun BasicTopBar(
     contentColor = contentColor,
     maxHeight = TopBarDefaults.largeContainerHeight(scrollBehavior, spanFactor),
     pinnedHeight = TopBarDefaults.smallContainerHeight,
-    scrollBehavior = scrollBehavior
+    scrollBehavior = scrollBehavior,
+    animateContent = animateContent
 )
 
 @Composable
@@ -85,7 +87,8 @@ private fun BasicTopBarLayout(
     contentColor: Color,
     maxHeight: Dp,
     pinnedHeight: Dp,
-    scrollBehavior: TopBarScrollBehavior?
+    scrollBehavior: TopBarScrollBehavior?,
+    animateContent: Boolean
 ) = CompositionLocalProvider(LocalContentColor provides contentColor) {
 
     val density = LocalDensity.current
@@ -213,9 +216,13 @@ private fun BasicTopBarLayout(
                         Text(
                             modifier = Modifier
                                 .padding(titlePadding)
-                                .animateContentSize(
-                                    animationSpec = spring(),
-                                    alignment = Alignment.Center
+                                .then(
+                                    if (animateContent) Modifier
+                                        .animateContentSize(
+                                            animationSpec = spring(),
+                                            alignment = Alignment.Center
+                                        )
+                                    else Modifier
                                 ),
                             text = titleText,
                             textAlign = TextAlign.Center
