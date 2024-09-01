@@ -64,7 +64,7 @@ fun SleepScreen(
                 startX = .8f,
                 endX = 1f,
                 startY = 0f,
-                endY = .5f
+                endY = 0f // .5f
             )
         }
     }
