@@ -12,8 +12,8 @@ val BreathDefaultColors = Colors(
     primarySoul = Color(0xFFFFD3D3),
     secondarySoul = Color(0xFFBBD6FF),
     background = Color(0xFFFFFFFF),
-    backgroundGradientStart = Color(0xFFC7DEFF),
-    backgroundGradientEnd = Color(0xFFFFDBDB),
+    backgroundGradientStart = Color(0xFFFFDBDB),
+    backgroundGradientEnd = Color(0xFFC7DEFF),
     card = Color(0xFFEAEBF7),
     text = Color(0xFF121212)
 )
