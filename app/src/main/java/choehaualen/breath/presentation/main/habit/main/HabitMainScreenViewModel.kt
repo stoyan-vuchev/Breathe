@@ -30,37 +30,7 @@ class HabitMainScreenViewModel @Inject constructor(
     }
 
     fun onUIAction(uiAction: HabitMainScreenUIAction) = when (uiAction) {
-
-        is HabitMainScreenUIAction.SetSegment -> {
-            _screenState.update { it.copy(currentSegment = uiAction.segment) }
-        }
-
-        is HabitMainScreenUIAction.NavigateUp -> {
-
-            if (
-                _screenState.value.currentSegment == HabitMainScreenSegment.HabitName
-                || _screenState.value.currentSegment == HabitMainScreenSegment.HabitMain
-                || _screenState.value.currentSegment == HabitMainScreenSegment.HabitConfirmation
-            ) sendUIAction(uiAction) else _screenState.update {
-                it.copy(
-                    currentSegment = when (it.currentSegment) {
-                        is HabitMainScreenSegment.HabitQuote -> HabitMainScreenSegment.HabitName
-                        is HabitMainScreenSegment.HabitDuration -> HabitMainScreenSegment.HabitQuote
-                        else -> it.currentSegment
-                    }
-                )
-            }
-
-        }
-
-        is HabitMainScreenUIAction.SetHabitName -> _screenState.update {
-            it.copy(name = uiAction.newName)
-        }
-
-    }
-
-    private fun sendUIAction(uiAction: HabitMainScreenUIAction) {
-        viewModelScope.launch { _uiActionChannel.send(uiAction) }
+        is HabitMainScreenUIAction.NavigateUp -> sendUIAction(uiAction)
     }
 
     private fun initialize() {
@@ -79,17 +49,20 @@ class HabitMainScreenViewModel @Inject constructor(
 
             _screenState.update {
                 it.copy(
+                    hasOngoingHabit = hasOngoingHabit,
                     username = username ?: "",
-                    name = habitName ?: "",
-                    quote = habitQuote ?: "",
-                    goalDuration = habitDuration ?: 0,
-                    currentProgress = habitProgress ?: 0,
-                    currentSegment = if (hasOngoingHabit) HabitMainScreenSegment.HabitMain
-                    else HabitMainScreenSegment.HabitName
+                    habitName = habitName ?: "",
+                    habitQuote = habitQuote ?: "",
+                    habitDuration = habitDuration ?: 0,
+                    habitProgress = habitProgress ?: 0
                 )
             }
 
         }
+    }
+
+    private fun sendUIAction(uiAction: HabitMainScreenUIAction) {
+        viewModelScope.launch { _uiActionChannel.send(uiAction) }
     }
 
 }

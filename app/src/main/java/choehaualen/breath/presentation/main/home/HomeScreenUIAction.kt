@@ -19,7 +19,7 @@ sealed interface HomeScreenUIAction {
     ) : HomeScreenUIAction
 
     data class NavigateToHabitControl(
-        val route: String = MainNavigationDestinations.HabitControl.route
+        val route: String = MainNavigationDestinations.HabitControlSetup.route
     ) : HomeScreenUIAction
 
     data class NavigateToProductivity(

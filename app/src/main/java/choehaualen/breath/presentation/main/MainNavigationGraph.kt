@@ -21,12 +21,16 @@ import choehaualen.breath.core.ui.colors.ProvideBreathColors
 import choehaualen.breath.core.ui.colors.SkyBlueColors
 import choehaualen.breath.core.ui.colors.SleepColors
 import choehaualen.breath.core.ui.colors.ZoneColors
+import choehaualen.breath.core.ui.navigateSingleTop
 import choehaualen.breath.presentation.main.breathe.BreatheScreen
 import choehaualen.breath.presentation.main.breathe.BreatheScreenUIAction
 import choehaualen.breath.presentation.main.breathe.BreatheScreenViewModel
 import choehaualen.breath.presentation.main.habit.main.HabitMainScreen
 import choehaualen.breath.presentation.main.habit.main.HabitMainScreenUIAction
 import choehaualen.breath.presentation.main.habit.main.HabitMainScreenViewModel
+import choehaualen.breath.presentation.main.habit.setup.HabitSetupScreen
+import choehaualen.breath.presentation.main.habit.setup.HabitSetupScreenUIAction
+import choehaualen.breath.presentation.main.habit.setup.HabitSetupScreenViewModel
 import choehaualen.breath.presentation.main.home.HomeScreen
 import choehaualen.breath.presentation.main.home.HomeScreenUIAction
 import choehaualen.breath.presentation.main.home.HomeScreenViewModel
@@ -191,7 +195,43 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
         )
 
         composable(
-            route = MainNavigationDestinations.HabitControl.route,
+            route = MainNavigationDestinations.HabitControlSetup.route,
+            content = {
+                ProvideBreathColors(ZoneColors) {
+
+                    val viewModel = hiltViewModel<HabitSetupScreenViewModel>()
+                    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+                    LaunchedEffect(viewModel.uiActionFlow) {
+                        viewModel.uiActionFlow.collectLatest { uiAction ->
+                            when (uiAction) {
+
+                                is HabitSetupScreenUIAction.NavigateToMain -> {
+                                    navController.navigateSingleTop(
+                                        route = MainNavigationDestinations.HabitControlMain.route,
+                                        popUpTo = MainNavigationDestinations.HabitControlSetup.route,
+                                        inclusive = true
+                                    )
+                                }
+
+                                is HabitSetupScreenUIAction.NavigateUp -> navController.navigateUp()
+                                else -> Unit
+
+                            }
+                        }
+                    }
+
+                    HabitSetupScreen(
+                        screenState = screenState,
+                        onUIAction = viewModel::onUIAction
+                    )
+
+                }
+            }
+        )
+
+        composable(
+            route = MainNavigationDestinations.HabitControlMain.route,
             content = {
                 ProvideBreathColors(ZoneColors) {
 
@@ -202,7 +242,6 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                         viewModel.uiActionFlow.collectLatest { uiAction ->
                             when (uiAction) {
                                 is HabitMainScreenUIAction.NavigateUp -> navController.navigateUp()
-                                else -> Unit
                             }
                         }
                     }
