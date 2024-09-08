@@ -28,7 +28,7 @@ fun BreathTheme(
             ),
             navigationBarStyle = tweaker.navigationBarStyle.copy(
                 darkIcons = true,
-                enforceContrast = false
+                enforceContrast = !tweaker.isGestureNavigationEnabled
             )
         )
         onDispose {}

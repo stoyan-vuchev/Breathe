@@ -1,9 +1,9 @@
 [versions]
 
 # Plugin Versions
-agp = "8.5.2"
-kotlin = "2.0.0"
-ksp = "2.0.0-1.0.21"
+agp = "8.6.0"
+kotlin = "2.0.10"
+ksp = "2.0.10-1.0.24"
 
 # GMS Lib Versions
 gmsLocation = "21.3.0"
@@ -13,22 +13,22 @@ coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.3"
+lifecycleRuntimeKtx = "2.8.5"
 material = "1.12.0"
-media3 = "1.3.1"
+media3 = "1.4.1"
 
 # Jetpack Compose Lib Versions
-composeBom = "2024.06.00"
-composeVersion = "1.7.0-beta05"
-activityCompose = "1.9.0"
-navigationCompose = "2.7.7"
-lifecycleRuntimeCompose = "2.8.3"
-material3Compose = "1.3.0-beta04"
+composeBom = "2024.09.00"
+composeVersion = "1.7.0"
+activityCompose = "1.9.2"
+navigationCompose = "2.8.0"
+lifecycleRuntimeCompose = "2.8.5"
+material3Compose = "1.3.0"
 
 # Fancy UI Stuff Lib Versions :d
 haze = "0.7.1"
 squircleShape = "2.0.0"
-systemUiBarsTweaker = "1.0.1"
+systemUiBarsTweaker = "1.1.0"
 lottie = "6.4.1"
 
 # Storage Lib Versions

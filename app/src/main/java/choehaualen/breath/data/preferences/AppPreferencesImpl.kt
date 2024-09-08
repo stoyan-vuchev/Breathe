@@ -103,7 +103,9 @@ class AppPreferencesImpl @Inject constructor(
     //
 
     override suspend fun setHabitDuration(duration: Int) {
-        TODO("Not yet implemented")
+        preferences.edit { prefs ->
+            prefs[HABIT_GOAL_DURATION_KEY] = duration
+        }
     }
 
     override suspend fun getHabitDuration(): Int? {
