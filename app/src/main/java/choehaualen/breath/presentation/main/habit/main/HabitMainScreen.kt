@@ -3,7 +3,6 @@ package choehaualen.breath.presentation.main.habit.main
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -153,13 +151,60 @@ fun HabitMainScreen(
 
                             Box(
                                 modifier = Modifier
-                                    .padding(horizontal = 56.dp)
+                                    .padding(horizontal = 48.dp)
                                     .fillMaxWidth()
                                     .height(1.dp)
                                     .background(
                                         color = BreathTheme.colors.text.copy(.5f),
                                         shape = SquircleShape()
                                     )
+                            )
+
+                        }
+                    )
+
+                    item(
+                        key = "progress_component",
+                        content = {
+
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 32.dp, start = 48.dp),
+                                text = "Your goal: ${screenState.habitName} " +
+                                        "for ${screenState.habitDuration} days",
+                                style = BreathTheme.typography.titleSmall,
+                                textAlign = TextAlign.Start
+                            )
+
+                            Box(
+                                modifier = Modifier
+                                    .padding(horizontal = 48.dp, vertical = 32.dp)
+                                    .fillMaxWidth()
+                                    .height(1.dp)
+                                    .background(
+                                        color = BreathTheme.colors.text.copy(.5f),
+                                        shape = SquircleShape()
+                                    )
+                            )
+
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 48.dp),
+                                text = "You've been on a ${screenState.habitProgress} day streak",
+                                style = BreathTheme.typography.titleSmall,
+                                textAlign = TextAlign.Start
+                            )
+
+                            HabitMainProgressComponent(
+                                modifier = Modifier
+                                    .padding(vertical = 24.dp)
+                                    .fillMaxWidth()
+                                    .height(48.dp)
+                                    .padding(horizontal = 24.dp),
+                                goalDuration = screenState.habitDuration,
+                                goalProgress = screenState.habitProgress
                             )
 
                         }
