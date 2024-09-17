@@ -1,5 +1,8 @@
 package choehaualen.breath.presentation.main
 
+import android.content.Intent
+import android.provider.Settings
+import androidx.activity.compose.BackHandler
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,9 +28,10 @@ import choehaualen.breath.core.ui.navigateSingleTop
 import choehaualen.breath.presentation.main.breathe.BreatheScreen
 import choehaualen.breath.presentation.main.breathe.BreatheScreenUIAction
 import choehaualen.breath.presentation.main.breathe.BreatheScreenViewModel
-import choehaualen.breath.presentation.main.habit.main.HabitMainScreen
-import choehaualen.breath.presentation.main.habit.main.HabitMainScreenUIAction
-import choehaualen.breath.presentation.main.habit.main.HabitMainScreenViewModel
+import choehaualen.breath.presentation.main.habit.checkpoint.HabitCheckpointScreen
+import choehaualen.breath.presentation.main.habit.checkpoint.HabitCheckpointScreenSegment
+import choehaualen.breath.presentation.main.habit.checkpoint.HabitCheckpointScreenViewModel
+import choehaualen.breath.presentation.main.habit.checkpoint.HabitCheckpointUIAction
 import choehaualen.breath.presentation.main.habit.setup.HabitSetupScreen
 import choehaualen.breath.presentation.main.habit.setup.HabitSetupScreenUIAction
 import choehaualen.breath.presentation.main.habit.setup.HabitSetupScreenViewModel
@@ -38,6 +42,7 @@ import choehaualen.breath.presentation.main.productivity.ProductivityScreenUIAct
 import choehaualen.breath.presentation.main.productivity.ProductivityScreenViewModel
 import choehaualen.breath.presentation.main.productivity.components.ProductivityScreen
 import choehaualen.breath.presentation.main.settings.SettingsScreen
+import choehaualen.breath.presentation.main.settings.SettingsScreenUIAction
 import choehaualen.breath.presentation.main.settings.SettingsScreenUIAction.DismissDeleteDataDialog
 import choehaualen.breath.presentation.main.settings.SettingsScreenUIAction.NavigateUp
 import choehaualen.breath.presentation.main.settings.SettingsScreenUIAction.ShowDeleteDataDialog
@@ -49,6 +54,7 @@ import choehaualen.breath.presentation.main.soundscape.SoundScapeScreen
 import choehaualen.breath.presentation.main.soundscape.SoundscapeUIAction
 import choehaualen.breath.presentation.main.soundscape.SoundscapeViewModel
 import kotlinx.coroutines.flow.collectLatest
+
 
 fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
 
@@ -69,29 +75,23 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                     viewModel.uiActionFlow.collectLatest { uiAction ->
                         when (uiAction) {
 
-                            is HomeScreenUIAction.NavigateToSleep -> navController.navigate(
-                                route = uiAction.route
-                            ) { launchSingleTop = true }
+                            is HomeScreenUIAction.NavigateToSleep -> navController
+                                .navigateSingleTop(route = uiAction.route, inclusive = false)
 
-                            is HomeScreenUIAction.NavigateToBreathe -> navController.navigate(
-                                route = uiAction.route
-                            ) { launchSingleTop = true }
+                            is HomeScreenUIAction.NavigateToBreathe -> navController
+                                .navigateSingleTop(route = uiAction.route, inclusive = false)
 
-                            is HomeScreenUIAction.NavigateToSoundscape -> navController.navigate(
-                                route = uiAction.route
-                            ) { launchSingleTop = true }
+                            is HomeScreenUIAction.NavigateToSoundscape -> navController
+                                .navigateSingleTop(route = uiAction.route, inclusive = false)
 
-                            is HomeScreenUIAction.NavigateToHabitControl -> navController.navigate(
-                                route = uiAction.route
-                            ) { launchSingleTop = true }
+                            is HomeScreenUIAction.NavigateToHabitControl -> navController
+                                .navigateSingleTop(route = uiAction.route, inclusive = false)
 
-                            is HomeScreenUIAction.NavigateToProductivity -> navController.navigate(
-                                route = uiAction.route
-                            ) { launchSingleTop = true }
+                            is HomeScreenUIAction.NavigateToProductivity -> navController
+                                .navigateSingleTop(route = uiAction.route, inclusive = false)
 
-                            is HomeScreenUIAction.NavigateToSettings -> navController.navigate(
-                                route = uiAction.route
-                            ) { launchSingleTop = true }
+                            is HomeScreenUIAction.NavigateToSettings -> navController
+                                .navigateSingleTop(route = uiAction.route, inclusive = false)
 
                             else -> Unit
 
@@ -235,18 +235,55 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
             content = {
                 ProvideBreathColors(ZoneColors) {
 
-                    val viewModel = hiltViewModel<HabitMainScreenViewModel>()
+//                    val viewModel = hiltViewModel<HabitMainScreenViewModel>()
+//                    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+//
+//                    LaunchedEffect(viewModel.uiActionFlow) {
+//                        viewModel.uiActionFlow.collectLatest { uiAction ->
+//                            when (uiAction) {
+//                                is HabitMainScreenUIAction.NavigateUp -> navController.navigateUp()
+//                            }
+//                        }
+//                    }
+//
+//                    HabitMainScreen(
+//                        screenState = screenState,
+//                        onUIAction = viewModel::onUIAction
+//                    )
+
+                    val viewModel = hiltViewModel<HabitCheckpointScreenViewModel>()
                     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-                    LaunchedEffect(viewModel.uiActionFlow) {
-                        viewModel.uiActionFlow.collectLatest { uiAction ->
-                            when (uiAction) {
-                                is HabitMainScreenUIAction.NavigateUp -> navController.navigateUp()
-                            }
-                        }
-                    }
+                    BackHandler(
+                        enabled = screenState.currentSegment
+                                !is HabitCheckpointScreenSegment.Checkpoint,
+                        onBack = { viewModel.onUIAction(HabitCheckpointUIAction.NavigateUp) }
+                    )
 
-                    HabitMainScreen(
+                    HabitCheckpointScreen(
+                        screenState = screenState,
+                        onUIAction = viewModel::onUIAction
+                    )
+
+                }
+            }
+        )
+
+        composable(
+            route = MainNavigationDestinations.HabitControlCheckpoint.route,
+            content = {
+                ProvideBreathColors(ZoneColors) {
+
+                    val viewModel = hiltViewModel<HabitCheckpointScreenViewModel>()
+                    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+                    BackHandler(
+                        enabled = screenState.currentSegment
+                                !is HabitCheckpointScreenSegment.Checkpoint,
+                        onBack = { viewModel.onUIAction(HabitCheckpointUIAction.NavigateUp) }
+                    )
+
+                    HabitCheckpointScreen(
                         screenState = screenState,
                         onUIAction = viewModel::onUIAction
                     )
@@ -299,10 +336,23 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                 LaunchedEffect(viewModel.uiActionFlow) {
                     viewModel.uiActionFlow.collectLatest { uiAction ->
                         when (uiAction) {
+
                             is NavigateUp -> navController.navigateUp()
                             is ShowDeleteDataDialog -> isDeleteDataDialogVisible = true
                             is DismissDeleteDataDialog -> isDeleteDataDialogVisible = false
+
+                            is SettingsScreenUIAction.Notifications -> {
+                                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                                    .apply {
+                                        putExtra(
+                                            Settings.EXTRA_APP_PACKAGE,
+                                            context.packageName
+                                        )
+                                    }.also { context.startActivity(it) }
+                            }
+
                             else -> Unit
+
                         }
                     }
                 }

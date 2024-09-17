@@ -72,8 +72,8 @@ val SkyBlueColors = Colors(
     primarySoul = Color(0xFF6DCADB),
     secondarySoul = Color(0xFF1C7FC4),
     background = Color(0xFFFFFFFF),
-    backgroundGradientStart = Color(0xFF6DCADB),
-    backgroundGradientEnd = Color(0xFF1C7FC4),
+    backgroundGradientStart = Color(0xFFD6F0F5),
+    backgroundGradientEnd = Color(0xFF90C7EF),
     card = Color(0xFFE7EEF3),
     text = Color(0xFF121212)
 )
