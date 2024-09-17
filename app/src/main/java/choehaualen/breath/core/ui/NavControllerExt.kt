@@ -4,7 +4,7 @@ import androidx.navigation.NavHostController
 
 fun NavHostController.navigateSingleTop(
     route: String,
-    popUpTo: String,
+    popUpTo: String = route,
     inclusive: Boolean = true
 ) = navigate(route) {
     launchSingleTop = true

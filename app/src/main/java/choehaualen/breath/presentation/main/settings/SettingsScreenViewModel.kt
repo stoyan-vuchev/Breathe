@@ -26,6 +26,7 @@ class SettingsScreenViewModel @Inject constructor(
         is SettingsScreenUIAction.NavigateUp -> sendUIAction(uiAction)
         is SettingsScreenUIAction.ShowDeleteDataDialog -> sendUIAction(uiAction)
         is SettingsScreenUIAction.DismissDeleteDataDialog -> sendUIAction(uiAction)
+        is SettingsScreenUIAction.Notifications -> sendUIAction(uiAction)
 
         else -> showSnackBar(
             msg = UiString.BasicString("Coming soon! :)")

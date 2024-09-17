@@ -11,6 +11,7 @@ import choehaualen.breath.core.ui.colors.LocalColors
 import choehaualen.breath.core.ui.colors.ProvideBreathColors
 import com.stoyanvuchev.systemuibarstweaker.LocalSystemUIBarsTweaker
 import com.stoyanvuchev.systemuibarstweaker.ProvideSystemUIBarsTweaker
+import com.stoyanvuchev.systemuibarstweaker.ScrimStyle
 
 @Composable
 fun BreathTheme(
@@ -24,11 +25,17 @@ fun BreathTheme(
         tweaker.tweakSystemBarsStyle(
             statusBarStyle = tweaker.statusBarStyle.copy(
                 darkIcons = true,
-                enforceContrast = false
+                scrimStyle = ScrimStyle.None
             ),
             navigationBarStyle = tweaker.navigationBarStyle.copy(
                 darkIcons = true,
-                enforceContrast = !tweaker.isGestureNavigationEnabled
+                scrimStyle = if (tweaker.isGestureNavigationEnabled) ScrimStyle.None
+                else ScrimStyle.Custom(
+                    lightThemeColor = colors.backgroundGradientEnd,
+                    darkThemeColor = colors.backgroundGradientEnd,
+                    lightThemeColorOpacity = .67f,
+                    darkThemeColorOpacity = .67f
+                )
             )
         )
         onDispose {}
