@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
     <application
-        android:name=".HiltBreathApp"
+        android:name=".HiltBreatheApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Breath"
+        android:theme="@style/Theme.Breathe"
         android:usesCleartextTraffic="false"
         tools:targetApi="33">
 
@@ -27,7 +27,7 @@
             android:name=".presentation.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Breath"
+            android:theme="@style/Theme.Breathe"
             tools:ignore="DiscouragedApi,LockedOrientationActivity">
 
             <intent-filter>
@@ -51,7 +51,7 @@
         </provider>
 
         <service
-            android:name=".framework.service.SoundscapePlaybackService"
+            android:name="io.proxima.breathe.framework.service.SoundscapePlaybackService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback">
 
@@ -63,13 +63,13 @@
         </service>
 
         <receiver
-            android:name=".framework.receiver.SleepDataReceiver"
+            android:name="io.proxima.breathe.framework.receiver.SleepDataReceiver"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.ACTIVITY_RECOGNITION" />
 
         <receiver
-            android:name=".framework.receiver.BootReceiver"
+            android:name="io.proxima.breathe.framework.receiver.BootReceiver"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
