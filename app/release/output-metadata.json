@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "choehaualen.breath",
+  "applicationId": "io.proxima.breathe",
   "variantName": "release",
   "elements": [
     {

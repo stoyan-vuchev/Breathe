@@ -9,18 +9,18 @@ plugins {
 
 android {
 
-    namespace = "choehaualen.breath"
-    compileSdk = 34
+    namespace = "io.proxima.breathe"
+    compileSdk = 35
 
     defaultConfig {
 
-        applicationId = "choehaualen.breath"
+        applicationId = "io.proxima.breathe"
         minSdk = 29
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "choehaualen.breath.HiltTestRunner"
+        testInstrumentationRunner = "io.proxima.breathe.HiltTestRunner"
         vectorDrawables.useSupportLibrary = true
 
     }
