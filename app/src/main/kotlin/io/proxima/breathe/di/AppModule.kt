@@ -1,17 +1,16 @@
 package io.proxima.breathe.di
 
 import android.content.Context
-import io.proxima.breathe.data.local.AppDatabase
-import io.proxima.breathe.data.manager.SleepManager
-import io.proxima.breathe.data.preferences.AppPreferences
-import io.proxima.breathe.data.preferences.AppPreferencesImpl
-import io.proxima.breathe.data.preferences.AppPreferencesImpl.Companion.preferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.proxima.breathe.data.remote.QuotesAPI
+import io.proxima.breathe.data.local.AppDatabase
+import io.proxima.breathe.data.manager.SleepManager
+import io.proxima.breathe.data.preferences.AppPreferences
+import io.proxima.breathe.data.preferences.AppPreferencesImpl
+import io.proxima.breathe.data.preferences.AppPreferencesImpl.Companion.preferences
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
@@ -44,12 +43,6 @@ object AppModule {
             sleepDao = appDatabase.sleepDao,
             ioDispatcher = Dispatchers.IO
         )
-    }
-
-    @Provides
-    @Singleton
-    fun provideQuotesAPI(): QuotesAPI {
-        return QuotesAPI.createInstance()
     }
 
 }
