@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Puzzle</string>
+    <string name="threeInThree">3x3</string>
+    <string name="fourInFour">4x4</string>
+    <string name="fiveInFive">5x5</string>
+    <string name="instruction">Touch the block you want to move. Good Luck :)</string>
+    <string name="new_game">New Game</string>
+    <string name="solve">Solve</string>
+</resources>
