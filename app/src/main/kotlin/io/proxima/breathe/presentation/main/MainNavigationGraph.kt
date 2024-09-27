@@ -68,6 +68,8 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
             content = {
 
                 val viewModel = hiltViewModel<HomeScreenViewModel>()
+                val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
                 val snackBarHostState = remember { SnackbarHostState() }
                 val context = LocalContext.current
 
@@ -106,6 +108,7 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                 }
 
                 HomeScreen(
+                    screenState = screenState,
                     snackBarHostState = snackBarHostState,
                     onUIAction = viewModel::onUIAction
                 )
