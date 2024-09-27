@@ -64,6 +64,10 @@ android {
 
 dependencies {
 
+    // Puzzle Module
+
+    implementation(project(":puzzle"))
+
     // GMS Dependencies
 
     implementation(libs.gms.location)

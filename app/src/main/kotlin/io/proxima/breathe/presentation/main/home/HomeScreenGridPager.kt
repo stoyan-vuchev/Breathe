@@ -1,5 +1,6 @@
 package io.proxima.breathe.presentation.main.home
 
+import android.content.Intent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
@@ -17,19 +18,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.arash.altafi.puzzle.PuzzleActivity
 import io.proxima.breathe.R
 import io.proxima.breathe.core.ui.carouselTransition
+import io.proxima.breathe.core.ui.components.HorizontalPagerIndicator
+import io.proxima.breathe.core.ui.fadingEdges
+import io.proxima.breathe.core.ui.theme.BreathTheme
 import io.proxima.breathe.core.ui.theme.DreamyNightColors
 import io.proxima.breathe.core.ui.theme.MangoColors
 import io.proxima.breathe.core.ui.theme.MelonColors
 import io.proxima.breathe.core.ui.theme.SkyBlueColors
 import io.proxima.breathe.core.ui.theme.SleepColors
 import io.proxima.breathe.core.ui.theme.ZoneColors
-import io.proxima.breathe.core.ui.components.HorizontalPagerIndicator
-import io.proxima.breathe.core.ui.fadingEdges
-import io.proxima.breathe.core.ui.theme.BreathTheme
 
 @Composable
 fun HomeScreenGridPager(
@@ -162,6 +165,8 @@ fun HomeScreenGridPager(
                             onClick = { onUIAction(HomeScreenUIAction.NavigateToProductivity()) }
                         )
 
+                        val context = LocalContext.current
+
                         HomeScreenToggle(
                             modifier = Modifier.weight(1f),
                             icon = painterResource(id = R.drawable.puzzle),
@@ -172,7 +177,12 @@ fun HomeScreenGridPager(
                                     MangoColors.secondarySoul
                                 )
                             ),
-                            onClick = { /* onUIAction(HomeScreenUIAction.NavigateToPuzzle()) */ }
+                            onClick = {
+
+                                Intent(context, PuzzleActivity::class.java)
+                                    .also { context.startActivity(it) }
+
+                            }
                         )
 
                     }
