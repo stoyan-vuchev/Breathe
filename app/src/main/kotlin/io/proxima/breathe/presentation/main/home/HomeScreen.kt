@@ -152,8 +152,8 @@ fun HomeScreen(
 }
 
 private fun LazyListScope.quotesItem(
-    quote: String = "You will face many defeats in life, but never let yourself be defeated.",
-    author: String = "Maya Angelov",
+    quote: String,
+    author: String,
     onUIAction: (HomeScreenUIAction) -> Unit
 ) = item(key = "daily_quote") {
 
@@ -178,7 +178,9 @@ private fun LazyListScope.quotesItem(
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            modifier = Modifier.padding(horizontal = 32.dp),
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .animateItem(),
             text = "“$quote”",
             style = BreathTheme.typography.labelMedium,
             textAlign = TextAlign.Center
@@ -189,7 +191,8 @@ private fun LazyListScope.quotesItem(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 64.dp),
+                .padding(horizontal = 64.dp)
+                .animateItem(),
             text = "- $author",
             style = BreathTheme.typography.labelMedium,
             textAlign = TextAlign.End
