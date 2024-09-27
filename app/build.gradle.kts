@@ -142,9 +142,11 @@ dependencies {
 
     // Networking Dependencies
 
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.serialization)
-    implementation(libs.ktor.client.okhttp)
+    implementation(libs.retrofit.android)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.okhttp.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
 
     // Serialization Dependencies
 

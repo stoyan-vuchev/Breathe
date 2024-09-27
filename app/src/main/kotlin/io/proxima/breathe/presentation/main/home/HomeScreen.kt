@@ -33,20 +33,21 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.haze
+import dev.chrisbanes.haze.hazeChild
 import io.proxima.breathe.core.etc.transformFraction
 import io.proxima.breathe.core.ui.components.rememberBreathRipple
 import io.proxima.breathe.core.ui.components.snackbar.SnackBar
 import io.proxima.breathe.core.ui.components.topbar.TopBarDefaults
 import io.proxima.breathe.core.ui.components.topbar.day_view_topbar.DayViewTopBar
 import io.proxima.breathe.core.ui.theme.BreathTheme
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.haze
-import dev.chrisbanes.haze.hazeChild
 import sv.lib.squircleshape.SquircleShape
 
 @Composable
 fun HomeScreen(
+    screenState: HomeScreenState,
     snackBarHostState: SnackbarHostState,
     onUIAction: (HomeScreenUIAction) -> Unit
 ) {
@@ -136,7 +137,11 @@ fun HomeScreen(
             contentPadding = insetsPadding
         ) {
 
-            quotesItem(onUIAction = onUIAction)
+            quotesItem(
+                author = screenState.quote.author,
+                quote = screenState.quote.quote,
+                onUIAction = onUIAction
+            )
 
             togglesItem(onUIAction = onUIAction)
 
@@ -216,6 +221,7 @@ private fun LazyListScope.togglesItem(
 @Composable
 private fun HomeScreenPreview() = BreathTheme {
     HomeScreen(
+        screenState = HomeScreenState(),
         snackBarHostState = SnackbarHostState(),
         onUIAction = {}
     )
