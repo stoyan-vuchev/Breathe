@@ -52,6 +52,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     packaging {
@@ -77,6 +78,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.material)
+    implementation(libs.coil)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -86,6 +88,7 @@ dependencies {
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.exoplayer.dash)
     implementation(libs.media3.ui)
+    implementation(libs.media3.mediasession)
 
     // Jetpack Compose Dependencies
 
@@ -98,6 +101,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.windowSizeClass)
+    implementation(libs.compose.material.icons.extended)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.lifecycle.runtime.compose)

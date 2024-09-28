@@ -184,6 +184,7 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                         viewModel.uiActionFlow.collectLatest { uiAction ->
                             when (uiAction) {
                                 is SoundscapeUIAction.NavigateUp -> navController.navigateUp()
+                                else -> Unit
                             }
                         }
                     }

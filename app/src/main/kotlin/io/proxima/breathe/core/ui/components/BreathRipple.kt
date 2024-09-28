@@ -74,7 +74,7 @@ class BreathRipple(
             launch { currentPressPositionY.animateTo(pressPosition.y) }
             launch {
                 alpha.animateTo(
-                    .2f,
+                    .4f,
                     spring(
                         dampingRatio = Spring.DampingRatioNoBouncy,
                         stiffness = Spring.StiffnessLow
@@ -83,7 +83,7 @@ class BreathRipple(
             }
             launch {
                 alphaFactor.animateTo(
-                    .67f,
+                    .5f,
                     spring(
                         dampingRatio = Spring.DampingRatioNoBouncy,
                         stiffness = Spring.StiffnessLow
@@ -178,7 +178,7 @@ class BreathRipple(
         }
 
         override fun ContentDrawScope.draw() {
-            drawSize = lazy { this.size }.value
+            drawSize = lazy { this@draw.size }.value
             scale(scale = animatedScalePercent.value) {
                 this@draw.drawContent()
                 drawCircle(

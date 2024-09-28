@@ -12,6 +12,11 @@ data class QuoteModel(
             quote = "You will face many defeats in life, but never let yourself be defeated."
         )
 
+        val Empty = QuoteModel(
+            author = "",
+            quote = ""
+        )
+
     }
 
 }

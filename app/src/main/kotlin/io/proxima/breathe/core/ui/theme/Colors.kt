@@ -22,8 +22,8 @@ val DreamyNightColors = Colors(
     primarySoul = Color(0xFF8DADFF),
     secondarySoul = Color(0xFF002686),
     background = Color(0xFFFFFFFF),
-    backgroundGradientStart = Color(0xFFC5D3F8),
-    backgroundGradientEnd = Color(0xFF1A3C92),
+    backgroundGradientStart = Color(0xFFE6EDFF),
+    backgroundGradientEnd = Color(0xFFA3C1F5),
     card = Color(0xFFEAEBF7),
     text = Color(0xFF121212)
 )
