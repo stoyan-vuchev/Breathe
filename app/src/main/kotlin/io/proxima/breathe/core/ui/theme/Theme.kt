@@ -1,17 +1,26 @@
 package io.proxima.breathe.core.ui.theme
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ReadOnlyComposable
-import io.proxima.breathe.core.ui.theme.BreathDefaultColors
-import io.proxima.breathe.core.ui.theme.Colors
-import io.proxima.breathe.core.ui.theme.LocalColors
-import io.proxima.breathe.core.ui.theme.ProvideBreathColors
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.stoyanvuchev.systemuibarstweaker.LocalSystemUIBarsTweaker
 import com.stoyanvuchev.systemuibarstweaker.ProvideSystemUIBarsTweaker
 import com.stoyanvuchev.systemuibarstweaker.ScrimStyle
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.haze
+import dev.chrisbanes.haze.hazeChild
 
 @Composable
 fun BreathTheme(
@@ -29,13 +38,7 @@ fun BreathTheme(
             ),
             navigationBarStyle = tweaker.navigationBarStyle.copy(
                 darkIcons = true,
-                scrimStyle = if (tweaker.isGestureNavigationEnabled) ScrimStyle.None
-                else ScrimStyle.Custom(
-                    lightThemeColor = colors.backgroundGradientEnd,
-                    darkThemeColor = colors.backgroundGradientEnd,
-                    lightThemeColorOpacity = .67f,
-                    darkThemeColorOpacity = .67f
-                )
+                scrimStyle = ScrimStyle.None
             )
         )
         onDispose {}
@@ -43,10 +46,36 @@ fun BreathTheme(
 
     ProvideBreathColors(colors) {
 
-        MaterialTheme(
-            typography = Typography,
-            content = content
-        )
+        val hazeState = remember { HazeState() }
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .haze(state = hazeState)
+        ) {
+
+            MaterialTheme(
+                typography = Typography,
+                content = content
+            )
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .hazeChild(
+                        state = hazeState,
+                        style = HazeStyle(
+                            blurRadius = 20.dp
+                        )
+                    )
+            ) {
+
+                Spacer(modifier = Modifier.navigationBarsPadding())
+
+            }
+
+        }
 
     }
 

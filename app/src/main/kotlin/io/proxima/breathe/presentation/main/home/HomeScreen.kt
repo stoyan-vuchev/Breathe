@@ -1,15 +1,16 @@
 package io.proxima.breathe.presentation.main.home
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -43,6 +44,7 @@ import io.proxima.breathe.core.ui.components.snackbar.SnackBar
 import io.proxima.breathe.core.ui.components.topbar.TopBarDefaults
 import io.proxima.breathe.core.ui.components.topbar.day_view_topbar.DayViewTopBar
 import io.proxima.breathe.core.ui.theme.BreathTheme
+import io.proxima.breathe.domain.model.QuoteModel
 import sv.lib.squircleshape.SquircleShape
 
 @Composable
@@ -115,19 +117,6 @@ fun HomeScreen(
             )
 
         },
-        bottomBar = {
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .hazeChild(hazeState)
-            ) {
-
-                Spacer(modifier = Modifier.navigationBarsPadding())
-
-            }
-
-        }
     ) { insetsPadding ->
 
         LazyColumn(
@@ -138,8 +127,7 @@ fun HomeScreen(
         ) {
 
             quotesItem(
-                author = screenState.quote.author,
-                quote = screenState.quote.quote,
+                quote = screenState.quote,
                 onUIAction = onUIAction
             )
 
@@ -151,54 +139,85 @@ fun HomeScreen(
 
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 private fun LazyListScope.quotesItem(
-    quote: String,
-    author: String,
+    quote: QuoteModel,
     onUIAction: (HomeScreenUIAction) -> Unit
 ) = item(key = "daily_quote") {
 
-    Column(
+    SharedTransitionLayout(
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberBreathRipple(color = BreathTheme.colors.primarySoul),
-                onClick = { onUIAction(HomeScreenUIAction.ExpandQuote) }
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize()
     ) {
 
-        Spacer(modifier = Modifier.height(32.dp))
+        AnimatedContent(
+            modifier = Modifier.fillMaxWidth(),
+            targetState = quote != QuoteModel.Empty,
+            label = "",
+        ) { isQuoteVisible ->
 
-        Text(
-            text = "Daily Quotes ~",
-            style = BreathTheme.typography.headlineSmall
-        )
+            if (isQuoteVisible) {
 
-        Spacer(modifier = Modifier.height(32.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = rememberBreathRipple(color = BreathTheme.colors.primarySoul),
+                            onClick = { onUIAction(HomeScreenUIAction.ExpandQuote) }
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 
-        Text(
-            modifier = Modifier
-                .padding(horizontal = 32.dp)
-                .animateItem(),
-            text = "“$quote”",
-            style = BreathTheme.typography.labelMedium,
-            textAlign = TextAlign.Center
-        )
+                    Spacer(modifier = Modifier.height(32.dp))
 
-        Spacer(modifier = Modifier.height(32.dp))
+                    Text(
+                        text = "Daily Quotes ~",
+                        style = BreathTheme.typography.headlineSmall
+                    )
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 64.dp)
-                .animateItem(),
-            text = "- $author",
-            style = BreathTheme.typography.labelMedium,
-            textAlign = TextAlign.End
-        )
+                    Spacer(modifier = Modifier.height(32.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
+                    with(this@SharedTransitionLayout) {
+                        Text(
+                            modifier = Modifier
+                                .padding(horizontal = 32.dp)
+                                .sharedElement(
+                                    rememberSharedContentState(key = "quote"),
+                                    animatedVisibilityScope = this@AnimatedContent
+                                ),
+                            text = "“${quote.quote}”",
+                            style = BreathTheme.typography.labelMedium,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    with(this@SharedTransitionLayout) {
+
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .sharedElement(
+                                    rememberSharedContentState(key = "author"),
+                                    animatedVisibilityScope = this@AnimatedContent
+                                )
+                                .padding(horizontal = 64.dp),
+                            text = "- ${quote.author}",
+                            style = BreathTheme.typography.labelMedium,
+                            textAlign = TextAlign.End
+                        )
+
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                }
+
+            }
+
+        }
 
     }
 

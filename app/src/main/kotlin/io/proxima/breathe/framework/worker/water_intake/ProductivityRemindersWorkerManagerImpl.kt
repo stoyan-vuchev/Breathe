@@ -32,4 +32,4 @@ class ProductivityRemindersWorkerManagerImpl @Inject constructor(
         workManager.cancelAllWorkByTag(ProductivityReminders.WATER_INTAKE)
     }
 
-}
+}// the interval had 45min default, also 60, yes

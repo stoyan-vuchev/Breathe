@@ -5,5 +5,6 @@ import io.proxima.breathe.domain.model.QuoteModel
 
 @Stable
 data class HomeScreenState(
-    val quote: QuoteModel = QuoteModel.Default
+    val quote: QuoteModel = QuoteModel.Empty,
+    val isQuotesDialogShown: Boolean = false
 )

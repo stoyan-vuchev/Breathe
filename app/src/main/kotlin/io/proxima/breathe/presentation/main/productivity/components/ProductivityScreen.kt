@@ -1,5 +1,10 @@
 package io.proxima.breathe.presentation.main.productivity.components
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -31,22 +36,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.proxima.breathe.R
-import io.proxima.breathe.core.etc.transformFraction
-import io.proxima.breathe.core.ui.theme.SkyBlueColors
-import io.proxima.breathe.core.ui.components.topbar.TopBarDefaults
-import io.proxima.breathe.core.ui.components.topbar.basic_topbar.BasicTopBar
-import io.proxima.breathe.core.ui.theme.BreathTheme
-import io.proxima.breathe.presentation.main.productivity.ProductivityReminders
-import io.proxima.breathe.presentation.main.productivity.ProductivityScreenState
-import io.proxima.breathe.presentation.main.productivity.ProductivityScreenUIAction
+import androidx.core.content.ContextCompat
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
+import io.proxima.breathe.R
+import io.proxima.breathe.core.etc.transformFraction
+import io.proxima.breathe.core.ui.components.topbar.TopBarDefaults
+import io.proxima.breathe.core.ui.components.topbar.basic_topbar.BasicTopBar
+import io.proxima.breathe.core.ui.theme.BreathTheme
+import io.proxima.breathe.core.ui.theme.SkyBlueColors
+import io.proxima.breathe.presentation.main.productivity.ProductivityReminders
+import io.proxima.breathe.presentation.main.productivity.ProductivityScreenState
+import io.proxima.breathe.presentation.main.productivity.ProductivityScreenUIAction
 import sv.lib.squircleshape.SquircleShape
 
 @Composable
@@ -54,6 +61,8 @@ fun ProductivityScreen(
     screenState: ProductivityScreenState,
     onUIAction: (ProductivityScreenUIAction) -> Unit
 ) {
+
+    CheckForNotificationPermission()
 
     var isScreenShown by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) { isScreenShown = true }
@@ -292,4 +301,31 @@ private fun ProductivityScreenPreview() = BreathTheme(SkyBlueColors) {
         screenState = ProductivityScreenState(),
         onUIAction = {}
     )
+}
+
+@Composable
+private fun CheckForNotificationPermission() {
+
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { _ -> }
+
+    LaunchedEffect(Unit) {
+
+        if (
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+            && ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+
+        }
+
+    }
+
+
 }

@@ -6,6 +6,10 @@ import io.proxima.breathe.presentation.main.MainNavigationDestinations
 @Immutable
 sealed interface HomeScreenUIAction {
 
+    data object More : HomeScreenUIAction
+    data object ExpandQuote : HomeScreenUIAction
+    data object ShrinkQuote : HomeScreenUIAction
+
     data class NavigateToSleep(
         val route: String = MainNavigationDestinations.Sleep.route
     ) : HomeScreenUIAction
@@ -25,9 +29,6 @@ sealed interface HomeScreenUIAction {
     data class NavigateToProductivity(
         val route: String = MainNavigationDestinations.Productivity.route
     ) : HomeScreenUIAction
-
-    data object More : HomeScreenUIAction
-    data object ExpandQuote : HomeScreenUIAction
 
     data class NavigateToSettings(
         val route: String = MainNavigationDestinations.Settings.route

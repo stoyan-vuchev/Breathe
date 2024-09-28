@@ -43,9 +43,13 @@ class HomeScreenViewModel @Inject constructor(
         is HomeScreenUIAction.NavigateToHabitControl -> sendUIAction(uiAction)
         is HomeScreenUIAction.NavigateToProductivity -> sendUIAction(uiAction)
 
-        is HomeScreenUIAction.ExpandQuote -> showSnackbar(
-            msg = UiString.BasicString("Quotes are coming soon! :)")
-        )
+        is HomeScreenUIAction.ExpandQuote -> _screenState.update {
+            it.copy(isQuotesDialogShown = true)
+        }
+
+        is HomeScreenUIAction.ShrinkQuote -> _screenState.update {
+            it.copy(isQuotesDialogShown = false)
+        }
 
         is HomeScreenUIAction.More -> showSnackbar(
             msg = UiString.BasicString("More cool stuff is coming soon! <3")
