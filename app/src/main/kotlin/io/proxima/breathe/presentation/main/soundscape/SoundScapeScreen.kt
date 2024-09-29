@@ -1,6 +1,5 @@
 package io.proxima.breathe.presentation.main.soundscape
 
-import android.view.animation.OvershootInterpolator
 import androidx.annotation.OptIn
 import androidx.annotation.RawRes
 import androidx.compose.animation.AnimatedContent
@@ -195,7 +194,7 @@ fun SoundScapeScreen(
                 item(
                     key = "item_bottom_spacer",
                     span = { GridItemSpan(2) },
-                    content = { Spacer(modifier = Modifier.height(32.dp)) }
+                    content = { Spacer(modifier = Modifier.height(150.dp)) }
                 )
 
             }
@@ -227,23 +226,28 @@ fun SoundScapeScreen(
                         modifier = Modifier
                             .navigationBarsPadding()
                             .padding(bottom = 32.dp)
-                            .padding(horizontal = 64.dp)
+                            .padding(horizontal = 32.dp)
                             .shadow(
-                                elevation = 8.dp,
+                                elevation = 12.dp,
                                 shape = SquircleShape(),
                                 ambientColor = BreathTheme.colors.secondarySoul,
                                 spotColor = BreathTheme.colors.secondarySoul,
                                 clip = false
                             )
+                            .border(
+                                color = BreathTheme.colors.secondarySoul.copy(.5f),
+                                shape = SquircleShape(),
+                                width = 1.dp
+                            )
                             .clip(SquircleShape())
                             .background(BreathTheme.colors.card)
-                            .padding(16.dp)
+                            .padding(12.dp)
                             .align(Alignment.BottomCenter)
                     ) {
 
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(20.dp)
+                            horizontalArrangement = Arrangement.spacedBy(32.dp)
                         ) {
 
                             AnimatedContent(
@@ -253,10 +257,10 @@ fun SoundScapeScreen(
 
                                 AsyncImage(
                                     modifier = Modifier
-                                        .size(48.dp)
+                                        .size(80.dp)
                                         .clip(SquircleShape())
                                         .border(
-                                            color = BreathTheme.colors.text,
+                                            color = BreathTheme.colors.secondarySoul.copy(.5f),
                                             shape = SquircleShape(),
                                             width = 1.dp
                                         ),
@@ -271,8 +275,6 @@ fun SoundScapeScreen(
                             }
 
                             AnimatedContent(
-                                modifier = Modifier
-                                    .padding(end = 20.dp),
                                 targetState = screenState.currentMediaItem?.mediaMetadata?.title,
                                 label = ""
                             ) { title ->
@@ -289,6 +291,7 @@ fun SoundScapeScreen(
 
                             Box(
                                 modifier = Modifier
+                                    .padding(end = 16.dp)
                                     .size(48.dp)
                                     .clickable(
                                         indication = rememberBreathRipple(),

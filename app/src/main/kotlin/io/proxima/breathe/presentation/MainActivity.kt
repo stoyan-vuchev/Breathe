@@ -1,5 +1,6 @@
 package io.proxima.breathe.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,7 +29,12 @@ class MainActivity : ComponentActivity() {
                 AppNavigationHost(
                     navController = navController,
                     isUserAuthenticated = isUserAuthenticated,
-                    onAuthenticateUser = viewModel::onAuthenticateUser
+                    onAuthenticateUser = viewModel::onAuthenticateUser,
+                    onRecreateActivity = {
+                        viewModel.onAuthenticateUser()
+                        finishAffinity()
+                        startActivity(Intent(this, MainActivity::class.java))
+                    }
                 )
 
             }

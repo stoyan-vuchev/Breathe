@@ -47,7 +47,7 @@ class HabitCheckpointScreenViewModel @Inject constructor(
     private fun fetchHabitQuote() {
         viewModelScope.launch {
             val habitQuote = withContext(Dispatchers.IO) { appPreferences.getHabitQuote() }
-            _screenState.update { it.copy(habitQuote = habitQuote ?: "") }
+            _screenState.update { it.copy(habitQuote = habitQuote.data ?: "") }
         }
     }
 

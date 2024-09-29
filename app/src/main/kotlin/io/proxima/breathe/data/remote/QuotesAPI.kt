@@ -11,18 +11,4 @@ interface QuotesAPI {
     @GET("api/today")
     suspend fun getDailyQuote(): Response<List<QuoteResponseDto>>
 
-    companion object {
-
-        private const val BASE_URL = "https://zenquotes.io/"
-
-        fun createInstance(): QuotesAPI {
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(QuotesAPI::class.java)
-        }
-
-    }
-
 }

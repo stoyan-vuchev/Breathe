@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,6 +47,7 @@ class SoundscapeViewModel @Inject constructor(
 
     private fun initialize() {
         player.playWhenReady = false
+        player.repeatMode = Player.REPEAT_MODE_ONE
     }
 
     private fun pausePlayback() {

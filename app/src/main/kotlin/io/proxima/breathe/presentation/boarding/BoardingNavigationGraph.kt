@@ -3,6 +3,9 @@ package io.proxima.breathe.presentation.boarding
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -18,6 +21,7 @@ import io.proxima.breathe.presentation.boarding.welcome.WelcomeScreen
 import io.proxima.breathe.presentation.boarding.welcome.WelcomeScreenUIAction
 import io.proxima.breathe.presentation.boarding.welcome.WelcomeScreenViewModel
 import io.proxima.breathe.presentation.main.MainNavigationDestinations
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 fun NavGraphBuilder.boardingNavigationGraph(
@@ -67,6 +71,8 @@ fun NavGraphBuilder.boardingNavigationGraph(
 
                     val viewModel = hiltViewModel<UserScreenViewModel>()
                     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+                    val focusRequester = remember { FocusRequester() }
+                    val keyboardController = LocalSoftwareKeyboardController.current
 
                     BackHandler(
                         enabled = screenState.currentSegment !is UserScreenSegment.Username
@@ -82,6 +88,14 @@ fun NavGraphBuilder.boardingNavigationGraph(
 
                         }
                     )
+
+                    LaunchedEffect(screenState.currentSegment) {
+                        if (screenState.currentSegment is UserScreenSegment.Username) {
+                            delay(360L)
+                            focusRequester.requestFocus()
+                            keyboardController?.show()
+                        }
+                    }
 
                     LaunchedEffect(viewModel.uiActionFlow) {
                         viewModel.uiActionFlow.collectLatest { uiAction ->
@@ -107,6 +121,7 @@ fun NavGraphBuilder.boardingNavigationGraph(
 
                     UserScreen(
                         screenState = screenState,
+                        focusRequester = focusRequester,
                         onUIAction = viewModel::onUIAction
                     )
 

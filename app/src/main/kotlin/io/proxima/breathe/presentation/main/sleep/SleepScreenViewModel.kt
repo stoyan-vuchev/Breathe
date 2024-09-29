@@ -20,12 +20,6 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.hours
 
-// What should we do now? bro i just remembered, very long ago the sleep segment data
-//showed on breathe, I remember that , so the issue is not on our end xd.yes anyways
-//lets do that productivity reminder thing, similar to water the other ones also push notifications.
-// let's fix the reminders showing within the awake time.
-// yeah we have the sleep and wake time :)(usual) yep
-
 @HiltViewModel
 class SleepScreenViewModel @Inject constructor(
     private val appPreferences: AppPreferences,
@@ -50,9 +44,9 @@ class SleepScreenViewModel @Inject constructor(
             val sleepGoal = withContext(Dispatchers.IO) { appPreferences.getSleepGoal() }
             _screenState.update { currentState ->
                 currentState.copy(
-                    sleepGoalDuration = sleepGoal,
+                    sleepGoalDuration = sleepGoal.data,
                     sleepGoalUIComponentState = currentState.sleepGoalUIComponentState.copy(
-                        isSupportAlertShown = sleepGoal == null
+                        isSupportAlertShown = sleepGoal.data == null
                     )
                 )
             }

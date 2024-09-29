@@ -29,7 +29,8 @@ import kotlin.time.Duration.Companion.seconds
 fun AppNavigationHost(
     navController: NavHostController,
     isUserAuthenticated: Boolean?,
-    onAuthenticateUser: () -> Unit
+    onAuthenticateUser: () -> Unit,
+    onRecreateActivity: () -> Unit
 ) {
 
     NavHost(
@@ -80,7 +81,10 @@ fun AppNavigationHost(
         boardingNavigationGraph(navController = navController)
 
         // Main navigation graph
-        mainNavigationGraph(navController = navController)
+        mainNavigationGraph(
+            navController = navController,
+            onRecreateActivity = onRecreateActivity
+        )
 
     }
 

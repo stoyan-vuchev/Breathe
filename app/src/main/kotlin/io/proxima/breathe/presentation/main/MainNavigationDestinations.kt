@@ -17,6 +17,7 @@ sealed class MainNavigationDestinations(
     data object HabitControlCheckpoint : MainNavigationDestinations("main_habit_control_checkpoint_screen")
 
     data object Settings : MainNavigationDestinations("main_settings_screen")
+    data object SettingsProfile : MainNavigationDestinations("main_settings_profile_screen")
 
     companion object {
         const val NAV_ROUTE = "main_navigation"

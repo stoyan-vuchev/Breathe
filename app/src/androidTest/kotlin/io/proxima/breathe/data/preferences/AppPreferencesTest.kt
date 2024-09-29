@@ -29,7 +29,7 @@ class AppPreferencesTest {
         val expected = "Alen"
         preferences.setUser(expected)
 
-        val actual = preferences.getUser()
+        val actual = preferences.getUser().data
         assertThat(actual).isEqualTo(expected)
 
     }
