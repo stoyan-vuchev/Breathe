@@ -13,7 +13,7 @@ sealed class Result<T>(
 
     class Error<T>(
         error: UiString? = DefaultError
-    ) : Result<T>(error = error)
+    ) : Result<T>(error = error, data = null)
 
     companion object {
 

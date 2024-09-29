@@ -49,6 +49,9 @@ import io.proxima.breathe.presentation.main.settings.SettingsScreenUIAction.Dism
 import io.proxima.breathe.presentation.main.settings.SettingsScreenUIAction.NavigateUp
 import io.proxima.breathe.presentation.main.settings.SettingsScreenUIAction.ShowDeleteDataDialog
 import io.proxima.breathe.presentation.main.settings.SettingsScreenViewModel
+import io.proxima.breathe.presentation.main.settings.about.SettingsAboutScreen
+import io.proxima.breathe.presentation.main.settings.about.SettingsAboutScreenUIAction
+import io.proxima.breathe.presentation.main.settings.about.SettingsAboutScreenViewModel
 import io.proxima.breathe.presentation.main.settings.profile.SettingsProfileScreen
 import io.proxima.breathe.presentation.main.settings.profile.SettingsProfileScreenUIAction
 import io.proxima.breathe.presentation.main.settings.profile.SettingsProfileScreenViewModel
@@ -350,8 +353,14 @@ fun NavGraphBuilder.mainNavigationGraph(
                         when (uiAction) {
 
                             is NavigateUp -> navController.navigateUp()
-                            is ShowDeleteDataDialog -> isDeleteDataDialogVisible = true
-                            is DismissDeleteDataDialog -> isDeleteDataDialogVisible = false
+
+                            is SettingsScreenUIAction.Profile -> {
+                                navController.navigateSingleTop(
+                                    route = MainNavigationDestinations.SettingsProfile.route,
+                                    popUpTo = MainNavigationDestinations.Settings.route,
+                                    inclusive = false
+                                )
+                            }
 
                             is SettingsScreenUIAction.Notifications -> {
                                 Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
@@ -363,13 +372,13 @@ fun NavGraphBuilder.mainNavigationGraph(
                                     }.also { context.startActivity(it) }
                             }
 
-                            is SettingsScreenUIAction.ConfirmDeleteData -> {
-                                onRecreateActivity()
-                            }
+                            is ShowDeleteDataDialog -> isDeleteDataDialogVisible = true
+                            is DismissDeleteDataDialog -> isDeleteDataDialogVisible = false
+                            is SettingsScreenUIAction.ConfirmDeleteData -> onRecreateActivity()
 
-                            is SettingsScreenUIAction.Profile -> {
+                            is SettingsScreenUIAction.About -> {
                                 navController.navigateSingleTop(
-                                    route = MainNavigationDestinations.SettingsProfile.route,
+                                    route = MainNavigationDestinations.SettingsAbout.route,
                                     popUpTo = MainNavigationDestinations.Settings.route,
                                     inclusive = false
                                 )
@@ -428,6 +437,29 @@ fun NavGraphBuilder.mainNavigationGraph(
                 SettingsProfileScreen(
                     screenState = screenState,
                     focusRequester = focusRequester,
+                    onUIAction = viewModel::onUIAction
+                )
+
+            }
+        )
+
+        composable(
+            route = MainNavigationDestinations.SettingsAbout.route,
+            content = {
+
+                val viewModel = hiltViewModel<SettingsAboutScreenViewModel>()
+
+                LaunchedEffect(viewModel.uiActionFlow) {
+                    viewModel.uiActionFlow.collectLatest { uiAction ->
+                        when (uiAction) {
+                            is SettingsAboutScreenUIAction.NavigateUp -> {
+                                navController.navigateUp()
+                            }
+                        }
+                    }
+                }
+
+                SettingsAboutScreen(
                     onUIAction = viewModel::onUIAction
                 )
 
