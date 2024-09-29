@@ -2,13 +2,13 @@ package io.proxima.breathe.presentation.main.sleep
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.proxima.breathe.core.etc.Result
 import io.proxima.breathe.core.etc.Result.Companion.DefaultError
 import io.proxima.breathe.core.etc.UiString
 import io.proxima.breathe.data.manager.SleepManager
 import io.proxima.breathe.data.preferences.AppPreferences
 import io.proxima.breathe.presentation.main.sleep.set_sleep_goal.SleepScreenSetSleepGoalUIComponentUIAction
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,25 +32,14 @@ class SleepScreenViewModel @Inject constructor(
     private val _uiActionChannel = Channel<SleepScreenUIAction>()
     val uiActionFlow = _uiActionChannel.receiveAsFlow()
 
+    init {
+        initialize()
+    }
+
     fun onUIAction(uiAction: SleepScreenUIAction) = when (uiAction) {
         is SleepScreenUIAction.NavigateUp -> sendUIAction(uiAction)
         is SleepScreenUIAction.SleepGoalUIAction -> onSleepGoalUIAction(uiAction)
         is SleepScreenUIAction.Next -> setSleepGoal()
-    }
-
-    init {
-        getSleepData()
-        viewModelScope.launch {
-            val sleepGoal = withContext(Dispatchers.IO) { appPreferences.getSleepGoal() }
-            _screenState.update { currentState ->
-                currentState.copy(
-                    sleepGoalDuration = sleepGoal.data,
-                    sleepGoalUIComponentState = currentState.sleepGoalUIComponentState.copy(
-                        isSupportAlertShown = sleepGoal.data == null
-                    )
-                )
-            }
-        }
     }
 
     private fun setSleepGoal() {
@@ -72,8 +61,18 @@ class SleepScreenViewModel @Inject constructor(
 
     }
 
-    private fun getSleepData() {
+    private fun initialize() {
         viewModelScope.launch {
+
+            val sleepGoal = withContext(Dispatchers.IO) { appPreferences.getSleepGoal() }
+            _screenState.update { currentState ->
+                currentState.copy(
+                    sleepGoalDuration = if (sleepGoal.data == 0L) null else sleepGoal.data,
+                    sleepGoalUIComponentState = currentState.sleepGoalUIComponentState.copy(
+                        isSupportAlertShown = sleepGoal.data == null || sleepGoal.data == 0L
+                    )
+                )
+            }
 
             when (val result = sleepManager.readSleepData()) {
 

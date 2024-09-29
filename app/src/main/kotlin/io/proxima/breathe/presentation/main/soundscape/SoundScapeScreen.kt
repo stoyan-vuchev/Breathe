@@ -34,6 +34,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.material3.Icon
@@ -229,17 +231,17 @@ fun SoundScapeScreen(
                             .padding(horizontal = 32.dp)
                             .shadow(
                                 elevation = 12.dp,
-                                shape = SquircleShape(),
+                                shape = RoundedCornerShape(100),
                                 ambientColor = BreathTheme.colors.secondarySoul,
                                 spotColor = BreathTheme.colors.secondarySoul,
                                 clip = false
                             )
                             .border(
-                                color = BreathTheme.colors.secondarySoul.copy(.5f),
-                                shape = SquircleShape(),
+                                color = BreathTheme.colors.secondarySoul.copy(.33f),
+                                shape = RoundedCornerShape(100),
                                 width = 1.dp
                             )
-                            .clip(SquircleShape())
+                            .clip(RoundedCornerShape(100))
                             .background(BreathTheme.colors.card)
                             .padding(12.dp)
                             .align(Alignment.BottomCenter)
@@ -258,10 +260,10 @@ fun SoundScapeScreen(
                                 AsyncImage(
                                     modifier = Modifier
                                         .size(80.dp)
-                                        .clip(SquircleShape())
+                                        .clip(CircleShape)
                                         .border(
                                             color = BreathTheme.colors.secondarySoul.copy(.5f),
-                                            shape = SquircleShape(),
+                                            shape = CircleShape,
                                             width = 1.dp
                                         ),
                                     model = ImageRequest.Builder(LocalContext.current)

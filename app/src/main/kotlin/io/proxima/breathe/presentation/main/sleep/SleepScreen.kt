@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import io.proxima.breathe.core.etc.transformFraction
@@ -83,7 +82,7 @@ fun SleepScreen(
             .fillMaxSize()
             .background(background)
             .nestedScroll(scrollBehavior.nestedScrollConnection),
-        containerColor = Color.Unspecified,
+        containerColor = BreathTheme.colors.background.copy(bgAlpha),
         contentColor = BreathTheme.colors.text,
         topBar = {
 
