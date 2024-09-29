@@ -10,7 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -18,13 +20,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import io.proxima.breathe.core.etc.UiString.Companion.asString
+import io.proxima.breathe.core.ui.navigateSingleTop
 import io.proxima.breathe.core.ui.theme.DreamyNightColors
 import io.proxima.breathe.core.ui.theme.MelonColors
 import io.proxima.breathe.core.ui.theme.ProvideBreathColors
 import io.proxima.breathe.core.ui.theme.SkyBlueColors
 import io.proxima.breathe.core.ui.theme.SleepColors
 import io.proxima.breathe.core.ui.theme.ZoneColors
-import io.proxima.breathe.core.ui.navigateSingleTop
 import io.proxima.breathe.presentation.main.breathe.BreatheScreen
 import io.proxima.breathe.presentation.main.breathe.BreatheScreenUIAction
 import io.proxima.breathe.presentation.main.breathe.BreatheScreenViewModel
@@ -47,6 +49,9 @@ import io.proxima.breathe.presentation.main.settings.SettingsScreenUIAction.Dism
 import io.proxima.breathe.presentation.main.settings.SettingsScreenUIAction.NavigateUp
 import io.proxima.breathe.presentation.main.settings.SettingsScreenUIAction.ShowDeleteDataDialog
 import io.proxima.breathe.presentation.main.settings.SettingsScreenViewModel
+import io.proxima.breathe.presentation.main.settings.profile.SettingsProfileScreen
+import io.proxima.breathe.presentation.main.settings.profile.SettingsProfileScreenUIAction
+import io.proxima.breathe.presentation.main.settings.profile.SettingsProfileScreenViewModel
 import io.proxima.breathe.presentation.main.sleep.SleepScreen
 import io.proxima.breathe.presentation.main.sleep.SleepScreenUIAction
 import io.proxima.breathe.presentation.main.sleep.SleepScreenViewModel
@@ -56,7 +61,10 @@ import io.proxima.breathe.presentation.main.soundscape.SoundscapeViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 
-fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
+fun NavGraphBuilder.mainNavigationGraph(
+    navController: NavHostController,
+    onRecreateActivity: () -> Unit
+) {
 
     navigation(
         startDestination = MainNavigationDestinations.Home.route,
@@ -355,6 +363,18 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                                     }.also { context.startActivity(it) }
                             }
 
+                            is SettingsScreenUIAction.ConfirmDeleteData -> {
+                                onRecreateActivity()
+                            }
+
+                            is SettingsScreenUIAction.Profile -> {
+                                navController.navigateSingleTop(
+                                    route = MainNavigationDestinations.SettingsProfile.route,
+                                    popUpTo = MainNavigationDestinations.Settings.route,
+                                    inclusive = false
+                                )
+                            }
+
                             else -> Unit
 
                         }
@@ -370,6 +390,44 @@ fun NavGraphBuilder.mainNavigationGraph(navController: NavHostController) {
                 SettingsScreen(
                     snackbarHostState = snackbarHostState,
                     isDeleteDataDialogVisible = isDeleteDataDialogVisible,
+                    onUIAction = viewModel::onUIAction
+                )
+
+            }
+        )
+
+        composable(
+            route = MainNavigationDestinations.SettingsProfile.route,
+            content = {
+
+                val viewModel = hiltViewModel<SettingsProfileScreenViewModel>()
+                val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+                val focusRequester = remember { FocusRequester() }
+                val keyboardController = LocalSoftwareKeyboardController.current
+
+                LaunchedEffect(viewModel.uiActionFlow) {
+                    viewModel.uiActionFlow.collectLatest { uiAction ->
+                        when (uiAction) {
+
+                            is SettingsProfileScreenUIAction.NavigateUp -> {
+                                navController.navigateUp()
+                            }
+
+                            is SettingsProfileScreenUIAction.Edit -> {
+                                focusRequester.requestFocus()
+                                keyboardController?.show()
+                            }
+
+                            else -> Unit
+
+                        }
+                    }
+                }
+
+                SettingsProfileScreen(
+                    screenState = screenState,
+                    focusRequester = focusRequester,
                     onUIAction = viewModel::onUIAction
                 )
 

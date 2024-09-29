@@ -2,8 +2,9 @@ package io.proxima.breathe.presentation.main.habit.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.proxima.breathe.data.preferences.AppPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.proxima.breathe.core.etc.Result
+import io.proxima.breathe.data.preferences.AppPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,19 +43,19 @@ class HabitMainScreenViewModel @Inject constructor(
             val habitDuration = withContext(Dispatchers.IO) { appPreferences.getHabitDuration() }
             val habitProgress = withContext(Dispatchers.IO) { appPreferences.getHabitProgress() }
 
-            val hasOngoingHabit = username != null
-                    && habitName != null
-                    && habitQuote != null
-                    && habitDuration != null
+            val hasOngoingHabit = username is Result.Success && username.data != null
+                    && habitName is Result.Success && habitName.data != null
+                    && habitQuote is Result.Success && habitQuote.data != null
+                    && habitDuration is Result.Success && habitDuration.data != null
 
             _screenState.update {
                 it.copy(
                     hasOngoingHabit = hasOngoingHabit,
-                    username = username ?: "",
-                    habitName = habitName ?: "",
-                    habitQuote = habitQuote ?: "",
-                    habitDuration = habitDuration ?: 0,
-                    habitProgress = habitProgress ?: 0
+                    username = username.data ?: "",
+                    habitName = habitName.data ?: "",
+                    habitQuote = habitQuote.data ?: "",
+                    habitDuration = habitDuration.data ?: 0,
+                    habitProgress = habitProgress.data ?: 0
                 )
             }
 

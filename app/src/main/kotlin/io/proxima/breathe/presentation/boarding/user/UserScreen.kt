@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -34,23 +36,32 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.stoyanvuchev.systemuibarstweaker.LocalSystemUIBarsTweaker
 import io.proxima.breathe.R
 import io.proxima.breathe.core.etc.UiString.Companion.asComposeString
 import io.proxima.breathe.core.ui.components.button.UniqueButton
 import io.proxima.breathe.core.ui.theme.BreathTheme
-import com.stoyanvuchev.systemuibarstweaker.LocalSystemUIBarsTweaker
+import sv.lib.squircleshape.SquircleShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserScreen(
     screenState: UserScreenState,
+    focusRequester: FocusRequester,
     onUIAction: (UserScreenUIAction) -> Unit
 ) {
 
@@ -83,6 +94,9 @@ fun UserScreen(
         )
         onDispose {}
     }
+
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
         modifier = Modifier
@@ -162,6 +176,13 @@ fun UserScreen(
                     ) {
 
                         TextField(
+                            modifier = Modifier
+                                .focusRequester(focusRequester)
+                                .padding(horizontal = 32.dp)
+                                .clip(SquircleShape())
+                                .background(BreathTheme.colors.card)
+                                .padding(horizontal = 6.dp)
+                                .animateContentSize(),
                             value = screenState.usernameText,
                             onValueChange = { newText ->
                                 onUIAction(UserScreenUIAction.SetUsernameText(newText))
@@ -171,14 +192,27 @@ fun UserScreen(
                                 unfocusedTextColor = BreathTheme.colors.text,
                                 focusedContainerColor = Color.Transparent,
                                 unfocusedContainerColor = Color.Transparent,
-                                focusedIndicatorColor = BreathTheme.colors.text,
-                                unfocusedIndicatorColor = BreathTheme.colors.text,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent,
                                 cursorColor = BreathTheme.colors.text,
                                 errorIndicatorColor = Color.Red,
-                                errorContainerColor = Color.Transparent
+                                errorContainerColor = Color.Transparent,
+                            ),
+                            textStyle = BreathTheme.typography.bodyLarge,
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                imeAction = ImeAction.Done,
+                                keyboardType = KeyboardType.Text
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    focusManager.clearFocus()
+                                    keyboardController?.hide()
+                                }
                             ),
                             isError = screenState.usernameValidationResult
-                                    !is UsernameValidationResult.ValidUsername
+                                    !is UsernameValidationResult.ValidUsername,
+                            singleLine = true,
+                            maxLines = 1
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -344,6 +378,7 @@ fun UserScreen(
 private fun UserScreenPreview() = BreathTheme {
     UserScreen(
         screenState = UserScreenState(),
+        focusRequester = remember { FocusRequester() },
         onUIAction = {}
     )
 }

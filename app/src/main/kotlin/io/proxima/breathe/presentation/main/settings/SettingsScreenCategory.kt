@@ -56,21 +56,21 @@ fun LazyListScope.settingsScreenMainCategory(
 
     }
 
-    item(key = "main_themes_item") {
-
-        SettingsScreenCategoryItem(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .fillMaxWidth(),
-            shape = SquircleShape(4.dp),
-            icon = painterResource(id = R.drawable.theme),
-            label = "Themes",
-            onClick = { onUIAction(SettingsScreenUIAction.Themes) }
-        )
-
-        Spacer(modifier = Modifier.height(1.dp))
-
-    }
+//    item(key = "main_themes_item") {
+//
+//        SettingsScreenCategoryItem(
+//            modifier = Modifier
+//                .padding(horizontal = 16.dp)
+//                .fillMaxWidth(),
+//            shape = SquircleShape(4.dp),
+//            icon = painterResource(id = R.drawable.theme),
+//            label = "Themes",
+//            onClick = { onUIAction(SettingsScreenUIAction.Themes) }
+//        )
+//
+//        Spacer(modifier = Modifier.height(1.dp))
+//
+//    }
 
     item(key = "main_delete_data_item") {
 

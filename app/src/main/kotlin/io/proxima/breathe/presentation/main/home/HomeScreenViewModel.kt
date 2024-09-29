@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
@@ -69,7 +68,7 @@ class HomeScreenViewModel @Inject constructor(
 
     private fun initialize() {
         viewModelScope.launch {
-            delay(1.seconds)
+            delay(512L)
             val quote = withContext(Dispatchers.IO) { quotesRepository.getDailyQuote() }
             _screenState.update { it.copy(quote = quote) }
         }

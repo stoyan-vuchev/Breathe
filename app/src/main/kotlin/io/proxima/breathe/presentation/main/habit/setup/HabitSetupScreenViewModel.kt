@@ -2,8 +2,9 @@ package io.proxima.breathe.presentation.main.habit.setup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.proxima.breathe.data.preferences.AppPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.proxima.breathe.core.etc.Result
+import io.proxima.breathe.data.preferences.AppPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -145,10 +146,10 @@ class HabitSetupScreenViewModel @Inject constructor(
             val habitDuration = withContext(Dispatchers.IO) { appPreferences.getHabitDuration() }
             val habitProgress = withContext(Dispatchers.IO) { appPreferences.getHabitProgress() }
 
-            val hasOngoingHabit = username != null
-                    && habitName != null
-                    && habitQuote != null
-                    && habitDuration != null
+            val hasOngoingHabit = username is Result.Success && username.data != null
+                    && habitName is Result.Success && habitName.data != null
+                    && habitQuote is Result.Success && habitQuote.data != null
+                    && habitDuration is Result.Success && habitDuration.data != null
 
             if (hasOngoingHabit) {
 
@@ -158,11 +159,11 @@ class HabitSetupScreenViewModel @Inject constructor(
 
                 _screenState.update {
                     it.copy(
-                        username = username ?: "",
-                        name = habitName ?: "",
-                        quote = habitQuote ?: "",
-                        goalDuration = "${habitDuration ?: ""}",
-                        currentProgress = habitProgress ?: 0,
+                        username = username.data ?: "",
+                        name = habitName.data ?: "",
+                        quote = habitQuote.data ?: "",
+                        goalDuration = "${habitDuration.data ?: ""}",
+                        currentProgress = habitProgress.data ?: 0,
                         currentSegment = HabitSetupScreenSegment.HabitName
                     )
                 }

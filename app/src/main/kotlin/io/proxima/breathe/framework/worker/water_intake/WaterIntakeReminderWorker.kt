@@ -60,8 +60,8 @@ class WaterIntakeReminderWorker @AssistedInject constructor(
     private suspend fun isWithinAwakeTime(): Boolean {
 
         val now = Instant.ofEpochMilli(System.currentTimeMillis())
-        val bedTime = appPreferences.getUsualBedtime()
-        val wakeUpTime = appPreferences.getUsualWakeUpTime()
+        val bedTime = appPreferences.getUsualBedtime().data
+        val wakeUpTime = appPreferences.getUsualWakeUpTime().data
 
         val currentTime = ZonedDateTime.ofInstant(now, ZoneId.systemDefault())
         val currentHour = currentTime.hour

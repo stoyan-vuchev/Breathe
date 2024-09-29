@@ -9,6 +9,8 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import io.proxima.breathe.core.etc.Result
+import io.proxima.breathe.core.etc.UiString
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
@@ -20,8 +22,18 @@ class AppPreferencesImpl @Inject constructor(
         preferences.edit { it[USER_KEY] = name }
     }
 
-    override suspend fun getUser(): String? {
-        return preferences.data.firstOrNull()?.let { it[USER_KEY] }
+    override suspend fun getUser(): Result<String> {
+        return try {
+            return preferences.data.firstOrNull()?.let {
+                Result.Success(it[USER_KEY])
+            } ?: Result.Error(UiString.BasicString("Username not set."))
+        } catch (e: Exception) {
+            Result.Error(
+                UiString.BasicString(
+                    e.localizedMessage ?: "Something went wrong."
+                )
+            )
+        }
     }
 
     //
@@ -30,8 +42,18 @@ class AppPreferencesImpl @Inject constructor(
         preferences.edit { it[SLEEP_GOAL_KEY] = sleepGoalDuration }
     }
 
-    override suspend fun getSleepGoal(): Long? {
-        return preferences.data.firstOrNull()?.let { it[SLEEP_GOAL_KEY] }
+    override suspend fun getSleepGoal(): Result<Long> {
+        return try {
+            return preferences.data.firstOrNull()?.let {
+                Result.Success(it[SLEEP_GOAL_KEY])
+            } ?: Result.Error(UiString.BasicString("Sleep goal not set."))
+        } catch (e: Exception) {
+            Result.Error(
+                UiString.BasicString(
+                    e.localizedMessage ?: "Something went wrong."
+                )
+            )
+        }
     }
 
     //
@@ -45,15 +67,24 @@ class AppPreferencesImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUsualBedtime(): Pair<Int, Int>? {
-        return preferences.data.firstOrNull()?.let {
+    override suspend fun getUsualBedtime(): Result<Pair<Int, Int>> {
+        return try {
+            return preferences.data.firstOrNull()?.let {
 
-            val hour = it[USUAL_BEDTIME_KEY]?.get(0)?.toInt()
-            val minute = it[USUAL_BEDTIME_KEY]?.get(1)?.toInt()
+                val hour = it[USUAL_BEDTIME_KEY]?.get(0)?.toInt()
+                val minute = it[USUAL_BEDTIME_KEY]?.get(1)?.toInt()
 
-            if (hour != null && minute != null) Pair(hour, minute)
-            else null
+                if (hour != null && minute != null) Result.Success(Pair(hour, minute))
+                else Result.Error(UiString.BasicString("Usual bed time not set."))
 
+            } ?: Result.Error(UiString.BasicString("Usual bed time not set."))
+
+        } catch (e: Exception) {
+            Result.Error(
+                UiString.BasicString(
+                    e.localizedMessage ?: "Something went wrong."
+                )
+            )
         }
     }
 
@@ -68,15 +99,24 @@ class AppPreferencesImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUsualWakeUpTime(): Pair<Int, Int>? {
-        return preferences.data.firstOrNull()?.let {
+    override suspend fun getUsualWakeUpTime(): Result<Pair<Int, Int>> {
+        return try {
+            return preferences.data.firstOrNull()?.let {
 
-            val hour = it[USUAL_WAKE_UP_TIME_KEY]?.get(0)?.toInt()
-            val minute = it[USUAL_WAKE_UP_TIME_KEY]?.get(1)?.toInt()
+                val hour = it[USUAL_WAKE_UP_TIME_KEY]?.get(0)?.toInt()
+                val minute = it[USUAL_WAKE_UP_TIME_KEY]?.get(1)?.toInt()
 
-            if (hour != null && minute != null) Pair(hour, minute)
-            else null
+                if (hour != null && minute != null) Result.Success(Pair(hour, minute))
+                else Result.Error(UiString.BasicString("Usual wake up time not set."))
 
+            } ?: Result.Error(UiString.BasicString("Usual wake up time not set."))
+
+        } catch (e: Exception) {
+            Result.Error(
+                UiString.BasicString(
+                    e.localizedMessage ?: "Something went wrong."
+                )
+            )
         }
     }
 
@@ -86,8 +126,18 @@ class AppPreferencesImpl @Inject constructor(
         preferences.edit { it[HABIT_NAME_KEY] = name }
     }
 
-    override suspend fun getHabitName(): String? {
-        return preferences.data.firstOrNull()?.let { it[HABIT_NAME_KEY] }
+    override suspend fun getHabitName(): Result<String> {
+        return try {
+            return preferences.data.firstOrNull()
+                ?.let { Result.Success(it[HABIT_NAME_KEY]) }
+                ?: Result.Error(UiString.BasicString("Habit name not set."))
+        } catch (e: Exception) {
+            Result.Error(
+                UiString.BasicString(
+                    e.localizedMessage ?: "Something went wrong."
+                )
+            )
+        }
     }
 
     //
@@ -96,8 +146,18 @@ class AppPreferencesImpl @Inject constructor(
         preferences.edit { it[HABIT_QUOTE_KEY] = quote }
     }
 
-    override suspend fun getHabitQuote(): String? {
-        return preferences.data.firstOrNull()?.let { it[HABIT_QUOTE_KEY] }
+    override suspend fun getHabitQuote(): Result<String> {
+        return try {
+            return preferences.data.firstOrNull()
+                ?.let { Result.Success(it[HABIT_QUOTE_KEY]) }
+                ?: Result.Error(UiString.BasicString("Habit quote not set."))
+        } catch (e: Exception) {
+            Result.Error(
+                UiString.BasicString(
+                    e.localizedMessage ?: "Something went wrong."
+                )
+            )
+        }
     }
 
     //
@@ -108,14 +168,34 @@ class AppPreferencesImpl @Inject constructor(
         }
     }
 
-    override suspend fun getHabitDuration(): Int? {
-        return preferences.data.firstOrNull()?.let { it[HABIT_GOAL_DURATION_KEY] }
+    override suspend fun getHabitDuration(): Result<Int> {
+        return try {
+            return preferences.data.firstOrNull()
+                ?.let { Result.Success(it[HABIT_GOAL_DURATION_KEY]) }
+                ?: Result.Error(UiString.BasicString("Habit goal duration not set."))
+        } catch (e: Exception) {
+            Result.Error(
+                UiString.BasicString(
+                    e.localizedMessage ?: "Something went wrong."
+                )
+            )
+        }
     }
 
     //
 
-    override suspend fun getHabitProgress(): Int? {
-        return preferences.data.firstOrNull()?.let { it[HABIT_CURRENT_PROGRESS_KEY] }
+    override suspend fun getHabitProgress(): Result<Int> {
+        return try {
+            return preferences.data.firstOrNull()
+                ?.let { Result.Success(it[HABIT_CURRENT_PROGRESS_KEY]) }
+                ?: Result.Error(UiString.BasicString("Habit current progress not started."))
+        } catch (e: Exception) {
+            Result.Error(
+                UiString.BasicString(
+                    e.localizedMessage ?: "Something went wrong."
+                )
+            )
+        }
     }
 
     override suspend fun incrementHabitProgressCounter() {
@@ -132,6 +212,30 @@ class AppPreferencesImpl @Inject constructor(
 
     override suspend fun resetHabitProgressCounter() {
         preferences.edit { it[HABIT_CURRENT_PROGRESS_KEY] = 0 }
+    }
+
+    //
+
+    override suspend fun deleteData(): Result<Unit> {
+        return try {
+            preferences.edit { prefs ->
+                prefs[USER_KEY] = ""
+                prefs[SLEEP_GOAL_KEY] = 0L
+                prefs[USUAL_BEDTIME_KEY] = byteArrayOf()
+                prefs[USUAL_WAKE_UP_TIME_KEY] = byteArrayOf()
+                prefs[HABIT_NAME_KEY] = ""
+                prefs[HABIT_QUOTE_KEY] = ""
+                prefs[HABIT_GOAL_DURATION_KEY] = 0
+                prefs[HABIT_CURRENT_PROGRESS_KEY] = 0
+            }
+            Result.Success(Unit)
+        } catch (e: Exception) {
+            Result.Error(
+                UiString.BasicString(
+                    e.localizedMessage ?: "Something went wrong."
+                )
+            )
+        }
     }
 
     //

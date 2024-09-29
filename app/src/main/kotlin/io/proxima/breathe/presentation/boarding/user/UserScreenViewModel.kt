@@ -2,8 +2,9 @@ package io.proxima.breathe.presentation.boarding.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.proxima.breathe.data.preferences.AppPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.proxima.breathe.core.etc.Result
+import io.proxima.breathe.data.preferences.AppPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,14 +40,16 @@ class UserScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val username = withContext(Dispatchers.IO) { preferences.getUser() }
-            _screenState.update { currentState ->
+            val result = withContext(Dispatchers.IO) { preferences.getUser() }
+            if (result is Result.Success) _screenState.update { currentState ->
                 currentState.copy(
-                    currentSegment = username?.let { UserScreenSegment.Greet }
-                        ?: UserScreenSegment.Username,
-                    username = username
+                    currentSegment = result.data?.let {
+                        if (it.isNotEmpty()) UserScreenSegment.Greet
+                        else UserScreenSegment.Username
+                    } ?: UserScreenSegment.Username,
+                    username = result.data
                 )
-            }
+            } else UserScreenSegment.Username
         }
     }
 

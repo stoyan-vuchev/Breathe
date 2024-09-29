@@ -2,8 +2,9 @@ package io.proxima.breathe.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.proxima.breathe.data.preferences.AppPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.proxima.breathe.core.etc.Result
+import io.proxima.breathe.data.preferences.AppPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,8 +23,13 @@ class MainActivityViewModel @Inject constructor(
 
     fun onAuthenticateUser() {
         viewModelScope.launch {
-            val username = withContext(Dispatchers.IO) { preferences.getUser() }
-            _isUserAuthenticated.update { username != null }
+            val result = withContext(Dispatchers.IO) { preferences.getUser() }
+            _isUserAuthenticated.update {
+                when (result) {
+                    is Result.Success -> result.data?.isNotEmpty() ?: false
+                    is Result.Error -> false
+                }
+            }
         }
     }
 
