@@ -1,24 +1,26 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.dagger.hilt.android)
 }
 
 android {
 
-    namespace = "choehaualen.breath"
-    compileSdk = 34
+    namespace = "io.proxima.breathe"
+    compileSdk = 35
 
     defaultConfig {
 
-        applicationId = "choehaualen.breath"
+        applicationId = "io.proxima.breathe"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "io.proxima.breathe.HiltTestRunner"
         vectorDrawables.useSupportLibrary = true
 
     }
@@ -35,26 +37,23 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
 
         }
 
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        jvmToolchain(17)
     }
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = extra["compose.compiler.version"] as String
+        buildConfig = true
     }
 
     packaging {
@@ -67,6 +66,10 @@ android {
 
 dependencies {
 
+    // Puzzle Module
+
+    implementation(project(":puzzle"))
+
     // GMS Dependencies
 
     implementation(libs.gms.location)
@@ -76,9 +79,17 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.material)
+    implementation(libs.coil)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Media3 Dependencies
+
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.exoplayer.dash)
+    implementation(libs.media3.ui)
+    implementation(libs.media3.mediasession)
 
     // Jetpack Compose Dependencies
 
@@ -91,6 +102,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.windowSizeClass)
+    implementation(libs.compose.material.icons.extended)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.lifecycle.runtime.compose)
@@ -108,6 +120,7 @@ dependencies {
     implementation(libs.chrisbanes.haze)
     implementation(libs.stoyanvuchev.squircleShape)
     implementation(libs.stoyanvuchev.systemUiBarsTweaker)
+    implementation(libs.lottie.compose)
 
     // Coroutines Dependencies
 
@@ -123,19 +136,22 @@ dependencies {
 
     // Dependency Injection Dependencies
 
-    implementation(platform(libs.koin.bom))
-    implementation(libs.koin.core)
-    implementation(libs.koin.core.coroutines)
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.workmanager)
-    implementation(libs.koin.androidx.compose)
-    implementation(libs.koin.androidx.compose.navigation)
+    implementation(libs.dagger.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.work)
+
+    ksp(libs.androidx.hilt.compiler)
+    ksp(libs.dagger.hilt.compiler)
+
+    androidTestImplementation(libs.dagger.hilt.android.testing)
 
     // Networking Dependencies
 
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.serialization)
-    implementation(libs.ktor.client.okhttp)
+    implementation(libs.retrofit.android)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.okhttp.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
 
     // Serialization Dependencies
 
@@ -146,6 +162,7 @@ dependencies {
 
     implementation(libs.workManager.runtime)
     implementation(libs.workManager.runtime.ktx)
+    implementation(libs.workManager.multiprocess)
 
     // Testing Dependencies
 

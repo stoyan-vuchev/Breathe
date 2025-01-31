@@ -5,9 +5,12 @@
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
     <application
-        android:name=".BreathApp"
+        android:name=".HiltBreatheApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
@@ -16,14 +19,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Breath"
+        android:theme="@style/Theme.Breathe"
         android:usesCleartextTraffic="false"
         tools:targetApi="33">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Breath">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Breathe"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +36,59 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name="com.arash.altafi.puzzle.PuzzleActivity"
+            android:exported="true" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+
+        </provider>
+
+        <service
+            android:name="io.proxima.breathe.framework.service.SoundscapePlaybackService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback">
+
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaLibraryService" />
+                <action android:name="android.media.browse.MediaBrowserService" />
+                <action android:name="androidx.media3.session.MediaSessionService" />
+            </intent-filter>
+
+        </service>
+
+        <receiver
+            android:name="io.proxima.breathe.framework.receiver.SleepDataReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.ACTIVITY_RECOGNITION" />
+
+        <receiver
+            android:name="io.proxima.breathe.framework.receiver.BootReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+
+            <intent-filter>
+
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+            </intent-filter>
+
+        </receiver>
 
     </application>
 

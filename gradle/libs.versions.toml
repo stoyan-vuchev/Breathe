@@ -1,50 +1,58 @@
 [versions]
 
 # Plugin Versions
-agp = "8.4.1"
-kotlin = "1.9.24"
-ksp = "1.9.24-1.0.20"
+agp = "8.6.1"
+kotlin = "2.0.10"
+ksp = "2.0.10-1.0.24"
+androidxSafeArgsVersion = "2.8.1"
 
 # GMS Lib Versions
-gmsLocation = "21.2.0"
+gmsLocation = "21.3.0"
 
 # Core Lib Versions
 coreKtx = "1.13.1"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.7.0"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.6"
 material = "1.12.0"
+media3 = "1.4.1"
+coil = "2.4.0"
 
 # Jetpack Compose Lib Versions
-composeBom = "2024.05.00"
-composeVersion = "1.7.0-beta01"
-activityCompose = "1.9.0"
-navigationCompose = "2.7.7"
-lifecycleRuntimeCompose = "2.7.0"
-material3Compose = "1.3.0-beta01"
+composeBom = "2024.09.02"
+composeVersion = "1.7.2"
+activityCompose = "1.9.2"
+navigationCompose = "2.8.1"
+lifecycleRuntimeCompose = "2.8.6"
+material3Compose = "1.3.0"
 
 # Fancy UI Stuff Lib Versions :d
 haze = "0.7.1"
-squircleShape = "1.0.8"
-systemUiBarsTweaker = "1.0.1"
+squircleShape = "2.0.0"
+systemUiBarsTweaker = "1.2.1"
+lottie = "6.4.1"
 
 # Storage Lib Versions
 dataStore = "1.1.1"
 room = "2.6.1"
 
 # Dependency Injection Lib Versions
-koin-bom = "3.5.6"
+daggerHilt = "2.51"
+androidxHiltNavigationCompose = "1.2.0"
+androidxHiltWork = "1.2.0"
+androidxHiltCompiler = "1.2.0"
 
 # Networking Lib Versions
-ktor = "2.3.11"
+retrofitVersion = "2.9.0"
+okhttpVersion = "4.12.0"
 
 # Serialization Lib Versions
 gson = "2.10.1"
-kotlinxSerialization = "1.6.3"
+kotlinxSerialization = "1.7.2"
 
 # Work Manager Lib Versions
-workManager = "2.9.0"
+workManager = "2.9.1"
 
 # Testing Lib Versions
 assertK = "0.28.1"
@@ -65,6 +73,13 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+
+# Media3
+media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
+media3-exoplayer-dash = { group = "androidx.media3", name = "media3-exoplayer-dash", version.ref = "media3" }
+media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
+media3-mediasession = { group = "androidx.media3", name = "media3-session", version.ref = "media3" }
 
 # Jetpack Compose Lib Dependencies
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -79,14 +94,16 @@ compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-mani
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "composeVersion" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3Compose" }
 compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3Compose" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "composeVersion" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
 
 # Fancy UI Stuff Lib Dependencies :d
 chrisbanes-haze = { group = "dev.chrisbanes.haze", name = "haze", version.ref = "haze" }
-stoyanvuchev-squircleShape = { group = "com.github.stoyan-vuchev", name = "squircle-shape", version.ref = "squircleShape" }
+stoyanvuchev-squircleShape = { group = "io.github.stoyan-vuchev", name = "squircle-shape-android", version.ref = "squircleShape" }
 stoyanvuchev-systemUiBarsTweaker = { group = "com.github.stoyan-vuchev", name = "system-ui-bars-tweaker", version.ref = "systemUiBarsTweaker" }
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 
 # Coroutines Lib Dependencies
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -99,18 +116,19 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 # Dependency Injection Lib Dependencies
-koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
-koin-core = { module = "io.insert-koin:koin-core" }
-koin-core-coroutines = { module = "io.insert-koin:koin-core-coroutines" }
-koin-android = { module = "io.insert-koin:koin-android" }
-koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager" }
-koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
-koin-androidx-compose-navigation = { module = "io.insert-koin:koin-androidx-compose-navigation" }
+dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "daggerHilt" }
+dagger-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "daggerHilt" }
+dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "daggerHilt" }
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "androidxHiltWork" }
+androidx-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "androidxHiltCompiler" }
 
 # Networking Lib Dependencies
-ktor-client-android = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
-ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
-ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+retrofit-android = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofitVersion" }
+retrofit-converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofitVersion" }
+okhttp-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttpVersion" }
+okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpVersion" }
 
 # Serialization Lib Dependencies
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
@@ -119,6 +137,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 # Work Manager Lib Dependencies
 workManager-runtime = { group = "androidx.work", name = "work-runtime", version.ref = "workManager" }
 workManager-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManager" }
+workManager-multiprocess = { group = "androidx.work", name = "work-multiprocess", version.ref = "workManager" }
 
 # Testing Libs Dependencies
 assertK = { group = "com.willowtreeapps.assertk", name = "assertk", version.ref = "assertK" }
@@ -131,10 +150,18 @@ coroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-t
 
 # Base Plugins
 android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 # Annotation / Symbol Proccessing Plugins
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 # Serialization Plugins
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+# Dependency Injection
+dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
+
+# AndroidX Safeargs Navigation
+androidx-safeargs-navigation-plugin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidxSafeArgsVersion" }
