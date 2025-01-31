@@ -106,6 +106,9 @@ fun NavGraphBuilder.mainNavigationGraph(
                             is HomeScreenUIAction.NavigateToSettings -> navController
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
 
+                            is HomeScreenUIAction.NavigateToMlAssist -> navController
+                                .navigateSingleTop(route = uiAction.route, inclusive = false)
+
                             else -> Unit
 
                         }

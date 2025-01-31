@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +28,7 @@ import io.proxima.breathe.R
 import io.proxima.breathe.core.ui.carouselTransition
 import io.proxima.breathe.core.ui.components.HorizontalPagerIndicator
 import io.proxima.breathe.core.ui.fadingEdges
+import io.proxima.breathe.core.ui.theme.MlAssist
 import io.proxima.breathe.core.ui.theme.BreathTheme
 import io.proxima.breathe.core.ui.theme.DreamyNightColors
 import io.proxima.breathe.core.ui.theme.MangoColors
@@ -33,6 +36,8 @@ import io.proxima.breathe.core.ui.theme.MelonColors
 import io.proxima.breathe.core.ui.theme.SkyBlueColors
 import io.proxima.breathe.core.ui.theme.SleepColors
 import io.proxima.breathe.core.ui.theme.ZoneColors
+import io.proxima.breathe.presentation.main.home.mlassist.ChatActivity
+
 
 @Composable
 fun HomeScreenGridPager(
@@ -207,7 +212,20 @@ fun HomeScreenGridPager(
                             onClick = { onUIAction(HomeScreenUIAction.More) }
                         )
 
-                        Spacer(modifier = Modifier.weight(1f))
+                       // Spacer(modifier = Modifier.weight(1f))
+
+                        HomeScreenToggle(
+                            modifier = Modifier.weight(1f),
+                            icon = painterResource(id = R.drawable.airocket),
+                            label = "AI Assist",
+                            background = Brush.verticalGradient(
+                                colors = listOf(
+                                    MlAssist.primarySoul,
+                                    MlAssist.secondarySoul
+                                )
+                            ),
+                            onClick = { onUIAction(HomeScreenUIAction.NavigateToMlAssist()) }
+                        )
 
                         // Fixed !!!
 
@@ -231,6 +249,14 @@ fun HomeScreenGridPager(
         indicatorHeight = 8.dp
     )
 
+}
+
+@Composable
+fun NatigateToMlAssist() {
+    val context = LocalContext.current
+    Button(onClick = { context.startActivity(Intent(context, ChatActivity::class.java)) }) {
+        Text("Open Chatbot")
+    }
 }
 
 private fun Modifier.atAGlancePageModifier(

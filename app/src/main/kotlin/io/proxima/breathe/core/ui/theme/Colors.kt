@@ -88,6 +88,16 @@ val ZoneColors = Colors(
     text = Color(0xFF121212)
 )
 
+val MlAssist = Colors(
+    primarySoul = Color(0xFFB85DE2),
+    secondarySoul = Color(0xFF4683DE),
+    background = Color(0xFFFFFFFF),
+    backgroundGradientStart = Color(0xFFD6F0F5),
+    backgroundGradientEnd = Color(0xFFD6F0F5),
+    card = Color(0xFFE7EEF3),
+    text = Color(0xFF121212)
+)
+
 @Immutable
 class Colors(
     val primarySoul: Color,

@@ -41,6 +41,7 @@ class HomeScreenViewModel @Inject constructor(
         is HomeScreenUIAction.NavigateToSoundscape -> sendUIAction(uiAction)
         is HomeScreenUIAction.NavigateToHabitControl -> sendUIAction(uiAction)
         is HomeScreenUIAction.NavigateToProductivity -> sendUIAction(uiAction)
+        is HomeScreenUIAction.NavigateToMlAssist -> sendUIAction(uiAction)
 
         is HomeScreenUIAction.ExpandQuote -> _screenState.update {
             it.copy(isQuotesDialogShown = true)
@@ -50,12 +51,13 @@ class HomeScreenViewModel @Inject constructor(
             it.copy(isQuotesDialogShown = false)
         }
 
-        is HomeScreenUIAction.More -> showSnackbar(
-            msg = UiString.BasicString("More cool stuff is coming soon! <3")
-        )
+        /*is HomeScreenUIAction.More -> showSnackbar(
+         //   msg = UiString.BasicString("More cool stuff is coming soon! <3")
+        */
 
         is HomeScreenUIAction.NavigateToSettings -> sendUIAction(uiAction)
 
+        else -> {}
     }
 
     private fun sendUIAction(uiAction: HomeScreenUIAction) {
