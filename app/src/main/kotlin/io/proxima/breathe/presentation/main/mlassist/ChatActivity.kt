@@ -1,4 +1,4 @@
-package io.proxima.breathe.presentation.main.home.mlassist
+package io.proxima.breathe.presentation.main.mlassist
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -22,6 +22,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
+import io.proxima.breathe.presentation.main.home.mlassist.ChatDatabase
+import io.proxima.breathe.presentation.main.home.mlassist.ChatMessage
 
 //@Entity(tableName = "chat_messages")
 //data class ChatMessage(

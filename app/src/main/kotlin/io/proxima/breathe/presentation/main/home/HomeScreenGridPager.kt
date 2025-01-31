@@ -36,7 +36,7 @@ import io.proxima.breathe.core.ui.theme.MelonColors
 import io.proxima.breathe.core.ui.theme.SkyBlueColors
 import io.proxima.breathe.core.ui.theme.SleepColors
 import io.proxima.breathe.core.ui.theme.ZoneColors
-import io.proxima.breathe.presentation.main.home.mlassist.ChatActivity
+import io.proxima.breathe.presentation.main.mlassist.ChatActivity
 
 
 @Composable
