@@ -62,6 +62,7 @@ import io.proxima.breathe.presentation.main.soundscape.SoundScapeScreen
 import io.proxima.breathe.presentation.main.soundscape.SoundscapeUIAction
 import io.proxima.breathe.presentation.main.soundscape.SoundscapeViewModel
 import kotlinx.coroutines.flow.collectLatest
+//
 
 
 fun NavGraphBuilder.mainNavigationGraph(
@@ -104,6 +105,9 @@ fun NavGraphBuilder.mainNavigationGraph(
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
 
                             is HomeScreenUIAction.NavigateToSettings -> navController
+                                .navigateSingleTop(route = uiAction.route, inclusive = false)
+
+                            is HomeScreenUIAction.NavigateToMlAssist -> navController
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
 
                             else -> Unit

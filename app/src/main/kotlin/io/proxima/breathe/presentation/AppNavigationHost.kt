@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -63,7 +64,7 @@ fun AppNavigationHost(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(BreathTheme.colors.background)
+                        .background(Color.Black)
                         .systemBarsPadding(),
                     contentAlignment = Alignment.Center
                 ) {

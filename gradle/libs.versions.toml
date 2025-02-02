@@ -58,6 +58,7 @@ workManager = "2.9.1"
 assertK = "0.28.1"
 appCashTurbine = "1.1.0"
 coroutines = "1.8.0"
+lifecycleViewmodelKtx = "2.6.2"
 
 # =================================================================================================
 
@@ -143,6 +144,7 @@ workManager-multiprocess = { group = "androidx.work", name = "work-multiprocess"
 assertK = { group = "com.willowtreeapps.assertk", name = "assertk", version.ref = "assertK" }
 appCash-turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "appCashTurbine" }
 coroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 
 # =================================================================================================
 

@@ -66,9 +66,12 @@ android {
 
 dependencies {
 
+    //system
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
+
     // Puzzle Module
 
-    implementation(project(":puzzle"))
+    // implementation(project(":puzzle"))
 
     // GMS Dependencies
 
@@ -80,6 +83,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.material)
     implementation(libs.coil)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -174,6 +178,23 @@ dependencies {
 
     testImplementation(libs.coroutinesTest)
     androidTestImplementation(libs.coroutinesTest)
+
+    //deepseek API CALLS
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.activity:activity-compose:1.8.2")
+    implementation("androidx.compose.ui:ui:1.6.3")
+    implementation("androidx.compose.material3:material3:1.2.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+
+    // Retrofit for API calls
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
 }
 
