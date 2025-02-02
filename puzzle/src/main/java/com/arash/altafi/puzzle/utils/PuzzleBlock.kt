@@ -33,8 +33,11 @@ class PuzzleBlock(
 
         // text
         paint.textSize = textSize * context.resources.displayMetrics.scaledDensity
-        paint.textAlign = Paint.Align.CENTER
-        paint.color = ContextCompat.getColor(context, R.color.puzzleBlockText)
+//        paint.textAlign = Paint.Align.CENTER i think when one person is typing it blocks the other end
+//        paint.color = ContextCompat.getColor(context, R.color.puzzleBlockText)
+        // Bruh I've pressed ctrl + z and it made something else lol, i wanna nuke the puzzle thing entirely but
+        //how?
+        // let me try now
         canvas.drawText(
             ID.toString(),
             x + size / 2,

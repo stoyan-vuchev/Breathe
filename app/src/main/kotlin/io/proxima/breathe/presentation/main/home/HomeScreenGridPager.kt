@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.arash.altafi.puzzle.PuzzleActivity
 import io.proxima.breathe.R
 import io.proxima.breathe.core.ui.carouselTransition
 import io.proxima.breathe.core.ui.components.HorizontalPagerIndicator
@@ -38,6 +37,13 @@ import io.proxima.breathe.core.ui.theme.SleepColors
 import io.proxima.breathe.core.ui.theme.ZoneColors
 import io.proxima.breathe.presentation.main.mlassist.ChatActivity
 
+// I think the puzzle is gone from the project imports, but the code is still there just in case. NICE but also look at this
+/*
+i kinda did commmit but it gave me some error based on puzzle thing like it deprecated or smth.
+the commit errors are not mandatory and are just warnings, nothing to worry abt. ohh but it was red thing not yellow
+anyways i think it got commited offline but not pushed. Commits can be done offline, but you need internet connection for push.
+i do have always, got it
+ */
 
 @Composable
 fun HomeScreenGridPager(
@@ -170,25 +176,25 @@ fun HomeScreenGridPager(
                             onClick = { onUIAction(HomeScreenUIAction.NavigateToProductivity()) }
                         )
 
-                        val context = LocalContext.current
-
-                        HomeScreenToggle(
-                            modifier = Modifier.weight(1f),
-                            icon = painterResource(id = R.drawable.puzzle),
-                            label = "Puzzle",
-                            background = Brush.verticalGradient(
-                                colors = listOf(
-                                    MangoColors.primarySoul,
-                                    MangoColors.secondarySoul
-                                )
-                            ),
-                            onClick = {
-
-                                Intent(context, PuzzleActivity::class.java)
-                                    .also { context.startActivity(it) }
-
-                            }
-                        )
+//                        val context = LocalContext.current
+//
+//                        HomeScreenToggle(
+//                            modifier = Modifier.weight(1f),
+//                            icon = painterResource(id = R.drawable.puzzle),
+//                            label = "Puzzle",
+//                            background = Brush.verticalGradient(
+//                                colors = listOf(
+//                                    MangoColors.primarySoul,
+//                                    MangoColors.secondarySoul
+//                                )
+//                            ),
+//                            onClick = {
+//
+//                                Intent(context, PuzzleActivity::class.java)
+//                                    .also { context.startActivity(it) }
+//
+//                            }
+//                        )
 
                     }
 
