@@ -214,7 +214,7 @@ fun WelcomeScreen(
                         Spacer(modifier = Modifier.height(32.dp))
 
                         Text(
-                            text = "By team Proxima",
+                            text = "A project of CS",
                             style = BreathTheme.typography.labelSmall.copy(
                                 fontFamily = FontFamily(Font(R.font.roboto_mono_light))
                             ),

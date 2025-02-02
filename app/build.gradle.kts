@@ -66,6 +66,9 @@ android {
 
 dependencies {
 
+    //system
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
+
     // Puzzle Module
 
     implementation(project(":puzzle"))
