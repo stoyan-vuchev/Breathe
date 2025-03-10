@@ -1,22 +1,33 @@
 package io.proxima.breathe.presentation.main.home
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
+import android.content.Intent
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerDefaults
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -30,37 +41,55 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
 import io.proxima.breathe.core.etc.transformFraction
+import io.proxima.breathe.core.ui.carouselTransition
 import io.proxima.breathe.core.ui.components.rememberBreathRipple
 import io.proxima.breathe.core.ui.components.snackbar.SnackBar
 import io.proxima.breathe.core.ui.components.topbar.TopBarDefaults
 import io.proxima.breathe.core.ui.components.topbar.day_view_topbar.DayViewTopBar
+import io.proxima.breathe.core.ui.components.HorizontalPagerIndicator
+import io.proxima.breathe.core.ui.fadingEdges
 import io.proxima.breathe.core.ui.theme.BreathTheme
 import io.proxima.breathe.domain.model.QuoteModel
 import sv.lib.squircleshape.SquircleShape
+import io.proxima.breathe.R
+import androidx.compose.foundation.layout.Row
+import io.proxima.breathe.core.ui.theme.BreathDefaultColors
 
+
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.shape.RoundedCornerShape
+
+
+
+// ---------- HomeScreen.kt ----------
 @Composable
 fun HomeScreen(
     screenState: HomeScreenState,
     snackBarHostState: SnackbarHostState,
     onUIAction: (HomeScreenUIAction) -> Unit
 ) {
-
     val topBarScrollBehavior = TopBarDefaults.exitUntilCollapsedScrollBehavior()
 
     val bgAlpha by remember(topBarScrollBehavior.state.collapsedFraction) {
         derivedStateOf { topBarScrollBehavior.state.collapsedFraction }
     }
 
-    val topBarBgAlpha by remember(bgAlpha) { // this ensures smooth color transition
+    val topBarBgAlpha by remember(bgAlpha) { // ensures smooth color transition
         derivedStateOf {
             transformFraction(
                 value = bgAlpha,
@@ -74,169 +103,311 @@ fun HomeScreen(
 
     val hazeState = remember { HazeState() }
 
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
-        containerColor = BreathTheme.colors.background.copy(bgAlpha),
-        contentColor = BreathTheme.colors.text,
-        topBar = {
-
-            DayViewTopBar(
-                modifier = Modifier.hazeChild(
-                    state = hazeState,
-                    style = HazeStyle(
-                        tint = BreathTheme.colors.background.copy(topBarBgAlpha),
-                        blurRadius = 20.dp
-                    )
-                ),
-                scrollBehavior = topBarScrollBehavior,
-                actions = {
-
-                    IconButton(
-                        onClick = { onUIAction(HomeScreenUIAction.NavigateToSettings()) },
-                        content = {
-
-                            Icon(
-                                imageVector = Icons.Rounded.Settings,
-                                contentDescription = "Settings"
-                            )
-
-                        }
-                    )
-
-                }
-            )
-
-        },
-        snackbarHost = {
-
-            SnackbarHost(
-                hostState = snackBarHostState,
-                snackbar = { SnackBar(it) }
-            )
-
-        },
-    ) { insetsPadding ->
-
-        LazyColumn(
+    // Wrap Scaffold in a Box with a full-screen background image
+    Box(modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(id = R.drawable.backgroundfakeblur), // Replace with your background image
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+        Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .haze(hazeState),
-            contentPadding = insetsPadding
-        ) {
-
-            quotesItem(
-                quote = screenState.quote,
-                onUIAction = onUIAction
-            )
-
-            togglesItem(onUIAction = onUIAction)
-
+                .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
+            // Use transparent so the background image is visible
+            containerColor = Color.Transparent,
+            contentColor = BreathDefaultColors.background,
+            topBar = {
+                DayViewTopBar(
+                    modifier = Modifier.hazeChild(
+                        state = hazeState,
+                        style = HazeStyle(
+                            tint = BreathTheme.colors.background.copy(topBarBgAlpha),
+                            blurRadius = 20.dp
+                        )
+                    ),
+                    scrollBehavior = topBarScrollBehavior,
+                    actions = {
+                        IconButton(
+                            onClick = { onUIAction(HomeScreenUIAction.NavigateToSettings()) },
+                            content = {
+                                Icon(
+                                    imageVector = Icons.Rounded.Settings,
+                                    contentDescription = "Settings"
+                                )
+                            }
+                        )
+                    }
+                )
+            },
+            snackbarHost = {
+                SnackbarHost(
+                    hostState = snackBarHostState,
+                    snackbar = { SnackBar(it) }
+                )
+            }
+        ) { insetsPadding ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .haze(hazeState),
+                contentPadding = insetsPadding
+            ) {
+                quotesItem(
+                    quote = screenState.quote,
+                    onUIAction = onUIAction
+                )
+                togglesItem(onUIAction = onUIAction)
+            }
         }
-
     }
-
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 private fun LazyListScope.quotesItem(
     quote: QuoteModel,
     onUIAction: (HomeScreenUIAction) -> Unit
 ) = item(key = "daily_quote") {
-
-    SharedTransitionLayout(
+    Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberBreathRipple(color = BreathTheme.colors.primarySoul),
+                onClick = { onUIAction(HomeScreenUIAction.ExpandQuote) }
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        AnimatedContent(
-            modifier = Modifier.fillMaxWidth(),
-            targetState = quote != QuoteModel.Empty,
-            label = "",
-        ) { isQuoteVisible ->
-
-            if (isQuoteVisible) {
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = rememberBreathRipple(color = BreathTheme.colors.primarySoul),
-                            onClick = { onUIAction(HomeScreenUIAction.ExpandQuote) }
-                        ),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-
-                    Spacer(modifier = Modifier.height(32.dp))
-
-                    Text(
-                        text = "Daily Quotes ~",
-                        style = BreathTheme.typography.headlineSmall
-                    )
-
-                    Spacer(modifier = Modifier.height(32.dp))
-
-                    with(this@SharedTransitionLayout) {
-                        Text(
-                            modifier = Modifier
-                                .padding(horizontal = 32.dp)
-                                .sharedElement(
-                                    rememberSharedContentState(key = "quote"),
-                                    animatedVisibilityScope = this@AnimatedContent
-                                ),
-                            text = "“${quote.quote}”",
-                            style = BreathTheme.typography.labelMedium,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(32.dp))
-
-                    with(this@SharedTransitionLayout) {
-
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .sharedElement(
-                                    rememberSharedContentState(key = "author"),
-                                    animatedVisibilityScope = this@AnimatedContent
-                                )
-                                .padding(horizontal = 64.dp),
-                            text = "- ${quote.author}",
-                            style = BreathTheme.typography.labelMedium,
-                            textAlign = TextAlign.End
-                        )
-
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                }
-
-            }
-
-        }
-
+        Spacer(modifier = Modifier.height(0.dp))//space
+        HorizontalDivider(//line divider
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(36.dp)
+                .clip(RoundedCornerShape(50)),
+            color = BreathDefaultColors.background
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            text = "“${quote.quote}”",
+            style = BreathTheme.typography.labelMedium,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 64.dp),
+            text = "- ${quote.author}",
+            style = BreathTheme.typography.labelMedium,
+            textAlign = TextAlign.End
+        )
+        Spacer(modifier = Modifier.height(8.dp))
     }
-
 }
 
 private fun LazyListScope.togglesItem(
     onUIAction: (HomeScreenUIAction) -> Unit
 ) = item(key = "toggles") {
-
     HomeScreenGridPager(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(20.dp)
             .clip(SquircleShape(40.dp))
-            .background(BreathTheme.colors.card),
+            .background(BreathDefaultColors.background.copy(alpha = 0.2f)),
         state = rememberPagerState { 2 },
         onUIAction = onUIAction
     )
+}
 
+// ---------- HomeScreenGridPager.kt ----------
+@Composable
+fun HomeScreenGridPager(
+    modifier: Modifier = Modifier,
+    state: PagerState,
+    onUIAction: (HomeScreenUIAction) -> Unit,
+) = Column(
+    modifier = modifier
+        .fadingEdges(
+            startOffset = 16.dp,
+            endOffset = 16.dp,
+            minFade = .9f
+        )
+        .padding(bottom = 16.dp),
+    horizontalAlignment = Alignment.CenterHorizontally
+) {
+    HorizontalPager(
+        modifier = Modifier.fillMaxWidth(),
+        state = state,
+        key = { "page_$it" },
+        flingBehavior = PagerDefaults.flingBehavior(
+            state = state,
+            snapAnimationSpec = spring(
+                stiffness = Spring.StiffnessVeryLow,
+                dampingRatio = Spring.DampingRatioLowBouncy
+            )
+        ),
+        pageContent = { page ->
+            when (page) {
+                0 -> Column(
+                    modifier = Modifier
+                        .atAGlancePageModifier(itemPage = 0, state = state)
+                ) {
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        HomeScreenToggle(
+                            modifier = Modifier.weight(1f),
+                            icon = painterResource(id = R.drawable.nulltoggleoverlay),
+                            label = "Stress",
+                            background = R.drawable.stressback,
+                            onClick = { onUIAction(HomeScreenUIAction.NavigateToBreathe()) }
+                        )
+                        HomeScreenToggle(
+                            modifier = Modifier.weight(1f),
+                            icon = painterResource(id = R.drawable.nulltoggleoverlay),
+                            label = "Productivity",
+                            background = R.drawable.productivity,
+                            onClick = { onUIAction(HomeScreenUIAction.NavigateToProductivity()) }
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        HomeScreenToggle(
+                            modifier = Modifier.weight(1f),
+                            icon = painterResource(id = R.drawable.nulltoggleoverlay),
+                            label = "Soundscape",
+                            background = R.drawable.soundscape,
+                            onClick = { onUIAction(HomeScreenUIAction.NavigateToSoundscape()) }
+                        )
+                        HomeScreenToggle(
+                            modifier = Modifier.weight(1f),
+                            icon = painterResource(id = R.drawable.nulltoggleoverlay),
+                            boundlessIcon = true,
+                            label = "Habit Control",
+                            background = R.drawable.zone,
+                            onClick = { onUIAction(HomeScreenUIAction.NavigateToHabitControl()) }
+                        )
+                    }
+                }
+                /*1 -> Column(
+                    modifier = Modifier
+                        .atAGlancePageModifier(itemPage = 1, state = state)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Spacer(modifier = Modifier.weight(1f))
+
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        HomeScreenToggle(
+                            modifier = Modifier.weight(1f),
+                            icon = painterResource(id = R.drawable.nulltoggleoverlay),
+                            label = "More",
+                            background = R.drawable.stressback,
+                            onClick = { onUIAction(HomeScreenUIAction.More) }
+                        )
+                        HomeScreenToggle(
+                            modifier = Modifier.weight(1f),
+                            icon = painterResource(id = R.drawable.nulltoggleoverlay),
+                            label = "AI Assist",
+                            background = R.drawable.stressback,
+                            onClick = { onUIAction(HomeScreenUIAction.NavigateToMlAssist()) }
+                        )
+                    }
+                }*/
+            }
+        }
+    )
+    Spacer(modifier = Modifier.height(0.dp))
+    HorizontalPagerIndicator(
+        pagerState = state,
+        pageCount = state.pageCount,
+        activeColor = BreathTheme.colors.text,
+        inactiveColor = BreathTheme.colors.text.copy(alpha = 0.1f),
+        indicatorWidth = 0.dp,
+        indicatorHeight = 0.dp
+    )
+}
+
+private fun Modifier.atAGlancePageModifier(
+    itemPage: Int,
+    state: PagerState
+) = fillMaxWidth()
+    .carouselTransition(
+        itemPage = itemPage,
+        pagerState = state
+    )
+    .padding(16.dp)
+
+
+// ---------- HomeScreenToggle.kt ----------
+@Composable
+fun HomeScreenToggle(
+    modifier: Modifier = Modifier,
+    icon: Painter,
+    label: String,
+    boundlessIcon: Boolean = false,
+    boundlessIconSize: DpSize = DpSize.Unspecified,
+    background: Int, // image resource id for background
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = modifier.clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = rememberBreathRipple(BreathTheme.colors.background),
+            onClick = onClick
+        ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(SquircleShape(24.dp))
+                .aspectRatio(1f)
+                .fillMaxWidth()
+        ) {
+            // Background image
+            Image(
+                painter = painterResource(id = background),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.matchParentSize()
+            )
+            // Foreground icon
+            Image(
+                painter = icon,
+                contentDescription = label,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .then(
+                        if (!boundlessIcon) Modifier.width(56.dp)
+                        else Modifier
+                            .defaultMinSize(minWidth = 74.dp)
+                            .size(boundlessIconSize)
+                    )
+            )
+        }
+        Text(
+            text = label,
+            style = BreathTheme.typography.labelMedium,
+            textAlign = TextAlign.Center,
+            color = BreathDefaultColors.background,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
 }
 
 @Preview(showBackground = true)

@@ -70,7 +70,6 @@ class HomeScreenViewModel @Inject constructor(
 
     private fun initialize() {
         viewModelScope.launch {
-            delay(512L)
             val quote = withContext(Dispatchers.IO) { quotesRepository.getDailyQuote() }
             _screenState.update { it.copy(quote = quote) }
         }

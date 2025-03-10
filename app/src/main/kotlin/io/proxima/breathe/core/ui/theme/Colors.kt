@@ -22,8 +22,8 @@ val DreamyNightColors = Colors(
     primarySoul = Color(0xFF8DADFF),
     secondarySoul = Color(0xFF002686),
     background = Color(0xFFFFFFFF),
-    backgroundGradientStart = Color(0xFFE6EDFF),
-    backgroundGradientEnd = Color(0xFFA3C1F5),
+    backgroundGradientStart = Color(0xFFFFFFFF),
+    backgroundGradientEnd = Color(0xFFFFFFFF),
     card = Color(0xFFEAEBF7),
     text = Color(0xFF121212)
 )
@@ -39,11 +39,11 @@ val SleepColors = Colors(
 )
 
 val MelonColors = Colors(
-    primarySoul = Color(0xFF96D3A9),
-    secondarySoul = Color(0xFF438980),
+    primarySoul = Color(0xFFFFFFFF),
+    secondarySoul = Color(0xFFFFFFFF),
     background = Color(0xFFFFFFFF),
-    backgroundGradientStart = Color(0xFFCDEFD9),
-    backgroundGradientEnd = Color(0xFF85D6C8),
+    backgroundGradientStart = Color(0xFFFFFFFF),
+    backgroundGradientEnd = Color(0xFFFFFFFF),
     card = Color(0xFFEAEBF7),
     text = Color(0xFF121212)
 )
@@ -69,21 +69,21 @@ val SilverColors = Colors(
 )
 
 val SkyBlueColors = Colors(
-    primarySoul = Color(0xFF6DCADB),
-    secondarySoul = Color(0xFF1C7FC4),
+    primarySoul = Color(0xFFFFFFFF),
+    secondarySoul = Color(0xFFFFFFFF),
     background = Color(0xFFFFFFFF),
-    backgroundGradientStart = Color(0xFFD6F0F5),
-    backgroundGradientEnd = Color(0xFF90C7EF),
+    backgroundGradientStart = Color(0xFFFFFFFF),
+    backgroundGradientEnd = Color(0xFFFFFFFF),
     card = Color(0xFFE7EEF3),
     text = Color(0xFF121212)
 )
 
 val ZoneColors = Colors(
-    primarySoul = Color(0xFFF49692),
-    secondarySoul = Color(0xFFD3425D),
+    primarySoul = Color(0xFFFFFFFF),
+    secondarySoul = Color(0xFFFFFFFF),
     background = Color(0xFFFFFFFF),
-    backgroundGradientStart = Color(0xFFF9D2D2),
-    backgroundGradientEnd = Color(0xFFECACB6),
+    backgroundGradientStart = Color(0xFFFFFFFF),
+    backgroundGradientEnd = Color(0xFFFFFFFF),
     card = Color(0xFFEAEBF7),
     text = Color(0xFF121212)
 )
@@ -97,6 +97,7 @@ val MlAssist = Colors(
     card = Color(0xFFE7EEF3),
     text = Color(0xFF121212)
 )
+
 
 @Immutable
 class Colors(

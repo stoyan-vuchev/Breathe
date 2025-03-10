@@ -42,6 +42,7 @@ import io.proxima.breathe.core.etc.transformFraction
 import io.proxima.breathe.core.ui.components.topbar.TopBarDefaults
 import io.proxima.breathe.core.ui.components.topbar.TopBarScrollBehavior
 import io.proxima.breathe.core.ui.components.topbar.settleAppBar
+import io.proxima.breathe.core.ui.theme.BreathDefaultColors
 import io.proxima.breathe.core.ui.theme.BreathTheme
 import io.proxima.breathe.core.utils.TimestampUtils
 import kotlinx.coroutines.CoroutineScope
@@ -66,7 +67,7 @@ fun DayViewTopBar(
     actions: @Composable (RowScope.() -> Unit)? = null,
     scrollBehavior: TopBarScrollBehavior? = null,
     backgroundColor: Color = Color.Unspecified,
-    contentColor: Color = BreathTheme.colors.text,
+    contentColor: Color = BreathDefaultColors.background,
     largeTitleTextStyle: TextStyle = BreathTheme.typography.displayLarge,
     smallTitleTextStyle: TextStyle = BreathTheme.typography.headlineLarge,
     windowInsets: WindowInsets = TopBarDefaults.windowInsets()
@@ -255,18 +256,23 @@ private fun DayViewTopBarLayout(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        HorizontalDivider(
+                        /*HorizontalDivider(
                             modifier = Modifier
                                 .graphicsLayer {
                                     alpha = expandedSubTitleAlpha
                                 }
-                                .padding(end = 8.dp)
+                                .padding(end = 0.dp)
                                 .clip(RoundedCornerShape(50))
                                 .width(firstLineWidth),
                             color = contentColor
+                        )*/
+
+                        Text(
+                            modifier = Modifier.padding(start = 40.dp),
+                            text = "Hi, Ajal KJ"
                         )
 
-                        Box(
+                        /*Box(
                             content = {
 
                                 ProvideTextStyle(
@@ -275,7 +281,7 @@ private fun DayViewTopBarLayout(
                                 )
 
                             }
-                        )
+                        )*/
 
                         Box(
                             modifier = Modifier
@@ -299,7 +305,7 @@ private fun DayViewTopBarLayout(
 
                             }
 
-                            HorizontalDivider(
+                            /*HorizontalDivider(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .graphicsLayer {
@@ -308,7 +314,7 @@ private fun DayViewTopBarLayout(
                                     .padding(end = secondLineEndPadding)
                                     .clip(RoundedCornerShape(50)),
                                 color = contentColor
-                            )
+                            )*/
 
                         }
 
@@ -326,7 +332,7 @@ private fun DayViewTopBarLayout(
 
                         ProvideTextStyle(
                             value = smallTitleTextStyle,
-                            content = { Text(text = date) }
+                            content = { Text(text = "Good Morning") }
                         )
 
                     }
