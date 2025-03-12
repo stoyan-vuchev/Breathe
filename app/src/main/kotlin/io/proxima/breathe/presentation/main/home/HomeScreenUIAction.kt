@@ -6,7 +6,6 @@ import io.proxima.breathe.presentation.main.MainNavigationDestinations
 @Immutable
 sealed interface HomeScreenUIAction {
 
-    data object More : HomeScreenUIAction
     data object ExpandQuote : HomeScreenUIAction
     data object ShrinkQuote : HomeScreenUIAction
 

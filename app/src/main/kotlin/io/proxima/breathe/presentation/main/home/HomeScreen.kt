@@ -1,8 +1,8 @@
 package io.proxima.breathe.presentation.main.home
 
-import android.content.Intent
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
+//import android.content.Intent
+//import androidx.compose.animation.core.Spring
+//import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,9 +22,9 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerDefaults
-import androidx.compose.foundation.pager.PagerState
+//import androidx.compose.foundation.pager.HorizontalPager
+//import androidx.compose.foundation.pager.PagerDefaults
+//import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Settings
@@ -39,7 +39,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
+//import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,21 +48,21 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+//import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
+//import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
+import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.hazeChild
 import io.proxima.breathe.core.etc.transformFraction
-import io.proxima.breathe.core.ui.carouselTransition
-import io.proxima.breathe.core.ui.components.HorizontalPagerIndicator
-import io.proxima.breathe.core.ui.fadingEdges
+//import io.proxima.breathe.core.ui.carouselTransition
+//import io.proxima.breathe.core.ui.components.HorizontalPagerIndicator
+//import io.proxima.breathe.core.ui.fadingEdges
 import io.proxima.breathe.core.ui.components.rememberBreathRipple
 import io.proxima.breathe.core.ui.components.snackbar.SnackBar
 import io.proxima.breathe.core.ui.components.topbar.TopBarDefaults
@@ -87,23 +87,25 @@ fun NavBar(
     onToggle2Click: () -> Unit,
     onToggle3Click: () -> Unit
 ) {
-    // Create a HazeState to manage the blur effect.
+
+
+
     val hazeState = remember { dev.chrisbanes.haze.HazeState() }
     Box(
         modifier = modifier
             .fillMaxWidth()
-            // Use a semi-transparent background so that the underlying (complex) background can be blurred.
             .background(Color.White.copy(alpha = 0.2f))
-            // Apply blur effect with hazeChild; adjust blurRadius and tint as needed.
             .hazeChild(
                 state = hazeState,
                 style = HazeStyle(
-                    //tint = Color.White.copy(alpha = 0f),
-                    blurRadius = 60.dp
+                    blurRadius = 60.dp,
+                    tint = Color.White.copy(alpha = 0.2f)
+
                 )
             )
-            .padding(vertical = 20.dp)
-    ) {
+            .padding(vertical = 24.dp)
+    )
+    {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,

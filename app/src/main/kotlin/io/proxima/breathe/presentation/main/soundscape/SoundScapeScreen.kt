@@ -118,7 +118,6 @@ fun SoundScapeScreen(
             .fillMaxSize()
             .background(BreathTheme.colors.backgroundBrush()),
         containerColor = Color.Unspecified,
-        contentColor = BreathTheme.colors.text,
         topBar = {
 
             BasicTopBar(

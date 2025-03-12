@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
 import io.proxima.breathe.core.ui.theme.BreathTheme
 
@@ -35,22 +36,21 @@ fun NavBar(
     onToggle2Click: () -> Unit,
     onToggle3Click: () -> Unit
 ) {
-
     val hazeState = remember { HazeState() }
     Box(
         modifier = modifier
             .fillMaxWidth()
-
+            // Provide a semi-transparent background so there's content to blur.
             .background(Color.White.copy(alpha = 0.2f))
-
+            // Increase the blur radius and adjust tint for better visibility.
             .hazeChild(
                 state = hazeState,
                 style = HazeStyle(
-                    tint = Color.White.copy(alpha = 0.3f),
-                    blurRadius = 40.dp
+                    blurRadius = 60.dp,
+                    tint = Color.White.copy(alpha = 0.3f)
                 )
             )
-            .padding(vertical = 20.dp)
+            .padding(vertical = 12.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -86,7 +86,6 @@ fun NavBarItem(
         Text(text = text)
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun NavBarPreview() {

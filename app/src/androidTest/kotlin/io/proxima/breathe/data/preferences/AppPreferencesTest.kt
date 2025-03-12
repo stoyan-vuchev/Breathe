@@ -26,7 +26,7 @@ class AppPreferencesTest {
     @Test
     fun set_username() = runTest {
 
-        val expected = "Alen"
+        val expected = "User"
         preferences.setUser(expected)
 
         val actual = preferences.getUser().data
