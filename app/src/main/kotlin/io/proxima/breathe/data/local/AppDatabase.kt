@@ -7,19 +7,22 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import io.proxima.breathe.data.local.dao.QuotesDao
 import io.proxima.breathe.data.local.dao.SleepDao
+import io.proxima.breathe.data.local.dao.TaskDao
 import io.proxima.breathe.data.local.entity.QuoteEntity
 import io.proxima.breathe.data.local.entity.SleepEntity
+import io.proxima.breathe.data.local.entity.Task
 
 @Database(
-    entities = [SleepEntity::class, QuoteEntity::class],
-    version = 2,
+    entities = [SleepEntity::class, QuoteEntity::class, Task::class],
+    version = 3,
     exportSchema = true,
-    autoMigrations = [AutoMigration(from = 1, to = 2)]
+    autoMigrations = [AutoMigration(from = 2, to = 3)]
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val sleepDao: SleepDao
     abstract val quotesDao: QuotesDao
+    abstract val taskDao: TaskDao
 
     companion object {
 

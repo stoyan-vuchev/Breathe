@@ -58,9 +58,8 @@ fun WelcomeScreen(
     DisposableEffect(screenState.segment, tweaker) {
         tweaker.tweakNavigationBarStyle(
             navigationBarStyle = tweaker.navigationBarStyle.copy(
-                darkIcons = screenState.segment !is WelcomeScreenSegment.TrackSleep
-                        && screenState.segment !is WelcomeScreenSegment.Soundscape
-                        && screenState.segment !is WelcomeScreenSegment.Privacy
+                darkIcons = screenState.segment !is WelcomeScreenSegment.Soundscape
+
             )
         )
         onDispose {}

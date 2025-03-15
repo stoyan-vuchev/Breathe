@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -35,6 +37,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.proxima.breathe.core.ui.theme.swapColor
 import io.proxima.breathe.core.ui.components.rememberBreathRipple
@@ -55,13 +58,15 @@ import sv.lib.squircleshape.SquircleShape
  * @param indication An optional indication of the clicks drawn on the screen.
  * @param interactionSource An optional interaction source coming outside of button.
  * @param paddingValues An optional padding values.
+ * @param borderColor An optional border color; if provided, an outline will be drawn.
+ * @param borderWidth The width of the border if [borderColor] is provided.
  * @param content The content of the button e.g. [Text].
  */
 @Composable
 fun UniqueButton(
     modifier: Modifier = Modifier,
     backgroundColor: Color = BreathTheme.colors.swapColor(BreathTheme.colors.background),
-    contentColor: Color = BreathTheme.colors.swapColor(BreathTheme.colors.text),
+    contentColor: Color = BreathTheme.colors.swapColor(Color.Black),
     shape: Shape = UniqueButtonDefaults.shape,
     enabled: Boolean = true,
     onClick: () -> Unit,
@@ -69,6 +74,8 @@ fun UniqueButton(
     indication: Indication? = rememberBreathRipple(contentColor),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     paddingValues: PaddingValues = UniqueButtonDefaults.paddingValues,
+    borderColor: Color = Color.White,
+    borderWidth: Dp = 1.dp,
     content: @Composable () -> Unit
 ) = CompositionLocalProvider(
     LocalContentColor provides contentColor,
@@ -89,7 +96,9 @@ fun UniqueButton(
                 interactionSource = interactionSource,
                 backgroundColor = backgroundColor,
                 paddingValues = paddingValues,
-                otherModifier = modifier
+                otherModifier = modifier,
+                borderColor = borderColor,
+                borderWidth = borderWidth
             ),
             contentAlignment = Alignment.Center,
             content = { content() }
@@ -111,7 +120,9 @@ private fun Modifier.uniqueButtonModifier(
     interactionSource: MutableInteractionSource,
     backgroundColor: Color,
     paddingValues: PaddingValues,
-    otherModifier: Modifier
+    otherModifier: Modifier,
+    borderColor: Color? = null,
+    borderWidth: Dp = 1.dp
 ): Modifier = this
     .semantics { contentDescription = onClickLabel ?: "" }
     .alpha(alpha)
@@ -124,10 +135,13 @@ private fun Modifier.uniqueButtonModifier(
     )
     .scale(scale)
     .clip(shape)
-    .background(color = backgroundColor)
+    // Add border if a border color is provided.
+    .then(
+        if (borderColor != null) Modifier.border(borderWidth, borderColor, shape) else Modifier
+    )
+    .background(Color.White.copy(alpha = 0.5f))
     .then(otherModifier)
     .then(Modifier.padding(paddingValues))
-
 
 @Composable
 private fun animateAlpha(enabled: Boolean) = animateFloatAsState(
@@ -152,7 +166,7 @@ object UniqueButtonDefaults {
      * The default shape of a [UniqueButton].
      */
     val shape: Shape
-        get() = SquircleShape(cornerSmoothing = .67f)
+        get() = SquircleShape(cornerSmoothing = .0f)
 
     /**
      * The default padding values of a [UniqueButton].
@@ -171,7 +185,7 @@ private fun UniqueButtonPreview() = BreathTheme {
 
     Box(
         modifier = Modifier
-            .background(BreathTheme.colors.background)
+            .background(Color.White.copy(alpha = 0.5f))
             .padding(32.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -179,8 +193,9 @@ private fun UniqueButtonPreview() = BreathTheme {
         var clicked by remember { mutableStateOf(false) }
 
         UniqueButton(
-            modifier = Modifier,
             onClick = { clicked = !clicked },
+            // Here we set a custom border color.
+            borderColor = Color.White,
             content = {
 
                 Row(
@@ -206,14 +221,10 @@ private fun UniqueButtonPreview() = BreathTheme {
                     }
 
                     Text(text = "Enabled Button")
-
                 }
-
             }
         )
-
     }
-
 }
 
 @Preview(showBackground = true)
@@ -232,7 +243,5 @@ private fun DisabledUniqueButtonPreview() = BreathTheme {
             onClick = {},
             content = { Text(text = "Disabled Button") }
         )
-
     }
-
 }

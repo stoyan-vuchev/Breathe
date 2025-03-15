@@ -29,6 +29,8 @@ interface AppPreferences {
     suspend fun incrementHabitProgressCounter()
     suspend fun resetHabitProgressCounter()
 
+
+
     suspend fun deleteData(): Result<Unit>
 
 }

@@ -13,6 +13,9 @@ interface UserScreenUIAction {
     data object GoToWakeUpSegment : UserScreenUIAction
 
     data class SetWakeUp(val hour: Int, val minute: Int) : UserScreenUIAction
+    data object GoToBreakSegment : UserScreenUIAction
+
+    data class SetBreakTime(val hour: Int, val minute: Int) : UserScreenUIAction
     data object GoToGreetSegment : UserScreenUIAction
 
     data object GetStarted : UserScreenUIAction

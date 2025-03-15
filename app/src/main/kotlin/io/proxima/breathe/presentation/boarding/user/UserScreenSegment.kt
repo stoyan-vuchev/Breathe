@@ -36,4 +36,5 @@ sealed class UserScreenSegment(
         icon = R.drawable.happy_face
     )
 
+
 }

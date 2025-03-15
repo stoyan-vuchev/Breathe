@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "49ce2cdb2c159161e5c0cad639125af6",
+    "identityHash": "19e9dbf4b4f6e0f8b2b724641e38e568",
     "entities": [
       {
         "tableName": "sleep_table",
@@ -73,12 +73,38 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "tasks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '49ce2cdb2c159161e5c0cad639125af6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '19e9dbf4b4f6e0f8b2b724641e38e568')"
     ]
   }
 }

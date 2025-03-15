@@ -27,15 +27,17 @@ class WelcomeScreenViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun onNext(segment: WelcomeScreenSegment) {
-        if (segment !is WelcomeScreenSegment.Privacy) {
+        if (segment !is WelcomeScreenSegment.Soundscape) {
             _screenState.update { currentState ->
                 currentState.copy(
                     segment = when (segment) {
-                        is WelcomeScreenSegment.Welcome -> WelcomeScreenSegment.TrackSleep
+                       /* is WelcomeScreenSegment.Welcome -> WelcomeScreenSegment.TrackSleep
                         is WelcomeScreenSegment.TrackSleep -> WelcomeScreenSegment.BreathExercises
                         is WelcomeScreenSegment.BreathExercises -> WelcomeScreenSegment.Soundscape
                         is WelcomeScreenSegment.Soundscape -> WelcomeScreenSegment.Puzzle
-                        is WelcomeScreenSegment.Puzzle -> WelcomeScreenSegment.Privacy
+                        is WelcomeScreenSegment.Puzzle -> WelcomeScreenSegment.Privacy*/
+                        is WelcomeScreenSegment.Welcome -> WelcomeScreenSegment.BreathExercises
+                        is WelcomeScreenSegment.BreathExercises -> WelcomeScreenSegment.Soundscape
                         else -> segment
                     }
                 )
@@ -47,11 +49,8 @@ class WelcomeScreenViewModel @Inject constructor() : ViewModel() {
         _screenState.update { currentState ->
             currentState.copy(
                 segment = when (segment) {
-                    is WelcomeScreenSegment.Privacy -> WelcomeScreenSegment.Puzzle
-                    is WelcomeScreenSegment.Puzzle -> WelcomeScreenSegment.Soundscape
                     is WelcomeScreenSegment.Soundscape -> WelcomeScreenSegment.BreathExercises
-                    is WelcomeScreenSegment.BreathExercises -> WelcomeScreenSegment.TrackSleep
-                    is WelcomeScreenSegment.TrackSleep -> WelcomeScreenSegment.Welcome
+                    is WelcomeScreenSegment.BreathExercises -> WelcomeScreenSegment.Welcome
                     else -> throw IllegalStateException("This isn't supposed to happen. Lol!")
                 }
             )

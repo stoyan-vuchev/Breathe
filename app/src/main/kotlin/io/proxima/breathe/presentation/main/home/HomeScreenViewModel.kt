@@ -42,6 +42,7 @@ class HomeScreenViewModel @Inject constructor(
         is HomeScreenUIAction.NavigateToHabitControl -> sendUIAction(uiAction)
         is HomeScreenUIAction.NavigateToProductivity -> sendUIAction(uiAction)
         is HomeScreenUIAction.NavigateToMlAssist -> sendUIAction(uiAction)
+        is HomeScreenUIAction.NavigateToPomodoro -> sendUIAction(uiAction)
 
         is HomeScreenUIAction.ExpandQuote -> _screenState.update {
             it.copy(isQuotesDialogShown = true)

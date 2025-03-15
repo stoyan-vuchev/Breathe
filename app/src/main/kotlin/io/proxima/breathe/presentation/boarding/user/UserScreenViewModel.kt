@@ -89,6 +89,9 @@ class UserScreenViewModel @Inject constructor(
         }
     }
 
+
+
+
     private fun checkUsernameForFlaws() {
 
         val result = UsernameValidator.validateUsername(screenState.value.usernameText)
@@ -116,7 +119,7 @@ class UserScreenViewModel @Inject constructor(
             bedtimeHour = bedtimeHour,
             bedtimeMinute = bedtimeMinute,
             wakeUpHour = wakeUpHour,
-            wakeUpMinute = wakeUpMinute
+            wakeUpMinute = wakeUpMinute,
         )
 
         _screenState.update { currentState ->
@@ -129,7 +132,7 @@ class UserScreenViewModel @Inject constructor(
                 bedtimeHour = bedtimeHour,
                 bedtimeMinute = bedtimeMinute,
                 wakeUpHour = wakeUpHour,
-                wakeUpMinute = wakeUpMinute
+                wakeUpMinute = wakeUpMinute,
             )
         }
 
@@ -140,17 +143,21 @@ class UserScreenViewModel @Inject constructor(
         bedtimeHour: Int,
         bedtimeMinute: Int,
         wakeUpHour: Int,
-        wakeUpMinute: Int
+        wakeUpMinute: Int,
+
+
     ) {
 
         val bedtime = Pair(bedtimeHour, bedtimeMinute)
         val wakeUpTime = Pair(wakeUpHour, wakeUpMinute)
+
 
         viewModelScope.launch {
 
             withContext(Dispatchers.IO) { preferences.setUser(username) }
             withContext(Dispatchers.IO) { preferences.setUsualBedtime(bedtime) }
             withContext(Dispatchers.IO) { preferences.setUsualWakeUpTime(wakeUpTime) }
+
 
             _screenState.update { currentState ->
                 currentState.copy(

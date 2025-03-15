@@ -1,6 +1,8 @@
 package io.proxima.breathe.di
 
 import android.content.Context
+import androidx.room.Room
+import com.vishal2376.snaptick.domain.interactor.AppWidgetInteractor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +22,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
 
     @Provides
     @Singleton

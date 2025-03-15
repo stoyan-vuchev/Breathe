@@ -120,6 +120,8 @@ class AppPreferencesImpl @Inject constructor(
         }
     }
 
+
+
     //
 
     override suspend fun setHabitName(name: String) {
@@ -240,12 +242,21 @@ class AppPreferencesImpl @Inject constructor(
 
     //
 
+
+
+
+
+
+
+    ///////////////
+
     companion object {
 
         private val USER_KEY = stringPreferencesKey("user")
         private val SLEEP_GOAL_KEY = longPreferencesKey("sleep_goal")
         private val USUAL_BEDTIME_KEY = byteArrayPreferencesKey("usual_bedtime")
         private val USUAL_WAKE_UP_TIME_KEY = byteArrayPreferencesKey("usual_wake_up_time")
+        private val BREAK_TIME_KEY = byteArrayPreferencesKey("break_time")
 
         private val HABIT_NAME_KEY = stringPreferencesKey("habit_name")
         private val HABIT_QUOTE_KEY = stringPreferencesKey("habit_quote")

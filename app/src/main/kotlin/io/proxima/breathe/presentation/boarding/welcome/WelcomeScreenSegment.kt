@@ -27,12 +27,12 @@ sealed class WelcomeScreenSegment(
         colors = BreathDefaultColors
     )
 
-    data object TrackSleep : WelcomeScreenSegment(
-        title = R.string.welcome_screen_track_sleep_segment_title,
-        description = R.string.welcome_screen_track_sleep_segment_description,
-        icon = R.drawable.sleep,
-        colors = SleepColors
-    )
+//    data object TrackSleep : WelcomeScreenSegment(
+//        title = R.string.welcome_screen_track_sleep_segment_title,
+//        description = R.string.welcome_screen_track_sleep_segment_description,
+//        icon = R.drawable.sleep,
+//        colors = SleepColors
+//    )
 
     data object BreathExercises : WelcomeScreenSegment(
         title = R.string.welcome_screen_breath_exercises_segment_title,
@@ -48,18 +48,18 @@ sealed class WelcomeScreenSegment(
         colors = DreamyNightColors
     )
 
-    data object Puzzle : WelcomeScreenSegment(
-        title = R.string.welcome_screen_puzzle_segment_title,
-        description = R.string.welcome_screen_puzzle_segment_description,
-        icon = R.drawable.puzzle,
-        colors = MangoColors
-    )
+//    data object Puzzle : WelcomeScreenSegment(
+//        title = R.string.welcome_screen_puzzle_segment_title,
+//        description = R.string.welcome_screen_puzzle_segment_description,
+//        icon = R.drawable.puzzle,
+//        colors = MangoColors
+//    )
 
-    data object Privacy : WelcomeScreenSegment(
-        title = R.string.welcome_screen_privacy_segment_title,
-        description = R.string.welcome_screen_privacy_segment_description,
-        icon = R.drawable.privacy,
-        colors = SilverColors
-    )
+//    data object Privacy : WelcomeScreenSegment(
+//        title = R.string.welcome_screen_privacy_segment_title,
+//        description = R.string.welcome_screen_privacy_segment_description,
+//        icon = R.drawable.privacy,
+//        colors = SilverColors
+//    )
 
 }

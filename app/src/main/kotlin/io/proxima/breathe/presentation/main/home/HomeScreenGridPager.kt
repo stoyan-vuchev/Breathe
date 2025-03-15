@@ -100,6 +100,13 @@ fun HomeScreenGridPager(
                             background = R.drawable.zone,
                             onClick = { onUIAction(HomeScreenUIAction.NavigateToHabitControl()) }
                         )
+                        HomeScreenToggle(
+                            modifier = Modifier.weight(1f),
+                            icon = painterResource(id = R.drawable.nulltoggleoverlay),
+                            label = "Focus Assist",
+                            background = R.drawable.sleep,
+                            onClick = { onUIAction(HomeScreenUIAction.NavigateToPomodoro()) }
+                        )
                     }
                 }
                 /*1 -> Column(

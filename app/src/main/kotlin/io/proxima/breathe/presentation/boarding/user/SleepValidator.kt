@@ -15,7 +15,7 @@ object SleepValidator {
         bedtimeHour: Int,
         bedtimeMinute: Int,
         wakeUpHour: Int,
-        wakeUpMinute: Int
+        wakeUpMinute: Int,
     ): SleepValidationResult {
 
         val bedtime = bedtimeHour.hours + bedtimeMinute.minutes

@@ -1,6 +1,7 @@
 package io.proxima.breathe.presentation.boarding.user
 
 import androidx.compose.runtime.Stable
+import io.proxima.breathe.presentation.main.sleep.set_sleep_goal.SleepScreenSetSleepGoalUIComponentUIAction
 
 @Stable
 data class UserScreenState(
@@ -10,7 +11,7 @@ data class UserScreenState(
     val usernameValidationResult: UsernameValidationResult = UsernameValidationResult.ValidUsername,
     val bedtimeHour: Int = 22,
     val bedtimeMinute: Int = 0,
-    val wakeUpHour: Int = 8,
+    val wakeUpHour: Int = 6,
     val wakeUpMinute: Int = 0,
     val sleepValidationResult: SleepValidationResult = SleepValidationResult.ValidSleepDuration
 )

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ReadOnlyComposable
@@ -21,6 +23,33 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
+
+val DarkColorScheme = darkColorScheme(
+    primary = Blue,
+    onPrimary = Blue500,
+    background = Blue500,
+    onBackground = White500,
+    primaryContainer = Blue200,
+    onPrimaryContainer = LightGray,
+)
+
+val AmoledDarkColorScheme = darkColorScheme(
+    primary = Blue,
+    onPrimary = Blue500,
+    background = Black500,
+    onBackground = White500,
+    primaryContainer = Black200,
+    onPrimaryContainer = LightGray,
+)
+
+private val LightColorScheme = lightColorScheme(
+    primary = Blue,
+    onPrimary = Blue500,
+    background = White500,
+    onBackground = Black500,
+    primaryContainer = White200,
+    onPrimaryContainer = DarkGray,
+)
 
 @Composable
 fun BreathTheme(

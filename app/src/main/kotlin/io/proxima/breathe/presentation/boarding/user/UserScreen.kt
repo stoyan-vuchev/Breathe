@@ -339,6 +339,7 @@ fun UserScreen(
                                 is UserScreenSegment.UsualBedTime -> UserScreenUIAction.GoToWakeUpSegment
                                 is UserScreenSegment.UsualWakeUpTime -> UserScreenUIAction.GoToGreetSegment
                                 is UserScreenSegment.Greet -> UserScreenUIAction.GetStarted
+
                             }
                         )
                     }

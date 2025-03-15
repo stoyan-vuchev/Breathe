@@ -40,6 +40,9 @@ import io.proxima.breathe.presentation.main.habit.setup.HabitSetupScreenViewMode
 import io.proxima.breathe.presentation.main.home.HomeScreen
 import io.proxima.breathe.presentation.main.home.HomeScreenUIAction
 import io.proxima.breathe.presentation.main.home.HomeScreenViewModel
+import io.proxima.breathe.presentation.main.pomodoro.PomodoroScreen
+import io.proxima.breathe.presentation.main.pomodoro.PomodoroScreenUIAction
+import io.proxima.breathe.presentation.main.pomodoro.PomodoroViewModel
 import io.proxima.breathe.presentation.main.productivity.ProductivityScreenUIAction
 import io.proxima.breathe.presentation.main.productivity.ProductivityScreenViewModel
 import io.proxima.breathe.presentation.main.productivity.components.ProductivityScreen
@@ -108,6 +111,9 @@ fun NavGraphBuilder.mainNavigationGraph(
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
 
                             is HomeScreenUIAction.NavigateToMlAssist -> navController
+                                .navigateSingleTop(route = uiAction.route, inclusive = false)
+
+                            is HomeScreenUIAction.NavigateToPomodoro -> navController
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
 
                             else -> Unit
@@ -186,6 +192,29 @@ fun NavGraphBuilder.mainNavigationGraph(
 
             }
         )
+
+        composable(
+            route = MainNavigationDestinations.Pomodoro.route,
+            content = {
+                val viewModel = hiltViewModel<PomodoroViewModel>()
+
+                // Listen for UI actions (e.g., NavigateUp) and handle them.
+                LaunchedEffect(viewModel.uiActionFlow) {
+                    viewModel.uiActionFlow.collect { uiAction ->
+                        when (uiAction) {
+                            is PomodoroScreenUIAction.NavigateUp -> navController.navigateUp()
+                            else -> Unit
+                        }
+                    }
+                }
+
+                PomodoroScreen(
+                    onUIAction = viewModel::onUIAction
+                )
+            }
+        )
+
+
 
         composable(
             route = MainNavigationDestinations.Soundscape.route,
@@ -469,6 +498,8 @@ fun NavGraphBuilder.mainNavigationGraph(
 
             }
         )
+
+
 
     }
 
