@@ -5,8 +5,10 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -41,6 +43,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -68,24 +71,6 @@ fun UserScreen(
     var isScreenShown by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) { isScreenShown = true }
 
-    val gradientAlpha by animateFloatAsState(
-        targetValue = if (isScreenShown) 1f else 0f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessVeryLow
-        ),
-        label = ""
-    )
-
-    val background by rememberUpdatedState(
-        Brush.verticalGradient(
-            colors = listOf(
-                BreathTheme.colors.backgroundGradientStart.copy(gradientAlpha),
-                BreathTheme.colors.backgroundGradientEnd.copy(gradientAlpha)
-            )
-        )
-    )
-
     val tweaker = LocalSystemUIBarsTweaker.current
     DisposableEffect(key1 = tweaker) {
         tweaker.tweakSystemBarsStyle(
@@ -98,203 +83,128 @@ fun UserScreen(
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(background),
-        containerColor = Color.Unspecified,
-        contentColor = BreathTheme.colors.text
-    ) { insetsPadding ->
+    Box(modifier = Modifier.fillMaxSize()) {
+        // ✅ Add Background Image here
+        Image(
+            painter = painterResource(id = R.drawable.backgroundfakeblur), // Replace with your actual image
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(insetsPadding),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = Color.Transparent,
+            contentColor = Color.White
+        ) { insetsPadding ->
 
-            Spacer(modifier = Modifier.weight(1f))
-
-            Icon(
-                modifier = Modifier.size(48.dp),
-                painter = painterResource(id = screenState.currentSegment.icon),
-                contentDescription = null,
-                tint = BreathTheme.colors.text
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            Text(
+            Column(
                 modifier = Modifier
-                    .padding(horizontal = 32.dp)
-                    .animateContentSize(
-                        alignment = Alignment.BottomCenter,
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioNoBouncy,
-                            stiffness = Spring.StiffnessMediumLow
-                        )
-                    ),
-                text = if (screenState.currentSegment is UserScreenSegment.Greet) {
-                    stringResource(
-                        id = R.string.user_screen_greet_title,
-                        String.format("%s", screenState.username ?: "")
-                    )
-                } else screenState.currentSegment.title.asComposeString(),
-                style = BreathTheme.typography.headlineLarge,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(48.dp))
-
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = 32.dp)
-                    .animateContentSize(
-                        alignment = Alignment.BottomCenter,
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioNoBouncy,
-                            stiffness = Spring.StiffnessMediumLow
-                        )
-                    ),
-                text = screenState.currentSegment.description.asComposeString(),
-                style = BreathTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.weight(.5f))
-
-            AnimatedContent(
-                targetState = screenState.currentSegment is UserScreenSegment.Username,
-                label = ""
+                    .fillMaxSize()
+                    .padding(insetsPadding),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Spacer(modifier = Modifier.weight(1f))
 
-                if (it) {
-
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-
-                        TextField(
-                            modifier = Modifier
-                                .focusRequester(focusRequester)
-                                .padding(horizontal = 32.dp)
-                                .clip(SquircleShape())
-                                .background(BreathTheme.colors.card)
-                                .padding(horizontal = 6.dp)
-                                .animateContentSize(),
-                            value = screenState.usernameText,
-                            onValueChange = { newText ->
-                                onUIAction(UserScreenUIAction.SetUsernameText(newText))
-                            },
-                            colors = TextFieldDefaults.colors(
-                                focusedTextColor = BreathTheme.colors.text,
-                                unfocusedTextColor = BreathTheme.colors.text,
-                                focusedContainerColor = Color.Transparent,
-                                unfocusedContainerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = BreathTheme.colors.text,
-                                errorIndicatorColor = Color.Red,
-                                errorContainerColor = Color.Transparent,
-                            ),
-                            textStyle = BreathTheme.typography.bodyLarge,
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                imeAction = ImeAction.Done,
-                                keyboardType = KeyboardType.Text
-                            ),
-                            keyboardActions = KeyboardActions(
-                                onDone = {
-                                    focusManager.clearFocus()
-                                    keyboardController?.hide()
-                                }
-                            ),
-                            isError = screenState.usernameValidationResult
-                                    !is UsernameValidationResult.ValidUsername,
-                            singleLine = true,
-                            maxLines = 1
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Text(
-                            modifier = Modifier
-                                .padding(horizontal = 64.dp)
-                                .animateContentSize(
-                                    alignment = Alignment.BottomCenter,
-                                    animationSpec = spring(
-                                        dampingRatio = Spring.DampingRatioNoBouncy,
-                                        stiffness = Spring.StiffnessMediumLow
-                                    )
-                                ),
-                            text = screenState
-                                .usernameValidationResult
-                                .errorMessage?.let { msg ->
-                                    stringResource(id = msg)
-                                } ?: "",
-                            style = BreathTheme.typography.bodyMedium,
-                            color = Color.Red,
-                            textAlign = TextAlign.Center
-                        )
-
-                    }
-
-                }
-
-            }
-
-            val usualBedtimeInputState = rememberTimePickerState(
-                initialHour = screenState.bedtimeHour,
-                initialMinute = screenState.bedtimeMinute,
-            )
-
-            LaunchedEffect(
-                key1 = usualBedtimeInputState.hour,
-                key2 = usualBedtimeInputState.minute
-            ) {
-                onUIAction(
-                    UserScreenUIAction.SetBedtime(
-                        hour = usualBedtimeInputState.hour,
-                        minute = usualBedtimeInputState.minute
-                    )
+                Icon(
+                    modifier = Modifier.size(48.dp),
+                    painter = painterResource(id = screenState.currentSegment.icon),
+                    contentDescription = null,
+                    tint = Color.White
                 )
-            }
 
-            val usualWakeUpTimeInputState = rememberTimePickerState(
-                initialHour = screenState.wakeUpHour,
-                initialMinute = screenState.wakeUpMinute,
-            )
+                Spacer(modifier = Modifier.height(32.dp))
 
-            LaunchedEffect(
-                key1 = usualWakeUpTimeInputState.hour,
-                key2 = usualWakeUpTimeInputState.minute
-            ) {
-                onUIAction(
-                    UserScreenUIAction.SetWakeUp(
-                        hour = usualWakeUpTimeInputState.hour,
-                        minute = usualWakeUpTimeInputState.minute
-                    )
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 32.dp)
+                        .animateContentSize(
+                            alignment = Alignment.BottomCenter,
+                            animationSpec = spring(
+                                dampingRatio = Spring.DampingRatioNoBouncy,
+                                stiffness = Spring.StiffnessMediumLow
+                            )
+                        ),
+                    text = if (screenState.currentSegment is UserScreenSegment.Greet) {
+                        stringResource(
+                            id = R.string.user_screen_greet_title,
+                            String.format("%s", screenState.username ?: "")
+                        )
+                    } else screenState.currentSegment.title.asComposeString(),
+                    style = BreathTheme.typography.headlineLarge,
+                    textAlign = TextAlign.Center
                 )
-            }
 
-            AnimatedContent(
-                modifier = Modifier.fillMaxWidth(),
-                targetState = screenState.currentSegment,
-                label = ""
-            ) { currentSegment ->
+                Spacer(modifier = Modifier.height(48.dp))
 
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 32.dp)
+                        .animateContentSize(
+                            alignment = Alignment.BottomCenter,
+                            animationSpec = spring(
+                                dampingRatio = Spring.DampingRatioNoBouncy,
+                                stiffness = Spring.StiffnessMediumLow
+                            )
+                        ),
+                    text = screenState.currentSegment.description.asComposeString(),
+                    style = BreathTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.weight(.5f))
+
+                AnimatedContent(
+                    targetState = screenState.currentSegment is UserScreenSegment.Username,
+                    label = ""
                 ) {
 
-                    when (currentSegment) {
+                    if (it) {
 
-                        is UserScreenSegment.UsualBedTime -> TimeInput(usualBedtimeInputState)
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
 
-                        is UserScreenSegment.UsualWakeUpTime -> {
-
-                            TimeInput(state = usualWakeUpTimeInputState)
+                            TextField(
+                                modifier = Modifier
+                                    .focusRequester(focusRequester)
+                                    .padding(horizontal = 32.dp)
+                                    .clip(SquircleShape())
+                                    .background(BreathTheme.colors.card.copy(alpha = 0.3f))
+                                    .padding(horizontal = 6.dp)
+                                    .animateContentSize(),
+                                value = screenState.usernameText,
+                                onValueChange = { newText ->
+                                    onUIAction(UserScreenUIAction.SetUsernameText(newText))
+                                },
+                                colors = TextFieldDefaults.colors(
+                                    focusedTextColor = Color.White,
+                                    unfocusedTextColor = Color.White.copy(alpha = 0.8f),
+                                    focusedContainerColor = Color.Transparent.copy(alpha = 0f),
+                                    unfocusedContainerColor = Color.Transparent,
+                                    focusedIndicatorColor = Color.Transparent,
+                                    unfocusedIndicatorColor = Color.Transparent,
+                                    cursorColor = Color.White,
+                                    errorIndicatorColor = Color.Red,
+                                    errorContainerColor = Color.Transparent,
+                                ),
+                                textStyle = BreathTheme.typography.bodyLarge,
+                                keyboardOptions = KeyboardOptions.Default.copy(
+                                    imeAction = ImeAction.Done,
+                                    keyboardType = KeyboardType.Text
+                                ),
+                                keyboardActions = KeyboardActions(
+                                    onDone = {
+                                        focusManager.clearFocus()
+                                        keyboardController?.hide()
+                                    }
+                                ),
+                                isError = screenState.usernameValidationResult
+                                        !is UsernameValidationResult.ValidUsername,
+                                singleLine = true,
+                                maxLines = 1
+                            )
 
                             Spacer(modifier = Modifier.height(16.dp))
 
@@ -309,7 +219,7 @@ fun UserScreen(
                                         )
                                     ),
                                 text = screenState
-                                    .sleepValidationResult
+                                    .usernameValidationResult
                                     .errorMessage?.let { msg ->
                                         stringResource(id = msg)
                                     } ?: "",
@@ -320,66 +230,149 @@ fun UserScreen(
 
                         }
 
-                        else -> Unit
+                    }
+
+                }
+
+                val usualBedtimeInputState = rememberTimePickerState(
+                    initialHour = screenState.bedtimeHour,
+                    initialMinute = screenState.bedtimeMinute,
+                )
+
+                LaunchedEffect(
+                    key1 = usualBedtimeInputState.hour,
+                    key2 = usualBedtimeInputState.minute
+                ) {
+                    onUIAction(
+                        UserScreenUIAction.SetBedtime(
+                            hour = usualBedtimeInputState.hour,
+                            minute = usualBedtimeInputState.minute
+                        )
+                    )
+                }
+
+                val usualWakeUpTimeInputState = rememberTimePickerState(
+                    initialHour = screenState.wakeUpHour,
+                    initialMinute = screenState.wakeUpMinute,
+                )
+
+                LaunchedEffect(
+                    key1 = usualWakeUpTimeInputState.hour,
+                    key2 = usualWakeUpTimeInputState.minute
+                ) {
+                    onUIAction(
+                        UserScreenUIAction.SetWakeUp(
+                            hour = usualWakeUpTimeInputState.hour,
+                            minute = usualWakeUpTimeInputState.minute
+                        )
+                    )
+                }
+
+                AnimatedContent(
+                    modifier = Modifier.fillMaxWidth(),
+                    targetState = screenState.currentSegment,
+                    label = ""
+                ) { currentSegment ->
+
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        when (currentSegment) {
+
+                            is UserScreenSegment.UsualBedTime -> TimeInput(usualBedtimeInputState)
+
+                            is UserScreenSegment.UsualWakeUpTime -> {
+
+                                TimeInput(state = usualWakeUpTimeInputState)
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                Text(
+                                    modifier = Modifier
+                                        .padding(horizontal = 64.dp)
+                                        .animateContentSize(
+                                            alignment = Alignment.BottomCenter,
+                                            animationSpec = spring(
+                                                dampingRatio = Spring.DampingRatioNoBouncy,
+                                                stiffness = Spring.StiffnessMediumLow
+                                            )
+                                        ),
+                                    text = screenState
+                                        .sleepValidationResult
+                                        .errorMessage?.let { msg ->
+                                            stringResource(id = msg)
+                                        } ?: "",
+                                    style = BreathTheme.typography.bodyMedium,
+                                    color = Color.Red,
+                                    textAlign = TextAlign.Center
+                                )
+
+                            }
+
+                            else -> Unit
+
+                        }
 
                     }
 
                 }
 
-            }
+                Spacer(modifier = Modifier.weight(1f))
 
-            Spacer(modifier = Modifier.weight(1f))
+                UniqueButton(
+                    onClick = remember(screenState.currentSegment) {
+                        {
+                            onUIAction(
+                                when (screenState.currentSegment) {
+                                    is UserScreenSegment.Username -> UserScreenUIAction.GoToBedtimeSegment
+                                    is UserScreenSegment.UsualBedTime -> UserScreenUIAction.GoToWakeUpSegment
+                                    is UserScreenSegment.UsualWakeUpTime -> UserScreenUIAction.GoToGreetSegment
+                                    is UserScreenSegment.Greet -> UserScreenUIAction.GetStarted
 
-            UniqueButton(
-                onClick = remember(screenState.currentSegment) {
-                    {
-                        onUIAction(
-                            when (screenState.currentSegment) {
-                                is UserScreenSegment.Username -> UserScreenUIAction.GoToBedtimeSegment
-                                is UserScreenSegment.UsualBedTime -> UserScreenUIAction.GoToWakeUpSegment
-                                is UserScreenSegment.UsualWakeUpTime -> UserScreenUIAction.GoToGreetSegment
-                                is UserScreenSegment.Greet -> UserScreenUIAction.GetStarted
-
-                            }
-                        )
-                    }
-                },
-                content = {
-
-                    Text(
-                        modifier = Modifier.animateContentSize(
-                            alignment = Alignment.Center,
-                            animationSpec = spring(
-                                dampingRatio = Spring.DampingRatioNoBouncy,
-                                stiffness = Spring.StiffnessMediumLow
+                                }
                             )
-                        ),
-                        text = if (screenState.currentSegment == UserScreenSegment.Greet)
-                            "Get Started!" else "Next",
-                        style = BreathTheme.typography.labelLarge
+                        }
+                    },
+                    content = {
+
+                        Text(
+                            modifier = Modifier.animateContentSize(
+                                alignment = Alignment.Center,
+                                animationSpec = spring(
+                                    dampingRatio = Spring.DampingRatioNoBouncy,
+                                    stiffness = Spring.StiffnessMediumLow
+                                )
+                            ),
+                            text = if (screenState.currentSegment == UserScreenSegment.Greet)
+                                "Get Started!" else "Next",
+                            color = Color.White,
+                            style = BreathTheme.typography.labelLarge
+                        )
+
+                    },
+                    paddingValues = PaddingValues(
+                        horizontal = 48.dp,
+                        vertical = 12.dp
                     )
-
-                },
-                paddingValues = PaddingValues(
-                    horizontal = 48.dp,
-                    vertical = 12.dp
                 )
-            )
 
-            Spacer(modifier = Modifier.height(64.dp))
+                Spacer(modifier = Modifier.height(64.dp))
+
+            }
 
         }
 
     }
-
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun UserScreenPreview() = BreathTheme {
-    UserScreen(
-        screenState = UserScreenState(),
-        focusRequester = remember { FocusRequester() },
-        onUIAction = {}
-    )
-}
+    @Preview(showBackground = true)
+    @Composable
+    private fun UserScreenPreview() = BreathTheme {
+        UserScreen(
+            screenState = UserScreenState(),
+            focusRequester = remember { FocusRequester() },
+            onUIAction = {}
+        )
+    }

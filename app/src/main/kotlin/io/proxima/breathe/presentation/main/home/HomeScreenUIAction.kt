@@ -8,6 +8,9 @@ sealed interface HomeScreenUIAction {
 
     data object ExpandQuote : HomeScreenUIAction
     data object ShrinkQuote : HomeScreenUIAction
+    data object NavigateToExplore : HomeScreenUIAction
+
+
 
     data class NavigateToSleep(
         val route: String = MainNavigationDestinations.Sleep.route
@@ -40,4 +43,6 @@ sealed interface HomeScreenUIAction {
     data class NavigateToPomodoro(
         val route: String = MainNavigationDestinations.Pomodoro.route
     ) : HomeScreenUIAction
+
+
 }

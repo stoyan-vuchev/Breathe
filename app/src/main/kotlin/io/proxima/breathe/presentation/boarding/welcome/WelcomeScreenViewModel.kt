@@ -37,7 +37,9 @@ class WelcomeScreenViewModel @Inject constructor() : ViewModel() {
                         is WelcomeScreenSegment.Soundscape -> WelcomeScreenSegment.Puzzle
                         is WelcomeScreenSegment.Puzzle -> WelcomeScreenSegment.Privacy*/
                         is WelcomeScreenSegment.Welcome -> WelcomeScreenSegment.BreathExercises
-                        is WelcomeScreenSegment.BreathExercises -> WelcomeScreenSegment.Soundscape
+                        is WelcomeScreenSegment.BreathExercises -> WelcomeScreenSegment.Focus
+                        is WelcomeScreenSegment.Focus -> WelcomeScreenSegment.Soundscape
+                        is WelcomeScreenSegment.Soundscape -> WelcomeScreenSegment.Tasks
                         else -> segment
                     }
                 )

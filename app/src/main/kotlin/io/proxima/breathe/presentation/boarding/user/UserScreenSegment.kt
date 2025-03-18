@@ -33,7 +33,7 @@ sealed class UserScreenSegment(
     data object Greet : UserScreenSegment(
         title = UiString.StringResource(R.string.user_screen_greet_title),
         description = UiString.StringResource(R.string.user_screen_greet_description),
-        icon = R.drawable.happy_face
+        icon = R.drawable.trans_logo
     )
 
 

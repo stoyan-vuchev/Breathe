@@ -27,39 +27,35 @@ class SettingsScreenViewModel @Inject constructor(
     val snackBarFlow = _snackBarChannel.receiveAsFlow()
 
     fun onUIAction(uiAction: SettingsScreenUIAction) = when (uiAction) {
-
+        // Existing actions:
         is SettingsScreenUIAction.NavigateUp -> sendUIAction(uiAction)
-
         is SettingsScreenUIAction.Profile -> sendUIAction(uiAction)
         is SettingsScreenUIAction.Notifications -> sendUIAction(uiAction)
-
         is SettingsScreenUIAction.ShowDeleteDataDialog -> sendUIAction(uiAction)
         is SettingsScreenUIAction.DismissDeleteDataDialog -> sendUIAction(uiAction)
         is SettingsScreenUIAction.ConfirmDeleteData -> deleteData()
-
         is SettingsScreenUIAction.About -> sendUIAction(uiAction)
-
+        // New navigation actions from bottom nav:
+        is SettingsScreenUIAction.NavigateToHome -> sendUIAction(uiAction)
+        is SettingsScreenUIAction.NavigateToExplore -> sendUIAction(uiAction)
+        is SettingsScreenUIAction.NavigateToProfile -> sendUIAction(uiAction)
         else -> showSnackBar(
             msg = UiString.BasicString("Coming soon! :)")
         )
-
     }
 
     private fun deleteData() {
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) { appPreferences.deleteData() }
             when (result) {
-
                 is Result.Success -> {
                     appDatabase.sleepDao.deleteAllSleepData()
                         .also { appDatabase.quotesDao.deleteQuote() }
                         .also { sendUIAction(SettingsScreenUIAction.ConfirmDeleteData) }
                 }
-
                 is Result.Error -> showSnackBar(
                     result.error ?: UiString.BasicString("Something went wrong.")
                 )
-
             }
         }
     }
@@ -71,5 +67,4 @@ class SettingsScreenViewModel @Inject constructor(
     private fun showSnackBar(msg: UiString) {
         viewModelScope.launch { _snackBarChannel.send(msg) }
     }
-
 }

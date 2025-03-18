@@ -139,7 +139,7 @@ private fun Modifier.uniqueButtonModifier(
     .then(
         if (borderColor != null) Modifier.border(borderWidth, borderColor, shape) else Modifier
     )
-    .background(Color.White.copy(alpha = 0.5f))
+    .background(Color.White.copy(alpha = 0.3f))
     .then(otherModifier)
     .then(Modifier.padding(paddingValues))
 
@@ -173,8 +173,8 @@ object UniqueButtonDefaults {
      */
     val paddingValues: PaddingValues
         get() = PaddingValues(
-            horizontal = 24.dp,
-            vertical = 12.dp
+            horizontal = 22.dp,
+            vertical = 10.dp
         )
 
 }
@@ -220,7 +220,8 @@ private fun UniqueButtonPreview() = BreathTheme {
 
                     }
 
-                    Text(text = "Enabled Button")
+                    Text( text = "Enabled Button",
+                        color = Color.White)
                 }
             }
         )

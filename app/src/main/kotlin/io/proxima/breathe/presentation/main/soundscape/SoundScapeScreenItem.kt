@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -78,9 +79,9 @@ fun SoundScapeScreenItem(
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            BreathTheme.colors.secondarySoul.copy(.0f),
-                            BreathTheme.colors.secondarySoul.copy(.25f),
-                            BreathTheme.colors.secondarySoul.copy(.8f),
+                            Color.Black.copy(.0f),
+                            Color.Black.copy(.25f),
+                            Color.Black.copy(.8f),
                         )
                     )
                 )

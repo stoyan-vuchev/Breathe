@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -70,7 +71,7 @@ fun ProductivityScreenReminder(
                 }
             )
             .background(
-                color = BreathTheme.colors.card,
+                color = BreathTheme.colors.card.copy(alpha = 0.3f),
                 shape = shape
             )
             .padding(24.dp)
@@ -85,7 +86,7 @@ fun ProductivityScreenReminder(
                 modifier = Modifier.size(32.dp),
                 painter = icon,
                 contentDescription = null,
-                tint = BreathTheme.colors.text
+                tint = Color.Black
             )
 
             Spacer(modifier = Modifier.width(20.dp))
@@ -98,13 +99,13 @@ fun ProductivityScreenReminder(
                 Text(
                     text = label,
                     style = BreathTheme.typography.titleMedium,
-                    color = BreathTheme.colors.text
+                    color = Color.Black
                 )
 
                 Text(
                     text = description,
                     style = BreathTheme.typography.bodyMedium,
-                    color = BreathTheme.colors.text.copy(.86f)
+                    color = Color.Black
                 )
 
             }

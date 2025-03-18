@@ -28,15 +28,15 @@ fun LazyListScope.settingsScreenMainCategory(
             shape = SquircleShape(
                 topStart = 24.dp,
                 topEnd = 24.dp,
-                bottomEnd = 4.dp,
-                bottomStart = 4.dp
+                bottomEnd = 24.dp,
+                bottomStart = 24.dp
             ),
             icon = painterResource(id = R.drawable.smile),
             label = "Profile",
             onClick = { onUIAction(SettingsScreenUIAction.Profile) }
         )
 
-        Spacer(modifier = Modifier.height(1.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
     }
 
@@ -46,13 +46,13 @@ fun LazyListScope.settingsScreenMainCategory(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            shape = SquircleShape(4.dp),
+            shape = SquircleShape(24.dp),
             icon = painterResource(id = R.drawable.notification),
             label = "Notifications",
             onClick = { onUIAction(SettingsScreenUIAction.Notifications) }
         )
 
-        Spacer(modifier = Modifier.height(1.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
     }
 
@@ -73,6 +73,7 @@ fun LazyListScope.settingsScreenMainCategory(
 //
 //    }
 
+
     item(key = "main_delete_data_item") {
 
         SettingsScreenCategoryItem(
@@ -80,8 +81,8 @@ fun LazyListScope.settingsScreenMainCategory(
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             shape = SquircleShape(
-                topStart = 4.dp,
-                topEnd = 4.dp,
+                topStart = 24.dp,
+                topEnd = 24.dp,
                 bottomEnd = 24.dp,
                 bottomStart = 24.dp
             ),

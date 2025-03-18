@@ -36,7 +36,7 @@ class QuotesRepositoryImpl @Inject constructor(
         quotesAPI.getDailyQuote().body()?.first()?.let {
             quotesDao.deleteQuote()
             quotesDao.insertQuote(it.toEntity())
-        }
+        } ?: Unit
 
         return quotesDao.getQuote() ?: QuoteEntity.Default
 

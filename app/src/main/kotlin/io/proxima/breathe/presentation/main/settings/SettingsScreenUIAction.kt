@@ -17,4 +17,10 @@ sealed interface SettingsScreenUIAction {
     data object Themes : SettingsScreenUIAction
     data object About : SettingsScreenUIAction
 
+    data object NavigateToHome : SettingsScreenUIAction
+    data object NavigateToExplore : SettingsScreenUIAction
+    data object NavigateToProfile : SettingsScreenUIAction
+
+
+
 }

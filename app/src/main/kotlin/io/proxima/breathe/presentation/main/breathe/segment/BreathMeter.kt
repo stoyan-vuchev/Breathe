@@ -29,14 +29,14 @@ import sv.lib.squircleshape.drawSquircle
 fun BreathMeter(
     modifier: Modifier = Modifier,
     segmentState: BreatheScreenSegmentState,
-    emptyLineColor: Color = BreathTheme.colors.background,
+    emptyLineColor: Color = BreathTheme.colors.background.copy(alpha = 0.3f),
     expandedLineColor: Color = Color.Black.copy(.16f)
         .compositeOver(BreathTheme.colors.secondarySoul),
     shrunkLineColor: Color = Color.Black.copy(.32f)
         .compositeOver(BreathTheme.colors.secondarySoul),
 ) {
 
-    val textStyle = BreathTheme.typography.labelMedium.copy(color = BreathTheme.colors.text)
+    val textStyle = BreathTheme.typography.labelMedium.copy(color = Color.White)
     val fontFamilyResolver = LocalFontFamilyResolver.current
     val density = LocalDensity.current
 

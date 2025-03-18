@@ -38,7 +38,7 @@ dataStore = "1.1.1"
 room = "2.6.1"
 
 # Dependency Injection Lib Versions
-daggerHilt = "2.51"
+daggerHilt = "2.55"
 androidxHiltNavigationCompose = "1.2.0"
 androidxHiltWork = "1.2.0"
 androidxHiltCompiler = "1.2.0"

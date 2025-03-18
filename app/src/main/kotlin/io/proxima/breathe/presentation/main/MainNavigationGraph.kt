@@ -5,6 +5,7 @@ import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +31,9 @@ import io.proxima.breathe.core.ui.theme.ZoneColors
 import io.proxima.breathe.presentation.main.breathe.BreatheScreen
 import io.proxima.breathe.presentation.main.breathe.BreatheScreenUIAction
 import io.proxima.breathe.presentation.main.breathe.BreatheScreenViewModel
+import io.proxima.breathe.presentation.main.explore.ExploreScreen
+import io.proxima.breathe.presentation.main.explore.ExploreScreenUIAction
+import io.proxima.breathe.presentation.main.explore.ExploreScreenViewModel
 import io.proxima.breathe.presentation.main.habit.checkpoint.HabitCheckpointScreen
 import io.proxima.breathe.presentation.main.habit.checkpoint.HabitCheckpointScreenSegment
 import io.proxima.breathe.presentation.main.habit.checkpoint.HabitCheckpointScreenViewModel
@@ -107,14 +111,20 @@ fun NavGraphBuilder.mainNavigationGraph(
                             is HomeScreenUIAction.NavigateToProductivity -> navController
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
 
-                            is HomeScreenUIAction.NavigateToSettings -> navController
-                                .navigateSingleTop(route = uiAction.route, inclusive = false)
+//                            is HomeScreenUIAction.NavigateToSettings -> navController
+//                                .navigateSingleTop(route = uiAction.route, inclusive = false)
 
                             is HomeScreenUIAction.NavigateToMlAssist -> navController
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
 
                             is HomeScreenUIAction.NavigateToPomodoro -> navController
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
+                            is HomeScreenUIAction.NavigateToExplore -> navController
+                                .navigateSingleTop(route = MainNavigationDestinations.Explore.route, inclusive = false)
+
+                            is HomeScreenUIAction.NavigateToSettings ->
+                                navController.navigateSingleTop(route = uiAction.route, inclusive = false)
+
 
                             else -> Unit
 
@@ -165,6 +175,49 @@ fun NavGraphBuilder.mainNavigationGraph(
             }
         )
 
+
+        composable(
+            route = MainNavigationDestinations.Explore.route,
+            content = {
+                val viewModel = hiltViewModel<ExploreScreenViewModel>()
+                val snackBarHostState = remember { SnackbarHostState() }
+
+                LaunchedEffect(viewModel.uiActionFlow) {
+                    viewModel.uiActionFlow.collectLatest { uiAction ->
+                        when (uiAction) {
+                            is ExploreScreenUIAction.NavigateToHome ->
+                                navController.navigateSingleTop(route = MainNavigationDestinations.Home.route)
+
+                            is ExploreScreenUIAction.NavigateToSettings ->
+                                navController.navigateSingleTop(route = MainNavigationDestinations.Settings.route)
+                            is ExploreScreenUIAction.NavigateToSleep ->
+                                navController.navigateSingleTop(route = MainNavigationDestinations.Sleep.route)
+                            is ExploreScreenUIAction.NavigateToBreathe ->
+                                navController.navigateSingleTop(route = MainNavigationDestinations.Breathe.route)
+                            is ExploreScreenUIAction.NavigateToSoundscape ->
+                                navController.navigateSingleTop(route = MainNavigationDestinations.Soundscape.route)
+                            is ExploreScreenUIAction.NavigateToHabitControl ->
+                                navController.navigateSingleTop(route = MainNavigationDestinations.HabitControlSetup.route)
+                            is ExploreScreenUIAction.NavigateToProductivity ->
+                                navController.navigateSingleTop(route = MainNavigationDestinations.Productivity.route)
+                            is ExploreScreenUIAction.NavigateToMlAssist ->
+                                navController.navigateSingleTop(route = MainNavigationDestinations.MlAssist.route)
+                            is ExploreScreenUIAction.NavigateToPomodoro ->
+                                navController.navigateSingleTop(route = MainNavigationDestinations.Pomodoro.route)
+                            else -> Unit
+                        }
+                    }
+                }
+
+                ExploreScreen(
+                    snackBarHostState = snackBarHostState,
+                    onUIAction = viewModel::onUIAction
+                )
+            }
+        )
+
+
+
         composable(
             route = MainNavigationDestinations.Breathe.route,
             content = {
@@ -213,6 +266,32 @@ fun NavGraphBuilder.mainNavigationGraph(
                 )
             }
         )
+
+//        composable(
+//            route = MainNavigationDestinations.Home.route,
+//            content = {
+//                val viewModel = hiltViewModel<HomeScreenViewModel>()
+//                val screenState by viewModel.screenState.collectAsState()
+//
+//                LaunchedEffect(viewModel.uiActionFlow) {
+//                    viewModel.uiActionFlow.collectLatest { uiAction ->
+//                        when (uiAction) {
+//                            is HomeScreenUIAction.NavigateToSettings ->
+//                                navController.navigateSingleTop(route = uiAction.route, inclusive = false)
+//                            is HomeScreenUIAction.NavigateToExplore ->
+//                                navController.navigateSingleTop(route = MainNavigationDestinations.Explore.route, inclusive = false)
+//                            else -> Unit
+//                        }
+//                    }
+//                }
+//
+//                HomeScreen(
+//                    screenState = screenState,
+//                    snackBarHostState = remember { SnackbarHostState() },
+//                    onUIAction = viewModel::onUIAction
+//                )
+//            }
+//        )
 
 
 
@@ -398,15 +477,12 @@ fun NavGraphBuilder.mainNavigationGraph(
                             is SettingsScreenUIAction.Notifications -> {
                                 Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                                     .apply {
-                                        putExtra(
-                                            Settings.EXTRA_APP_PACKAGE,
-                                            context.packageName
-                                        )
+                                        putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
                                     }.also { context.startActivity(it) }
                             }
 
-                            is ShowDeleteDataDialog -> isDeleteDataDialogVisible = true
-                            is DismissDeleteDataDialog -> isDeleteDataDialogVisible = false
+                            is SettingsScreenUIAction.ShowDeleteDataDialog -> isDeleteDataDialogVisible = true
+                            is SettingsScreenUIAction.DismissDeleteDataDialog -> isDeleteDataDialogVisible = false
                             is SettingsScreenUIAction.ConfirmDeleteData -> onRecreateActivity()
 
                             is SettingsScreenUIAction.About -> {
@@ -417,6 +493,28 @@ fun NavGraphBuilder.mainNavigationGraph(
                                 )
                             }
 
+                            // New cases for bottom navigation from Settings
+                            is SettingsScreenUIAction.NavigateToHome -> {
+                                navController.navigateSingleTop(
+                                    route = MainNavigationDestinations.Home.route,
+                                    popUpTo = MainNavigationDestinations.Settings.route,
+                                    inclusive = false
+                                )
+                            }
+                            is SettingsScreenUIAction.NavigateToExplore -> {
+                                navController.navigateSingleTop(
+                                    route = MainNavigationDestinations.Explore.route,
+                                    popUpTo = MainNavigationDestinations.Settings.route,
+                                    inclusive = false
+                                )
+                            }
+                            is SettingsScreenUIAction.NavigateToProfile -> {
+                                navController.navigateSingleTop(
+                                    route = MainNavigationDestinations.Profile.route,
+                                    popUpTo = MainNavigationDestinations.Settings.route,
+                                    inclusive = false
+                                )
+                            }
                             else -> Unit
 
                         }

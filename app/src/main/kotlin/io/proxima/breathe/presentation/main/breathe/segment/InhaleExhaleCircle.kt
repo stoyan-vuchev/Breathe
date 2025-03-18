@@ -25,12 +25,12 @@ import io.proxima.breathe.core.ui.theme.BreathTheme
 fun InhaleExhaleCircle(
     modifier: Modifier = Modifier,
     segmentState: BreatheScreenSegmentState,
-    circleColor: Color = Color(0xFFF8EDA2),
+    circleColor: Color = Color(0xFFFFFFFF).copy(alpha = 0.3f),
 ) {
 
     val text by rememberUpdatedState(stringResource(id = segmentState.phase.label))
     val textStyle = BreathTheme.typography.titleMedium.copy(
-        color = BreathTheme.colors.text,
+        color = Color.White,
         textAlign = TextAlign.Center
     )
 

@@ -78,6 +78,10 @@ import io.proxima.breathe.core.ui.theme.ProvideBreathColors
 import io.proxima.breathe.core.ui.theme.backgroundBrush
 import io.proxima.breathe.domain.model.soundScapeItemsList
 import sv.lib.squircleshape.SquircleShape
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+
+
 
 @OptIn(UnstableApi::class)
 @Composable
@@ -112,216 +116,226 @@ fun SoundScapeScreen(
     DisposableEffect(Unit) {
         onDispose { onUIAction(SoundscapeUIAction.PausePlayback) }
     }
+    Box(modifier = Modifier.fillMaxSize()) {
 
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(BreathTheme.colors.backgroundBrush()),
-        containerColor = Color.Unspecified,
-        topBar = {
-
-            BasicTopBar(
-                modifier = Modifier.hazeChild(
-                    state = hazeState,
-                    style = HazeStyle(
-                        tint = BreathTheme.colors.backgroundGradientStart.copy(topBarBgAlpha),
-                        blurRadius = 20.dp
-                    )
-                ),
-                titleText = "Soundscape",
-                scrollBehavior = scrollBehavior,
-                navigationIcon = {
-
-                    IconButton(
-                        onClick = { onUIAction(SoundscapeUIAction.NavigateUp) }
-                    ) {
-
-                        Icon(
-                            modifier = Modifier.size(32.dp),
-                            imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
-                            contentDescription = "Navigate back to Home."
-                        )
-
-                    }
-
-                },
-                backgroundColor = BreathTheme.colors.backgroundGradientStart.copy(topBarBgAlpha)
-            )
-
-        },
-    ) { insetsPadding ->
-
-        Box(
+        Image(
+            painter = painterResource(id = R.drawable.soundscape_background),  // Replace with your image
+            contentDescription = "Background Image",
+            contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
-        ) {
+        )
 
-            LazyVerticalGrid(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-                    .haze(hazeState)
-                    .nestedScroll(scrollBehavior.nestedScrollConnection),
-                columns = GridCells.Fixed(2),
-                contentPadding = insetsPadding,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BreathTheme.colors.backgroundBrush()),
+            containerColor = Color.Unspecified,
+            topBar = {
 
-                item(
-                    key = "item_top_spacer",
-                    span = { GridItemSpan(2) },
-                    content = { Spacer(modifier = Modifier.height(8.dp)) }
-                )
-
-                items(
-                    items = soundScapeItemsList,
-                    key = { "item_${it.id}" },
-                    itemContent = { soundscapeItem ->
-
-                        val isItemPlaying by rememberUpdatedState(
-                            currentlyPlaying == soundscapeItem.audioSrc
-                                    && screenState.isPlaying
+                BasicTopBar(
+                    modifier = Modifier.hazeChild(
+                        state = hazeState,
+                        style = HazeStyle(
+                            tint = BreathTheme.colors.backgroundGradientStart.copy(topBarBgAlpha),
+                            blurRadius = 20.dp
                         )
+                    ),
+                    titleText = "Soundscape",
+                    scrollBehavior = scrollBehavior,
+                    navigationIcon = {
 
-                        SoundScapeScreenItem(
-                            soundscapeItem = soundscapeItem,
-                            isPlaying = isItemPlaying,
-                            onUIAction = onUIAction
-                        )
-
-                    }
-                )
-
-                item(
-                    key = "item_bottom_spacer",
-                    span = { GridItemSpan(2) },
-                    content = { Spacer(modifier = Modifier.height(150.dp)) }
-                )
-
-            }
-
-            AnimatedVisibility(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(256.dp)
-                    .align(Alignment.BottomCenter),
-                visible = screenState.isPlaying,
-                enter = slideInVertically(
-                    animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioLowBouncy,
-                        stiffness = Spring.StiffnessLow
-                    )
-                ) { it } + fadeIn() + scaleIn(initialScale = .5f),
-                exit = slideOutVertically(
-                    animationSpec = tween()
-                ) { it } + fadeOut() + scaleOut(targetScale = .5f),
-                label = ""
-            ) {
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-
-                    Column(
-                        modifier = Modifier
-                            .navigationBarsPadding()
-                            .padding(bottom = 32.dp)
-                            .padding(horizontal = 32.dp)
-                            .shadow(
-                                elevation = 12.dp,
-                                shape = RoundedCornerShape(100),
-                                ambientColor = BreathTheme.colors.secondarySoul,
-                                spotColor = BreathTheme.colors.secondarySoul,
-                                clip = false
-                            )
-                            .border(
-                                color = BreathTheme.colors.secondarySoul.copy(.33f),
-                                shape = RoundedCornerShape(100),
-                                width = 1.dp
-                            )
-                            .clip(RoundedCornerShape(100))
-                            .background(BreathTheme.colors.card)
-                            .padding(12.dp)
-                            .align(Alignment.BottomCenter)
-                    ) {
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(32.dp)
+                        IconButton(
+                            onClick = { onUIAction(SoundscapeUIAction.NavigateUp) }
                         ) {
 
-                            AnimatedContent(
-                                targetState = screenState.currentMediaItem?.mediaMetadata?.artworkUri,
-                                label = ""
-                            ) { uri ->
+                            Icon(
+                                modifier = Modifier.size(32.dp),
+                                imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
+                                contentDescription = "Navigate back to Home."
+                            )
 
-                                AsyncImage(
-                                    modifier = Modifier
-                                        .size(80.dp)
-                                        .clip(CircleShape)
-                                        .border(
-                                            color = BreathTheme.colors.secondarySoul.copy(.5f),
-                                            shape = CircleShape,
-                                            width = 1.dp
-                                        ),
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(uri)
-                                        .crossfade(true)
-                                        .build(),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop
+                        }
+
+                    },
+                    backgroundColor = BreathTheme.colors.backgroundGradientStart.copy(topBarBgAlpha)
+                )
+
+            },
+        ) { insetsPadding ->
+
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+
+                LazyVerticalGrid(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                        .haze(hazeState)
+                        .nestedScroll(scrollBehavior.nestedScrollConnection),
+                    columns = GridCells.Fixed(2),
+                    contentPadding = insetsPadding,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+
+                    item(
+                        key = "item_top_spacer",
+                        span = { GridItemSpan(2) },
+                        content = { Spacer(modifier = Modifier.height(8.dp)) }
+                    )
+
+                    items(
+                        items = soundScapeItemsList,
+                        key = { "item_${it.id}" },
+                        itemContent = { soundscapeItem ->
+
+                            val isItemPlaying by rememberUpdatedState(
+                                currentlyPlaying == soundscapeItem.audioSrc
+                                        && screenState.isPlaying
+                            )
+
+                            SoundScapeScreenItem(
+                                soundscapeItem = soundscapeItem,
+                                isPlaying = isItemPlaying,
+                                onUIAction = onUIAction
+                            )
+
+                        }
+                    )
+
+                    item(
+                        key = "item_bottom_spacer",
+                        span = { GridItemSpan(2) },
+                        content = { Spacer(modifier = Modifier.height(150.dp)) }
+                    )
+
+                }
+
+                AnimatedVisibility(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(256.dp)
+                        .align(Alignment.BottomCenter),
+                    visible = screenState.isPlaying,
+                    enter = slideInVertically(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioLowBouncy,
+                            stiffness = Spring.StiffnessLow
+                        )
+                    ) { it } + fadeIn() + scaleIn(initialScale = .5f),
+                    exit = slideOutVertically(
+                        animationSpec = tween()
+                    ) { it } + fadeOut() + scaleOut(targetScale = .5f),
+                    label = ""
+                ) {
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+
+                        Column(
+                            modifier = Modifier
+                                .navigationBarsPadding()
+                                .padding(bottom = 32.dp)
+                                .padding(horizontal = 32.dp)
+                                .shadow(
+                                    elevation = 12.dp,
+                                    shape = RoundedCornerShape(100),
+                                    ambientColor = BreathTheme.colors.secondarySoul,
+                                    spotColor = BreathTheme.colors.secondarySoul,
+                                    clip = false
                                 )
-
-                            }
-
-                            AnimatedContent(
-                                targetState = screenState.currentMediaItem?.mediaMetadata?.title,
-                                label = ""
-                            ) { title ->
-
-                                Text(
-                                    modifier = Modifier.width(IntrinsicSize.Min),
-                                    text = title?.toString() ?: "Playing Now",
-                                    style = BreathTheme.typography.labelLarge,
-                                    color = BreathTheme.colors.text,
-                                    textAlign = TextAlign.Start
+                                .border(
+                                    color = BreathTheme.colors.secondarySoul.copy(.33f),
+                                    shape = RoundedCornerShape(100),
+                                    width = 1.dp
                                 )
+                                .clip(RoundedCornerShape(100))
+                                .background(BreathTheme.colors.card)
+                                .padding(12.dp)
+                                .align(Alignment.BottomCenter)
+                        ) {
 
-                            }
-
-                            Box(
-                                modifier = Modifier
-                                    .padding(end = 16.dp)
-                                    .size(48.dp)
-                                    .clickable(
-                                        indication = rememberBreathRipple(),
-                                        interactionSource = remember { MutableInteractionSource() },
-                                        onClick = {
-                                            if (screenState.isPlaying) {
-                                                onUIAction(SoundscapeUIAction.PausePlayback)
-                                            } else SoundscapeUIAction.PlayOrPauseSound(
-                                                currentlyPlaying
-                                            )
-                                        }
-                                    )
-                                    .clip(SquircleShape(24.dp))
-                                    .background(BreathTheme.colors.secondarySoul),
-                                contentAlignment = Alignment.Center
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(32.dp)
                             ) {
 
-                                AsyncImage(
-                                    modifier = Modifier.size(32.dp),
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(
-                                            if (screenState.isPlaying) R.drawable.round_pause_24
-                                            else R.drawable.round_play_arrow_24
+                                AnimatedContent(
+                                    targetState = screenState.currentMediaItem?.mediaMetadata?.artworkUri,
+                                    label = ""
+                                ) { uri ->
+
+                                    AsyncImage(
+                                        modifier = Modifier
+                                            .size(80.dp)
+                                            .clip(CircleShape)
+                                            .border(
+                                                color = BreathTheme.colors.secondarySoul.copy(.5f),
+                                                shape = CircleShape,
+                                                width = 1.dp
+                                            ),
+                                        model = ImageRequest.Builder(LocalContext.current)
+                                            .data(uri)
+                                            .crossfade(true)
+                                            .build(),
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Crop
+                                    )
+
+                                }
+
+                                AnimatedContent(
+                                    targetState = screenState.currentMediaItem?.mediaMetadata?.title,
+                                    label = ""
+                                ) { title ->
+
+                                    Text(
+                                        modifier = Modifier.width(IntrinsicSize.Min),
+                                        text = title?.toString() ?: "Playing Now",
+                                        style = BreathTheme.typography.labelLarge,
+                                        color = BreathTheme.colors.text,
+                                        textAlign = TextAlign.Start
+                                    )
+
+                                }
+
+                                Box(
+                                    modifier = Modifier
+                                        .padding(end = 16.dp)
+                                        .size(48.dp)
+                                        .clickable(
+                                            indication = rememberBreathRipple(),
+                                            interactionSource = remember { MutableInteractionSource() },
+                                            onClick = {
+                                                if (screenState.isPlaying) {
+                                                    onUIAction(SoundscapeUIAction.PausePlayback)
+                                                } else SoundscapeUIAction.PlayOrPauseSound(
+                                                    currentlyPlaying
+                                                )
+                                            }
                                         )
-                                        .crossfade(true)
-                                        .build(),
-                                    contentDescription = null,
-                                    colorFilter = ColorFilter.tint(BreathTheme.colors.background)
-                                )
+                                        .clip(SquircleShape(24.dp))
+                                        .background(BreathTheme.colors.secondarySoul),
+                                    contentAlignment = Alignment.Center
+                                ) {
+
+                                    AsyncImage(
+                                        modifier = Modifier.size(32.dp),
+                                        model = ImageRequest.Builder(LocalContext.current)
+                                            .data(
+                                                if (screenState.isPlaying) R.drawable.round_pause_24
+                                                else R.drawable.round_play_arrow_24
+                                            )
+                                            .crossfade(true)
+                                            .build(),
+                                        contentDescription = null,
+                                        colorFilter = ColorFilter.tint(BreathTheme.colors.background)
+                                    )
+
+                                }
 
                             }
 
@@ -336,9 +350,7 @@ fun SoundScapeScreen(
         }
 
     }
-
 }
-
 @Preview
 @Composable
 private fun SoundScapeScreenPreview() = BreathTheme {

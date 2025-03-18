@@ -28,12 +28,12 @@ fun SettingsScreenCategoryItem(
     shape: Shape = SquircleShape(24.dp),
     icon: Painter,
     label: String,
-    textColor: Color = BreathTheme.colors.text,
+    textColor: Color = Color.White,
     onClick: () -> Unit
 ) = Row(
     modifier = modifier
         .clip(shape)
-        .background(BreathTheme.colors.card)
+        .background(BreathTheme.colors.card.copy(alpha = 0.2f))
         .clickable(
             interactionSource = remember { MutableInteractionSource() },
             indication = rememberBreathRipple(),

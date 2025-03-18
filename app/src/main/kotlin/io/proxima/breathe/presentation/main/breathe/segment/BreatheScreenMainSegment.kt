@@ -73,11 +73,11 @@ fun BreatheScreenMainSegment(
             .background(BreathTheme.colors.background.copy(bgAlpha))
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = Color.Unspecified,
-        contentColor = BreathTheme.colors.text,
+        contentColor = Color.White,
         topBar = {
 
             BasicTopBar(
-                titleText = "Breathe",
+                titleText = "Mindfulness",
                 scrollBehavior = scrollBehavior,
                 navigationIcon = {
 
@@ -114,7 +114,7 @@ fun BreatheScreenMainSegment(
                     modifier = Modifier
                         .padding(horizontal = 72.dp)
                         .fillMaxWidth(),
-                    color = BreathTheme.colors.text
+                    color = Color.White
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))
@@ -123,7 +123,7 @@ fun BreatheScreenMainSegment(
                     modifier = Modifier
                         .padding(horizontal = 32.dp)
                         .fillMaxWidth(),
-                    text = "Enter your preferred breathe mode if you are ready",
+                    text = "Enter the desired mindfulness mode if you are ready",
                     style = BreathTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center
                 )
@@ -165,8 +165,8 @@ private fun LazyListScope.breatheSegmentsListItem(
 
         BreatheScreenSegmentItem(
             icon = painterResource(id = R.drawable.hr_high),
-            label = "Alert Mode (High HR)",
-            description = "Increases alertness, feeling sleepy but need to keep awake.",
+            label = "Feel Energetic",
+            description = "Increases alertness, energize the body and clear the mind.",
             onClick = {
 
                 onUIAction(
@@ -184,8 +184,8 @@ private fun LazyListScope.breatheSegmentsListItem(
 
         BreatheScreenSegmentItem(
             icon = painterResource(id = R.drawable.hr_low),
-            label = "Calm Mode (Low HR)",
-            description = "Helps to decrease stress  quickly",
+            label = "Physiological sigh",
+            description = "Helps to decrease stress rapidly and reset your body, The double inhale helps inflate the tiny sacs in your lungs optimizing oxygen intake",
             onClick = {
 
                 onUIAction(
@@ -228,7 +228,7 @@ private fun BreatheScreenSegmentItem(
             modifier = Modifier
                 .size(64.dp)
                 .background(
-                    color = BreathTheme.colors.card,
+                    color = BreathTheme.colors.card.copy(alpha = 0.3f),
                     shape = SquircleShape(24.dp)
                 ),
             contentAlignment = Alignment.Center
@@ -259,7 +259,7 @@ private fun BreatheScreenSegmentItem(
             Text(
                 text = description,
                 style = BreathTheme.typography.bodyMedium,
-                color = BreathTheme.colors.text.copy(.86f)
+                color = Color.White
             )
 
         }

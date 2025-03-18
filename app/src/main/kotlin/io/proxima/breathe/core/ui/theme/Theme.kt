@@ -15,6 +15,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.stoyanvuchev.systemuibarstweaker.LocalSystemUIBarsTweaker
 import com.stoyanvuchev.systemuibarstweaker.ProvideSystemUIBarsTweaker
@@ -23,6 +24,8 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
+
+
 
 val DarkColorScheme = darkColorScheme(
     primary = Blue,
@@ -62,11 +65,11 @@ fun BreathTheme(
     DisposableEffect(tweaker) {
         tweaker.tweakSystemBarsStyle(
             statusBarStyle = tweaker.statusBarStyle.copy(
-                darkIcons = true,
+                darkIcons = false,
                 scrimStyle = ScrimStyle.None
             ),
             navigationBarStyle = tweaker.navigationBarStyle.copy(
-                darkIcons = true,
+                darkIcons = false,
                 scrimStyle = ScrimStyle.None
             )
         )
@@ -95,14 +98,14 @@ fun BreathTheme(
                     .hazeChild(
                         state = hazeState,
                         style = HazeStyle(
-                            blurRadius = 20.dp
+                            blurRadius = 20.dp,
+                            tint = Color.Transparent,
                         )
                     )
             ) {
-
                 Spacer(modifier = Modifier.navigationBarsPadding())
-
             }
+
 
         }
 

@@ -23,7 +23,7 @@ sealed class WelcomeScreenSegment(
     data object Welcome : WelcomeScreenSegment(
         title = R.string.welcome_screen_welcome_segment_title,
         description = R.string.welcome_screen_welcome_segment_description,
-        icon = R.drawable.splash_logo,
+        icon = R.drawable.trans_logo,
         colors = BreathDefaultColors
     )
 
@@ -37,16 +37,33 @@ sealed class WelcomeScreenSegment(
     data object BreathExercises : WelcomeScreenSegment(
         title = R.string.welcome_screen_breath_exercises_segment_title,
         description = R.string.welcome_screen_breath_exercises_segment_description,
-        icon = R.drawable.leaf,
+        icon = R.drawable.hr_icon_svg,
         colors = MelonColors
     )
 
     data object Soundscape : WelcomeScreenSegment(
         title = R.string.welcome_screen_soundscape_segment_title,
         description = R.string.welcome_screen_soundscape_segment_description,
-        icon = R.drawable.sound_wave,
+        icon = R.drawable.emotion_icon_svg,
         colors = DreamyNightColors
     )
+
+    data object Focus : WelcomeScreenSegment(
+        title = R.string.welcome_screen_focus_segment_title,
+        description = R.string.welcome_screen_focus_segment_description,
+        icon = R.drawable.focus_icon_svg,
+        colors = DreamyNightColors
+    )
+
+    data object Tasks : WelcomeScreenSegment(
+        title = R.string.welcome_screen_task_segment_title,
+        description = R.string.welcome_screen_task_segment_description,
+        icon = R.drawable.task_icon_svg,
+        colors = DreamyNightColors
+    )
+
+
+
 
 //    data object Puzzle : WelcomeScreenSegment(
 //        title = R.string.welcome_screen_puzzle_segment_title,

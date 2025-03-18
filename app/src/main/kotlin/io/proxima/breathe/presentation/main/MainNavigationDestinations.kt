@@ -24,6 +24,9 @@ sealed class MainNavigationDestinations(
 
     data object Pomodoro : MainNavigationDestinations("main_pomodoro_screen")
 
+    data object Explore : MainNavigationDestinations("main_explore_screen")
+    data object Profile : MainNavigationDestinations("main_profile_screen")
+
     companion object {
         const val NAV_ROUTE = "main_navigation"
     }
