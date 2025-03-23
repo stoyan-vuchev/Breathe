@@ -19,7 +19,7 @@ fun LazyListScope.settingsScreenMainCategory(
 
     item(key = "main_profile_item") {
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(250.dp))
 
         SettingsScreenCategoryItem(
             modifier = Modifier

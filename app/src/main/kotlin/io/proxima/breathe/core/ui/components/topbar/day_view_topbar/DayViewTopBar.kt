@@ -4,40 +4,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.ProvideTextStyle
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.lerp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.proxima.breathe.core.etc.Result
 import io.proxima.breathe.core.etc.transformFraction
 import io.proxima.breathe.core.ui.components.topbar.TopBarDefaults
 import io.proxima.breathe.core.ui.components.topbar.TopBarScrollBehavior
@@ -45,25 +25,14 @@ import io.proxima.breathe.core.ui.components.topbar.settleAppBar
 import io.proxima.breathe.core.ui.theme.BreathDefaultColors
 import io.proxima.breathe.core.ui.theme.BreathTheme
 import io.proxima.breathe.core.utils.TimestampUtils
+import io.proxima.breathe.data.preferences.AppPreferences
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
-/**
- *
- * A custom resizable top bar UI component that displays day related information.
- *
- * @param modifier Apply further customization.
- * @param actions The actions content e.g. an icon button with an options icon.
- * @param scrollBehavior The scroll behavior of the top bar.
- * @param backgroundColor The background color of the top bar.
- * @param contentColor The content color applied to the [actions].
- * @param largeTitleTextStyle The text style of the title in expanded state.
- * @param smallTitleTextStyle The text style of the title in a collapsed state.
- * @param windowInsets The insets for drawing the top bar content safely and away from the system bars.
- *
- */
 @Composable
 fun DayViewTopBar(
     modifier: Modifier = Modifier,
+    appPreferences: AppPreferences,  // ✅ AppPreferences injected
     actions: @Composable (RowScope.() -> Unit)? = null,
     scrollBehavior: TopBarScrollBehavior? = null,
     backgroundColor: Color = Color.Unspecified,
@@ -71,18 +40,34 @@ fun DayViewTopBar(
     largeTitleTextStyle: TextStyle = BreathTheme.typography.displayLarge,
     smallTitleTextStyle: TextStyle = BreathTheme.typography.headlineLarge,
     windowInsets: WindowInsets = TopBarDefaults.windowInsets()
-) = DayViewTopBarLayout(
-    modifier = modifier,
-    largeTitleTextStyle = largeTitleTextStyle,
-    smallTitleTextStyle = smallTitleTextStyle,
-    actions = actions,
-    windowInsets = windowInsets,
-    backgroundColor = backgroundColor,
-    contentColor = contentColor,
-    maxHeight = TopBarDefaults.largeContainerHeight(scrollBehavior, 1f / 5f),
-    pinnedHeight = TopBarDefaults.smallContainerHeight,
-    scrollBehavior = scrollBehavior
-)
+) {
+    var username by remember { mutableStateOf("") }
+    val coroutineScope = rememberCoroutineScope()
+
+    // ✅ Load user name from preferences
+    LaunchedEffect(Unit) {
+        coroutineScope.launch {
+            when (val result = appPreferences.getUser()) {
+                is Result.Success -> username = result.data ?: "Guest"
+                is Result.Error -> username = "Guest"
+            }
+        }
+    }
+
+    DayViewTopBarLayout(
+        modifier = modifier,
+        largeTitleTextStyle = largeTitleTextStyle,
+        smallTitleTextStyle = smallTitleTextStyle,
+        actions = actions,
+        windowInsets = windowInsets,
+        backgroundColor = backgroundColor,
+        contentColor = contentColor,
+        maxHeight = TopBarDefaults.largeContainerHeight(scrollBehavior, 1f / 5f),
+        pinnedHeight = TopBarDefaults.smallContainerHeight,
+        scrollBehavior = scrollBehavior,
+        username = username
+    )
+}
 
 @Composable
 private fun DayViewTopBarLayout(
@@ -95,105 +80,43 @@ private fun DayViewTopBarLayout(
     contentColor: Color,
     maxHeight: Dp,
     pinnedHeight: Dp,
-    scrollBehavior: TopBarScrollBehavior?
+    scrollBehavior: TopBarScrollBehavior?,
+    username: String
 ) = CompositionLocalProvider(LocalContentColor provides contentColor) {
 
     val density = LocalDensity.current
+    val statusBarHeightPx = windowInsets.getTop(density).toFloat()
+    val pinnedHeightPx = with(density) { pinnedHeight.toPx() } + statusBarHeightPx
+    val maxHeightPx = with(density) { maxHeight.toPx() } + statusBarHeightPx
 
-    val statusBarHeightPx: Float
-    val pinnedHeightPx: Float
-    val maxHeightPx: Float
+    scrollBehavior?.state?.heightOffsetLimit = pinnedHeightPx - maxHeightPx
 
-    density.run {
+    val collapsedFraction by rememberUpdatedState { scrollBehavior?.state?.collapsedFraction ?: 0f }
 
-        statusBarHeightPx = windowInsets.getTop(this).toFloat()
-        pinnedHeightPx = pinnedHeight.toPx() + statusBarHeightPx
-        maxHeightPx = maxHeight.toPx() + statusBarHeightPx
-
-        if (scrollBehavior?.state?.heightOffsetLimit != pinnedHeightPx - maxHeightPx) {
-            scrollBehavior?.state?.heightOffsetLimit = pinnedHeightPx - maxHeightPx
-        }
-
-    }
-
-    val collapsedFraction by rememberUpdatedState {
-        scrollBehavior?.state?.collapsedFraction ?: 0f
-    }
-
-    val height by remember(
-        density,
-        maxHeightPx,
-        scrollBehavior?.state?.heightOffset
-    ) {
+    val height by remember {
         derivedStateOf {
-            with(density) {
-                (maxHeightPx + (scrollBehavior?.state?.heightOffset ?: 0f)).toDp()
-                    .coerceAtLeast(0.dp)
-            }
+            with(density) { (maxHeightPx + (scrollBehavior?.state?.heightOffset ?: 0f)).toDp() }
+                .coerceAtLeast(0.dp)
         }
     }
 
-    val statusBarHeight by remember(statusBarHeightPx) {
-        derivedStateOf {
-            with(density) {
-                statusBarHeightPx.toDp()
-            }
-        }
-    }
-
-    val dayTextStyle by remember(collapsedFraction) {
-        derivedStateOf {
-            lerp(
-                start = largeTitleTextStyle,
-                stop = smallTitleTextStyle,
-                fraction = collapsedFraction()
-            )
-        }
-    }
+    val statusBarHeight = with(density) { statusBarHeightPx.toDp() }
 
     val secondLineEndPadding by remember(collapsedFraction) {
         derivedStateOf {
-            transformFraction(
-                value = collapsedFraction().coerceIn(0f, 1f),
-                startX = 0f,
-                endX = 1f,
-                startY = 0f,
-                endY = 86f
-            ).dp
+            transformFraction(collapsedFraction().coerceIn(0f, 1f), 0f, 1f, 0f, 86f).dp
         }
     }
 
     val expandedSubTitleAlpha by remember(collapsedFraction) {
         derivedStateOf {
-            transformFraction(
-                value = 1f - collapsedFraction().coerceIn(0f, 1f),
-                startX = 0.67f,
-                endX = 1f,
-                startY = 1f,
-                endY = 0f
-            )
+            transformFraction(1f - collapsedFraction().coerceIn(0f, 1f), 0.67f, 1f, 1f, 0f)
         }
     }
 
     val collapsedSubTitleAlpha by remember(collapsedFraction) {
         derivedStateOf {
-            transformFraction(
-                value = collapsedFraction().coerceIn(0f, 1f),
-                startX = .67f,
-                endX = .33f,
-                startY = 0f,
-                endY = 1f
-            )
-        }
-    }
-
-    val firstLineWidth by remember(expandedSubTitleAlpha) {
-        derivedStateOf {
-            transformFraction(
-                value = (expandedSubTitleAlpha * .5f).coerceIn(0f, 1f),
-                startY = 48f,
-                endY = 16f
-            ).dp
+            transformFraction(collapsedFraction().coerceIn(0f, 1f), .67f, .33f, 0f, 1f)
         }
     }
 
@@ -206,25 +129,13 @@ private fun DayViewTopBarLayout(
     val onDragStopped = remember<suspend CoroutineScope.(Float) -> Unit>(scrollBehavior) {
         { velocity ->
             if (scrollBehavior != null && !scrollBehavior.isPinned) {
-                settleAppBar(
-                    state = scrollBehavior.state,
-                    velocity = velocity,
-                    flingAnimationSpec = scrollBehavior.flingAnimationSpec,
-                    snapAnimationSpec = scrollBehavior.snapAnimationSpec
-                )
+                settleAppBar(scrollBehavior.state, velocity, scrollBehavior.flingAnimationSpec, scrollBehavior.snapAnimationSpec)
             }
         }
     }
 
     val timestamp = remember { System.currentTimeMillis() }
-
-    val day by rememberUpdatedState(
-        TimestampUtils.extractDayOfTheMonth(timestamp).toString()
-    )
-
-    val date by rememberUpdatedState(
-        TimestampUtils.extractMonthOfTheYear(timestamp)
-    )
+    val date by rememberUpdatedState(TimestampUtils.extractMonthOfTheYear(timestamp))
 
     Box(
         modifier = modifier
@@ -236,124 +147,67 @@ private fun DayViewTopBarLayout(
                 orientation = Orientation.Vertical,
                 onDragStopped = onDragStopped
             ),
-        contentAlignment = Alignment.CenterStart,
-        content = {
+        contentAlignment = Alignment.CenterStart
+    ) {
 
-            val windowInsetsPadding by rememberUpdatedState(
-                windowInsets.only(WindowInsetsSides.Horizontal)
-            )
+        Box(
+            modifier = Modifier.windowInsetsPadding(windowInsets.only(WindowInsetsSides.Horizontal)),
+            contentAlignment = Alignment.CenterStart
+        ) {
 
-            Box(
-                modifier = Modifier.windowInsetsPadding(windowInsetsPadding),
-                contentAlignment = Alignment.CenterStart
+            Row(
+                modifier = Modifier.padding(top = statusBarHeight),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                Text(
+                    modifier = Modifier.padding(start = 40.dp),
+                    text = if (username.isNotEmpty()) "Hi, $username" else "Hi"
+                )
 
-                Box {
-
-                    Row(
-                        modifier = Modifier.padding(top = statusBarHeight),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-
-                        /*HorizontalDivider(
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    alpha = expandedSubTitleAlpha
-                                }
-                                .padding(end = 0.dp)
-                                .clip(RoundedCornerShape(50))
-                                .width(firstLineWidth),
-                            color = contentColor
-                        )*/
-
-                        Text(
-                            modifier = Modifier.padding(start = 40.dp),
-                            text = "Hi, Ajal KJ"
-                        )
-
-                        /*Box(
-                            content = {
-
-                                ProvideTextStyle(
-                                    value = dayTextStyle,
-                                    content = { Text(text = day) }
-                                )
-
-                            }
-                        )*/
-
-                        Box(
-                            modifier = Modifier
-                                .padding(start = 8.dp, end = secondLineEndPadding)
-                                .fillMaxWidth(),
-                            contentAlignment = Alignment.CenterStart
-                        ) {
-
-                            Box(
-                                modifier = Modifier
-                                    .graphicsLayer {
-                                        alpha = collapsedSubTitleAlpha
-                                    }
-                                    .padding(start = 8.dp)
-                            ) {
-
-                                ProvideTextStyle(
-                                    value = smallTitleTextStyle,
-                                    content = { Text(text = date) }
-                                )
-
-                            }
-
-                            /*HorizontalDivider(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .graphicsLayer {
-                                        alpha = expandedSubTitleAlpha
-                                    }
-                                    .padding(end = secondLineEndPadding)
-                                    .clip(RoundedCornerShape(50)),
-                                color = contentColor
-                            )*/
-
-                        }
-
-                    }
-
+                Box(
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = secondLineEndPadding)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.CenterStart
+                ) {
                     Box(
                         modifier = Modifier
-                            .graphicsLayer {
-                                alpha = expandedSubTitleAlpha
-                                translationY = 32.dp.toPx()
-                            }
-                            .padding(start = 40.dp)
-                            .align(Alignment.BottomStart)
+                            .graphicsLayer { alpha = collapsedSubTitleAlpha }
+                            .padding(start = 8.dp)
                     ) {
-
-                        ProvideTextStyle(
-                            value = smallTitleTextStyle,
-                            content = { Text(text = "Good Morning") }
-                        )
-
+                        ProvideTextStyle(value = smallTitleTextStyle) {
+                            Text(text = date)
+                        }
                     }
-
                 }
-
             }
 
-            if (actions != null) {
-                Row(
-                    modifier = Modifier
-                        .padding(end = 16.dp)
-                        .height(pinnedHeight)
-                        .align(Alignment.BottomEnd),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically,
-                    content = actions
-                )
+            Box(
+                modifier = Modifier
+                    .graphicsLayer {
+                        alpha = expandedSubTitleAlpha
+                        translationY = with(density) { 32.dp.toPx() } // ✅ FIXED toPx
+                    }
+                    .padding(start = 40.dp)
+                    .align(Alignment.BottomStart)
+            ) {
+                ProvideTextStyle(value = smallTitleTextStyle) {
+                    Text(text = "Good Morning")
+                }
             }
-
         }
-    )
 
+        if (actions != null) {
+            Row(
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .height(pinnedHeight)
+                    .align(Alignment.BottomEnd),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+                content = actions
+            )
+        }
+    }
 }

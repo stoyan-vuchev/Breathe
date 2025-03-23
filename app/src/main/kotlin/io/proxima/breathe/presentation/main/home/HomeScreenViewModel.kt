@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.proxima.breathe.core.etc.UiString
+import io.proxima.breathe.data.preferences.AppPreferences  // ✅ Import AppPreferences
 import io.proxima.breathe.domain.repository.QuotesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -18,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
-    private val quotesRepository: QuotesRepository
+    private val quotesRepository: QuotesRepository,
+    val appPreferences: AppPreferences   // ✅ Inject AppPreferences here
 ) : ViewModel() {
 
     private val _uiActionChannel = Channel<HomeScreenUIAction>()
@@ -35,16 +36,15 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     fun onUIAction(uiAction: HomeScreenUIAction) = when (uiAction) {
-
-        is HomeScreenUIAction.NavigateToSleep -> sendUIAction(uiAction)
-        is HomeScreenUIAction.NavigateToBreathe -> sendUIAction(uiAction)
-        is HomeScreenUIAction.NavigateToSoundscape -> sendUIAction(uiAction)
-        is HomeScreenUIAction.NavigateToHabitControl -> sendUIAction(uiAction)
-        is HomeScreenUIAction.NavigateToProductivity -> sendUIAction(uiAction)
-        is HomeScreenUIAction.NavigateToMlAssist -> sendUIAction(uiAction)
-        is HomeScreenUIAction.NavigateToPomodoro -> sendUIAction(uiAction)
-
-
+        is HomeScreenUIAction.NavigateToSleep,
+        is HomeScreenUIAction.NavigateToBreathe,
+        is HomeScreenUIAction.NavigateToSoundscape,
+        is HomeScreenUIAction.NavigateToHabitControl,
+        is HomeScreenUIAction.NavigateToProductivity,
+        is HomeScreenUIAction.NavigateToMlAssist,
+        is HomeScreenUIAction.NavigateToPomodoro,
+        is HomeScreenUIAction.NavigateToSettings,
+        is HomeScreenUIAction.NavigateToExplore -> sendUIAction(uiAction)
 
         is HomeScreenUIAction.ExpandQuote -> _screenState.update {
             it.copy(isQuotesDialogShown = true)
@@ -53,15 +53,6 @@ class HomeScreenViewModel @Inject constructor(
         is HomeScreenUIAction.ShrinkQuote -> _screenState.update {
             it.copy(isQuotesDialogShown = false)
         }
-
-        /*is HomeScreenUIAction.More -> showSnackbar(
-         //   msg = UiString.BasicString("More cool stuff is coming soon! <3")
-        */
-
-        is HomeScreenUIAction.NavigateToSettings -> sendUIAction(uiAction)
-
-        is HomeScreenUIAction.NavigateToExplore -> sendUIAction(uiAction)
-
 
         else -> {}
     }
@@ -80,5 +71,4 @@ class HomeScreenViewModel @Inject constructor(
             _screenState.update { it.copy(quote = quote) }
         }
     }
-
 }

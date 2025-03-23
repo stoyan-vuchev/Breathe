@@ -56,48 +56,48 @@ val pieChartColors = listOf(
 )
 
 val BreathDefaultColors = Colors(
-    primarySoul = Color(0xFFFFD3D3),
-    secondarySoul = Color(0xFFBBD6FF),
+    primarySoul = Color(0xFF000000),
+    secondarySoul = Color(0xFF000000),
     background = Color(0xFFFFFFFF),
-    backgroundGradientStart = Color(0xFFFFDBDB),
-    backgroundGradientEnd = Color(0xFFC7DEFF),
-    card = Color(0xFFEAEBF7),
+    backgroundGradientStart = Color(0xFF000000),
+    backgroundGradientEnd = Color(0xFF000000),
+    card = Color(0xFFDCDDDF),
     text = Color(0xFF121212)
 )
 
 val DreamyNightColors = Colors(
-    primarySoul = Color(0xFF8DADFF),
-    secondarySoul = Color(0xFF002686),
-    background = Color(0xFFFFFFFF),
-    backgroundGradientStart = Color(0xFFFFFFFF),
-    backgroundGradientEnd = Color(0xFFFFFFFF),
-    card = Color(0xFFEAEBF7),
+    primarySoul = Color(0xFF000000),
+    secondarySoul = Color(0xFF000000),
+    background = Color(0xFFDCDDDF),
+    backgroundGradientStart = Color(0xFFDCDDDF),
+    backgroundGradientEnd = Color(0xFFDCDDDF),
+    card = Color(0xFFDCDDDF),
     text = Color(0xFF121212)
 )
 
 val SleepColors = Colors(
-    primarySoul = Color(0xFFA9A1DD),
-    secondarySoul = Color(0xFF5856B7),
-    background = Color(0xFFFFFFFF),
-    backgroundGradientStart = Color(0xFFE8E6F7),
-    backgroundGradientEnd = Color(0xFF8B88E6),
-    card = Color(0xFFEAEBF7),
+    primarySoul = Color(0xFF000000),
+    secondarySoul = Color(0xFF000000),
+    background = Color(0xFFDCDDDF),
+    backgroundGradientStart = Color(0xFFDCDDDF),
+    backgroundGradientEnd = Color(0xFFDCDDDF),
+    card = Color(0xFFDCDDDF),
     text = Color(0xFF121212)
 )
 
 val MelonColors = Colors(
-    primarySoul = Color(0xFFFFFFFF),
-    secondarySoul = Color(0xFFFFFFFF),
-    background = Color(0xFFFFFFFF),
-    backgroundGradientStart = Color(0xFFFFFFFF),
+    primarySoul = Color(0xFF000000),
+    secondarySoul = Color(0xFF000000),
+    background = Color(0xFF000000),
+    backgroundGradientStart = Color(0xFF1F1A1A),
     backgroundGradientEnd = Color(0xFFFFFFFF),
     card = Color(0xFFEAEBF7),
     text = Color(0xFF121212)
 )
 
 val MangoColors = Colors(
-    primarySoul = Color(0xFFF3CC0F),
-    secondarySoul = Color(0xFFE38001),
+    primarySoul = Color(0xFF000000),
+    secondarySoul = Color(0xFF000000),
     background = Color(0xFFFFFFFF),
     backgroundGradientStart = Color(0xFFFFF5C3),
     backgroundGradientEnd = Color(0xFFFFB862),
@@ -106,8 +106,8 @@ val MangoColors = Colors(
 )
 
 val SilverColors = Colors(
-    primarySoul = Color(0xFFFFD3D3),
-    secondarySoul = Color(0xFFBBD6FF),
+    primarySoul = Color(0xFF000000),
+    secondarySoul = Color(0xFF000000),
     background = Color(0xFFFFFFFF),
     backgroundGradientStart = Color(0xFFFFFFFF),
     backgroundGradientEnd = Color(0xFF6B6B6B),
@@ -116,8 +116,8 @@ val SilverColors = Colors(
 )
 
 val SkyBlueColors = Colors(
-    primarySoul = Color(0xFFFFFFFF),
-    secondarySoul = Color(0xFFFFFFFF),
+    primarySoul = Color(0xFF000000),
+    secondarySoul = Color(0xFF000000),
     background = Color(0xFFFFFFFF),
     backgroundGradientStart = Color(0xFFFFFFFF),
     backgroundGradientEnd = Color(0xFFFFFFFF),
@@ -126,8 +126,8 @@ val SkyBlueColors = Colors(
 )
 
 val ZoneColors = Colors(
-    primarySoul = Color(0xFFFFFFFF),
-    secondarySoul = Color(0xFFFFFFFF),
+    primarySoul = Color(0xFF000000),
+    secondarySoul = Color(0xFF000000),
     background = Color(0xFFFFFFFF),
     backgroundGradientStart = Color(0xFFFFFFFF),
     backgroundGradientEnd = Color(0xFFFFFFFF),
@@ -136,8 +136,8 @@ val ZoneColors = Colors(
 )
 
 val MlAssist = Colors(
-    primarySoul = Color(0xFFB85DE2),
-    secondarySoul = Color(0xFF4683DE),
+    primarySoul = Color(0xFF000000),
+    secondarySoul = Color(0xFF000000),
     background = Color(0xFFFFFFFF),
     backgroundGradientStart = Color(0xFFD6F0F5),
     backgroundGradientEnd = Color(0xFFD6F0F5),

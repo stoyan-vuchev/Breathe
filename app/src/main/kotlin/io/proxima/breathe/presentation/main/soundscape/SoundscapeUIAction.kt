@@ -6,13 +6,11 @@ import io.proxima.breathe.domain.model.SoundScapeItem
 
 @Immutable
 sealed interface SoundscapeUIAction {
-
     data object NavigateUp : SoundscapeUIAction
     data object PausePlayback : SoundscapeUIAction
-
     data class PlayOrPauseSound(
         @RawRes val audioSrc: Int?,
         val soundScapeItem: SoundScapeItem? = null
     ) : SoundscapeUIAction
-
+    data class MoodSelected(val mood: String) : SoundscapeUIAction
 }

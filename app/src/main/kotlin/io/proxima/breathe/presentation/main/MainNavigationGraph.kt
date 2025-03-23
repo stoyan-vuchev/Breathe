@@ -20,6 +20,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
 import io.proxima.breathe.core.etc.UiString.Companion.asString
 import io.proxima.breathe.core.ui.navigateSingleTop
 import io.proxima.breathe.core.ui.theme.DreamyNightColors
@@ -28,6 +29,12 @@ import io.proxima.breathe.core.ui.theme.ProvideBreathColors
 import io.proxima.breathe.core.ui.theme.SkyBlueColors
 import io.proxima.breathe.core.ui.theme.SleepColors
 import io.proxima.breathe.core.ui.theme.ZoneColors
+import io.proxima.breathe.presentation.fitness.FitnessNormalScreen
+import io.proxima.breathe.presentation.fitness.FitnessObeseScreen
+import io.proxima.breathe.presentation.fitness.FitnessOverweightScreen
+import io.proxima.breathe.presentation.fitness.FitnessSetupScreen
+import io.proxima.breathe.presentation.fitness.FitnessUnderweightScreen
+import io.proxima.breathe.presentation.fitness.FitnessViewModel
 import io.proxima.breathe.presentation.main.breathe.BreatheScreen
 import io.proxima.breathe.presentation.main.breathe.BreatheScreenUIAction
 import io.proxima.breathe.presentation.main.breathe.BreatheScreenViewModel
@@ -38,6 +45,9 @@ import io.proxima.breathe.presentation.main.habit.checkpoint.HabitCheckpointScre
 import io.proxima.breathe.presentation.main.habit.checkpoint.HabitCheckpointScreenSegment
 import io.proxima.breathe.presentation.main.habit.checkpoint.HabitCheckpointScreenViewModel
 import io.proxima.breathe.presentation.main.habit.checkpoint.HabitCheckpointUIAction
+import io.proxima.breathe.presentation.main.habit.main.HabitMainScreen
+import io.proxima.breathe.presentation.main.habit.main.HabitMainScreenUIAction
+import io.proxima.breathe.presentation.main.habit.main.HabitMainScreenViewModel
 import io.proxima.breathe.presentation.main.habit.setup.HabitSetupScreen
 import io.proxima.breathe.presentation.main.habit.setup.HabitSetupScreenUIAction
 import io.proxima.breathe.presentation.main.habit.setup.HabitSetupScreenViewModel
@@ -119,11 +129,18 @@ fun NavGraphBuilder.mainNavigationGraph(
 
                             is HomeScreenUIAction.NavigateToPomodoro -> navController
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
+
                             is HomeScreenUIAction.NavigateToExplore -> navController
-                                .navigateSingleTop(route = MainNavigationDestinations.Explore.route, inclusive = false)
+                                .navigateSingleTop(
+                                    route = MainNavigationDestinations.Explore.route,
+                                    inclusive = false
+                                )
 
                             is HomeScreenUIAction.NavigateToSettings ->
-                                navController.navigateSingleTop(route = uiAction.route, inclusive = false)
+                                navController.navigateSingleTop(
+                                    route = uiAction.route,
+                                    inclusive = false
+                                )
 
 
                             else -> Unit
@@ -190,20 +207,31 @@ fun NavGraphBuilder.mainNavigationGraph(
 
                             is ExploreScreenUIAction.NavigateToSettings ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.Settings.route)
+
                             is ExploreScreenUIAction.NavigateToSleep ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.Sleep.route)
+
                             is ExploreScreenUIAction.NavigateToBreathe ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.Breathe.route)
+
                             is ExploreScreenUIAction.NavigateToSoundscape ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.Soundscape.route)
+
                             is ExploreScreenUIAction.NavigateToHabitControl ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.HabitControlSetup.route)
+
                             is ExploreScreenUIAction.NavigateToProductivity ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.Productivity.route)
+
                             is ExploreScreenUIAction.NavigateToMlAssist ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.MlAssist.route)
+
                             is ExploreScreenUIAction.NavigateToPomodoro ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.Pomodoro.route)
+
+                            is ExploreScreenUIAction.NavigateToFitness ->
+                                navController.navigateSingleTop(route = MainNavigationDestinations.FitnessSetup.route)
+
                             else -> Unit
                         }
                     }
@@ -294,7 +322,6 @@ fun NavGraphBuilder.mainNavigationGraph(
 //        )
 
 
-
         composable(
             route = MainNavigationDestinations.Soundscape.route,
             content = {
@@ -357,67 +384,78 @@ fun NavGraphBuilder.mainNavigationGraph(
             }
         )
 
-        composable(
+        /* composable(
             route = MainNavigationDestinations.HabitControlMain.route,
             content = {
                 ProvideBreathColors(ZoneColors) {
 
-//                    val viewModel = hiltViewModel<HabitMainScreenViewModel>()
-//                    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
-//
-//                    LaunchedEffect(viewModel.uiActionFlow) {
-//                        viewModel.uiActionFlow.collectLatest { uiAction ->
-//                            when (uiAction) {
-//                                is HabitMainScreenUIAction.NavigateUp -> navController.navigateUp()
-//                            }
-//                        }
-//                    }
-//
-//                    HabitMainScreen(
-//                        screenState = screenState,
-//                        onUIAction = viewModel::onUIAction
-//                    )
-
-                    val viewModel = hiltViewModel<HabitCheckpointScreenViewModel>()
+                    val viewModel = hiltViewModel<HabitMainScreenViewModel>()
                     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-                    BackHandler(
-                        enabled = screenState.currentSegment
-                                !is HabitCheckpointScreenSegment.Checkpoint,
-                        onBack = { viewModel.onUIAction(HabitCheckpointUIAction.NavigateUp) }
-                    )
+                    LaunchedEffect(viewModel.uiActionFlow) {
+                        viewModel.uiActionFlow.collectLatest { uiAction ->
+                            when (uiAction) {
+                                is HabitMainScreenUIAction.NavigateUp -> navController.navigateUp()
+                            }
+                        }
+                    }
 
-                    HabitCheckpointScreen(
+                    HabitMainScreen(
                         screenState = screenState,
                         onUIAction = viewModel::onUIAction
                     )
-
                 }
+
+                val viewModel = hiltViewModel<HabitCheckpointScreenViewModel>()
+                val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+                BackHandler(
+                    enabled = screenState.currentSegment
+                            !is HabitCheckpointScreenSegment.Checkpoint,
+                    onBack = { viewModel.onUIAction(HabitCheckpointUIAction.NavigateUp) }
+                )
+
+                HabitCheckpointScreen(
+                    screenState = screenState,
+                    onUIAction = viewModel::onUIAction
+                )
+
+
             }
-        )
+        )*/
 
         composable(
-            route = MainNavigationDestinations.HabitControlCheckpoint.route,
-            content = {
-                ProvideBreathColors(ZoneColors) {
+            route = MainNavigationDestinations.HabitControlMain.route,
+        ) { backStackEntry ->
+            ProvideBreathColors(ZoneColors) {
+                val viewModel = hiltViewModel<HabitMainScreenViewModel>()
+                val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-                    val viewModel = hiltViewModel<HabitCheckpointScreenViewModel>()
-                    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
-
-                    BackHandler(
-                        enabled = screenState.currentSegment
-                                !is HabitCheckpointScreenSegment.Checkpoint,
-                        onBack = { viewModel.onUIAction(HabitCheckpointUIAction.NavigateUp) }
-                    )
-
-                    HabitCheckpointScreen(
-                        screenState = screenState,
-                        onUIAction = viewModel::onUIAction
-                    )
-
+                // ✅ Use the NavController passed into NavGraph
+                LaunchedEffect(Unit) {
+                    viewModel.uiActionFlow.collect { action ->
+                        when (action) {
+                            HabitMainScreenUIAction.NavigateUp -> {
+                                navController.navigateUp()  // ✅ Now correct navController is used
+                            }
+                        }
+                    }
                 }
+
+                BackHandler {
+                    viewModel.onUIAction(HabitMainScreenUIAction.NavigateUp)
+                }
+
+                HabitMainScreen(
+                    screenState = screenState,
+                    onUIAction = viewModel::onUIAction
+                )
             }
-        )
+        }
+
+
+
+
 
         composable(
             route = MainNavigationDestinations.Productivity.route,
@@ -481,8 +519,12 @@ fun NavGraphBuilder.mainNavigationGraph(
                                     }.also { context.startActivity(it) }
                             }
 
-                            is SettingsScreenUIAction.ShowDeleteDataDialog -> isDeleteDataDialogVisible = true
-                            is SettingsScreenUIAction.DismissDeleteDataDialog -> isDeleteDataDialogVisible = false
+                            is SettingsScreenUIAction.ShowDeleteDataDialog -> isDeleteDataDialogVisible =
+                                true
+
+                            is SettingsScreenUIAction.DismissDeleteDataDialog -> isDeleteDataDialogVisible =
+                                false
+
                             is SettingsScreenUIAction.ConfirmDeleteData -> onRecreateActivity()
 
                             is SettingsScreenUIAction.About -> {
@@ -501,6 +543,7 @@ fun NavGraphBuilder.mainNavigationGraph(
                                     inclusive = false
                                 )
                             }
+
                             is SettingsScreenUIAction.NavigateToExplore -> {
                                 navController.navigateSingleTop(
                                     route = MainNavigationDestinations.Explore.route,
@@ -508,6 +551,7 @@ fun NavGraphBuilder.mainNavigationGraph(
                                     inclusive = false
                                 )
                             }
+
                             is SettingsScreenUIAction.NavigateToProfile -> {
                                 navController.navigateSingleTop(
                                     route = MainNavigationDestinations.Profile.route,
@@ -515,6 +559,7 @@ fun NavGraphBuilder.mainNavigationGraph(
                                     inclusive = false
                                 )
                             }
+
                             else -> Unit
 
                         }
@@ -597,8 +642,66 @@ fun NavGraphBuilder.mainNavigationGraph(
             }
         )
 
+        // Fitness Module Route
+        composable(route = MainNavigationDestinations.FitnessSetup.route) {
+            val viewModel = hiltViewModel<FitnessViewModel>()
+            // Use collectAsState to observe the fitness state inside a composable
+            val screenState by viewModel.screenState.collectAsState()
+            // Launch an effect that navigates when setup is complete
+            LaunchedEffect(screenState.isSetupCompleted) {
+                if (screenState.isSetupCompleted) {
+                    when (screenState.bmiCategory) {
+                        "Underweight" -> navController.navigate(MainNavigationDestinations.FitnessUnderweight.route) {
+                            popUpTo(MainNavigationDestinations.FitnessSetup.route) { inclusive = true }
+                        }
+                        "Normal" -> navController.navigate(MainNavigationDestinations.FitnessNormal.route) {
+                            popUpTo(MainNavigationDestinations.FitnessSetup.route) { inclusive = true }
+                        }
+                        "Overweight" -> navController.navigate(MainNavigationDestinations.FitnessOverweight.route) {
+                            popUpTo(MainNavigationDestinations.FitnessSetup.route) { inclusive = true }
+                        }
+                        "Obesity" -> navController.navigate(MainNavigationDestinations.FitnessObese.route) {
+                            popUpTo(MainNavigationDestinations.FitnessSetup.route) { inclusive = true }
+                        }
+                        else -> { /* Fallback, if needed */ }
+                    }
+                }
+            }
+            // Show the FitnessSetupScreen only if setup is not completed
+            if (!screenState.isSetupCompleted) {
+                FitnessSetupScreen(
+                    screenState = screenState,
+                    onSubmit = { height, weight ->
+                        viewModel.onSubmitFitnessData(height, weight)
+                    },
+                    onNavigateResult = {} // Optional: provide if needed
+                )
+            }
+        }
 
+        composable(route = MainNavigationDestinations.FitnessUnderweight.route) {
+            val viewModel = hiltViewModel<FitnessViewModel>()
+            val screenState by viewModel.screenState.collectAsState()
+            FitnessUnderweightScreen(bmi = screenState.bmi)
+        }
+        composable(route = MainNavigationDestinations.FitnessNormal.route) {
+            val viewModel = hiltViewModel<FitnessViewModel>()
+            val screenState by viewModel.screenState.collectAsState()
+            FitnessNormalScreen(bmi = screenState.bmi)
+        }
+        composable(route = MainNavigationDestinations.FitnessOverweight.route) {
+            val viewModel = hiltViewModel<FitnessViewModel>()
+            val screenState by viewModel.screenState.collectAsState()
+            FitnessOverweightScreen(bmi = screenState.bmi)
+        }
+        composable(route = MainNavigationDestinations.FitnessObese.route) {
+            val viewModel = hiltViewModel<FitnessViewModel>()
+            val screenState by viewModel.screenState.collectAsState()
+            FitnessObeseScreen(bmi = screenState.bmi)
+        }
 
+        // ... Other composable routes (Settings, etc.) ...
     }
-
 }
+
+

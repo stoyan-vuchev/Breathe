@@ -38,5 +38,9 @@ sealed interface ExploreScreenUIAction {
     data class NavigateToPomodoro(
         val route: String = MainNavigationDestinations.Pomodoro.route
     ) : ExploreScreenUIAction
+
+    data class NavigateToFitness(
+        val route: String = MainNavigationDestinations.FitnessSetup.route
+    ) : ExploreScreenUIAction
 }
 

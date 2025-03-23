@@ -45,7 +45,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.layout.ContentScale
 
 
-
 @Composable
 fun ProductivityScreen(
     screenState: ProductivityScreenState,

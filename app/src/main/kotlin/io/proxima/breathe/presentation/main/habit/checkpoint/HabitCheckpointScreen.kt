@@ -139,7 +139,7 @@ fun HabitCheckpointScreen(
 
                     }
 
-                    is HabitCheckpointScreenSegment.Pass -> UniqueButton(
+                  is HabitCheckpointScreenSegment.Pass -> UniqueButton(
                         onClick = { onUIAction(HabitCheckpointUIAction.Continue) }
                     ) {
 

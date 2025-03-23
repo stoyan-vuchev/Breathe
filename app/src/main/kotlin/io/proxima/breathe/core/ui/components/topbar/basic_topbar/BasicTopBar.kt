@@ -52,7 +52,7 @@ fun BasicTopBar(
     titleText: String,
     scrollBehavior: TopBarScrollBehavior? = null,
     backgroundColor: Color = Color.Unspecified,
-    contentColor: Color = BreathTheme.colors.text,
+    contentColor: Color = Color.White,
     largeTitleTextStyle: TextStyle = BreathTheme.typography.headlineLarge,
     smallTitleTextStyle: TextStyle = BreathTheme.typography.titleLarge,
     windowInsets: WindowInsets = TopBarDefaults.windowInsets(),

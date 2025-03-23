@@ -11,11 +11,11 @@ fun getExploreTiles(onUIAction: (ExploreScreenUIAction) -> Unit): List<ExploreTi
 
         ExploreTileData(
             header = "Do you know?",
-            description = "Getting sunlight for atleast 5 minuites can keep you stay feel energetic throughout the day",
-            backgroundColor = Color(0xFFFFFFFF).copy(alpha = 0.5f),
+            description = "\nGetting sunlight for atleast 5 minuites can keep you stay feel energetic throughout the day",
+            backgroundColor = Color(0xFFFFFFFF).copy(alpha = 0.6f),
             progress = 0.5f,
             imageRes = R.drawable.nulltoggleoverlay,
-            onClick = { onUIAction(ExploreScreenUIAction.NavigateToPomodoro()) }
+            onClick = {  }
         ),
 
         ExploreTileData(
@@ -24,7 +24,7 @@ fun getExploreTiles(onUIAction: (ExploreScreenUIAction) -> Unit): List<ExploreTi
             imageRes = R.drawable.effective_blur,
             backgroundColor = Color(0xFF4CAF50).copy(alpha = 0f),
             progress = 0.5f,
-            onClick = { onUIAction(ExploreScreenUIAction.NavigateToPomodoro()) }
+            onClick = {  }
         ),
         ExploreTileData(
             header = "Mindfulness",
@@ -57,7 +57,18 @@ fun getExploreTiles(onUIAction: (ExploreScreenUIAction) -> Unit): List<ExploreTi
             Color(0xFF4CAF50).copy(alpha = 0f),
             progress = 0.5f,
             onClick = { onUIAction(ExploreScreenUIAction.NavigateToProductivity()) }
+        ),
+
+        ExploreTileData(
+            header = "Fitness Assist",
+            description = "Fitness assist make u less fat\n" +
+                    "and more fat according to your fat condition",
+            imageRes = R.drawable.fitness_blur,
+            Color(0xFF4CAF50).copy(alpha = 0f),
+            progress = 0.5f,
+            onClick = { onUIAction(ExploreScreenUIAction.NavigateToFitness()) }
         )
+
 
     )
 }

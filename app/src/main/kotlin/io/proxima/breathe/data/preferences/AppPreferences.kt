@@ -1,6 +1,7 @@
 package io.proxima.breathe.data.preferences
 
 import io.proxima.breathe.core.etc.Result
+import kotlinx.coroutines.flow.Flow
 
 interface AppPreferences {
 
@@ -28,6 +29,18 @@ interface AppPreferences {
     suspend fun getHabitProgress(): Result<Int>
     suspend fun incrementHabitProgressCounter()
     suspend fun resetHabitProgressCounter()
+
+    suspend fun setFitnessHeight(height: Float)
+    fun getFitnessHeight(): Flow<Float>
+
+    suspend fun setFitnessWeight(weight: Float)
+    fun getFitnessWeight(): Flow<Float>
+
+    suspend fun setFitnessBMI(bmi: Float)
+    fun getFitnessBMI(): Flow<Float>
+
+    suspend fun setFitnessBMICategory(category: String)
+    fun getFitnessBMICategory(): Flow<String>
 
 
 

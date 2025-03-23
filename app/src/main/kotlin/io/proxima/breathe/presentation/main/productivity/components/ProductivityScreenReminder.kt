@@ -118,7 +118,7 @@ fun ProductivityScreenReminder(
                     uncheckedBorderColor = BreathTheme.colors.text.copy(.75f),
                     uncheckedThumbColor = BreathTheme.colors.text,
                     uncheckedTrackColor = BreathTheme.colors.card,
-                    checkedTrackColor = BreathTheme.colors.secondarySoul,
+                    checkedTrackColor = Color.Black,
                     checkedThumbColor = BreathTheme.colors.background,
                 ),
                 onCheckedChange = { enabled ->

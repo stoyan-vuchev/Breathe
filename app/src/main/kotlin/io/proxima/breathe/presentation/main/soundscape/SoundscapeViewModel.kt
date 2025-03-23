@@ -13,6 +13,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.proxima.breathe.BuildConfig
 import io.proxima.breathe.domain.model.SoundScapeItem
+import io.proxima.breathe.domain.model.soundScapeItemsList
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -43,6 +44,24 @@ class SoundscapeViewModel @Inject constructor(
             audioSrc = uiAction.audioSrc,
             soundScapeItem = uiAction.soundScapeItem
         )
+        is SoundscapeUIAction.MoodSelected -> {
+            onMoodSelected(uiAction.mood)
+        }
+    }
+
+    private fun onMoodSelected(mood: String) {
+        _screenState.update { it.copy(selectedMood = mood) }
+        filterSoundscapeList(mood)
+    }
+
+    private fun filterSoundscapeList(mood: String) {
+        val filteredList = when (mood) {
+            "Enhance Sleep" -> soundScapeItemsList.filter { it.tags.contains("sleep") }
+            "Focus" -> soundScapeItemsList.filter { it.tags.contains("focus") }
+            "Sad" -> soundScapeItemsList.filter { it.tags.contains("sad") }
+            else -> soundScapeItemsList
+        }
+        _screenState.update { it.copy(filteredSounds = filteredList) }
     }
 
     private fun initialize() {
@@ -61,34 +80,16 @@ class SoundscapeViewModel @Inject constructor(
         soundScapeItem: SoundScapeItem?
     ) {
         viewModelScope.launch {
-
             @RawRes
-            val id = player
-                .currentMediaItem
-                ?.mediaMetadata
-                ?.extras
-                ?.getInt("audioSrc")
-
-            if (
-                player.isReleased && audioSrc != null
-                || player.isPlaying && id != audioSrc && audioSrc != null
-                || !player.isPlaying && id != audioSrc && audioSrc != null
+            val id = player.currentMediaItem?.mediaMetadata?.extras?.getInt("audioSrc")
+            if ((player.isReleased && audioSrc != null) ||
+                (player.isPlaying && id != audioSrc && audioSrc != null) ||
+                (!player.isPlaying && id != audioSrc && audioSrc != null)
             ) {
-
                 val mediaItem = MediaItem.fromUri(
-                    Uri.parse(
-                        "android.resource://" +
-                                BuildConfig.APPLICATION_ID +
-                                "/" + audioSrc.toString()
-                    )
+                    Uri.parse("android.resource://${BuildConfig.APPLICATION_ID}/$audioSrc")
                 )
-
-                val artworkUri = Uri.parse(
-                    "android.resource://" +
-                            BuildConfig.APPLICATION_ID +
-                            "/" + soundScapeItem?.image.toString()
-                )
-
+                val artworkUri = Uri.parse("android.resource://${BuildConfig.APPLICATION_ID}/${soundScapeItem?.image}")
                 val newMediaItem = mediaItem.buildUpon().setMediaMetadata(
                     mediaItem.mediaMetadata.buildUpon()
                         .setTitle(soundScapeItem?.name)
@@ -96,30 +97,20 @@ class SoundscapeViewModel @Inject constructor(
                         .setExtras(bundleOf(Pair("audioSrc", audioSrc)))
                         .build()
                 ).build()
-
                 _screenState.update {
-                    it.copy(
-                        currentMediaItem = newMediaItem,
-                        isPlaying = true
-                    )
+                    it.copy(currentMediaItem = newMediaItem, isPlaying = true)
                 }
-
                 player.prepare()
                 player.setMediaItem(newMediaItem)
                 player.playWhenReady = true
-
             } else {
-
                 _screenState.update { it.copy(isPlaying = !it.isPlaying) }
                 player.playWhenReady = _screenState.value.isPlaying
-
             }
-
         }
     }
 
     private fun sendUIAction(uiAction: SoundscapeUIAction) {
         viewModelScope.launch { _uiActionChannel.send(uiAction) }
     }
-
 }

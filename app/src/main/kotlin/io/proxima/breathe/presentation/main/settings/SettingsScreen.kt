@@ -87,8 +87,8 @@ fun SettingsScreen(
                         toggle2Icon = painterResource(id = R.drawable.explore_fade),
                         toggle3Icon = painterResource(id = R.drawable.desk_active),
                         onToggle1Click = { onUIAction(SettingsScreenUIAction.NavigateToHome) },
-                        onToggle2Click = { },
-                        onToggle3Click = { onUIAction(SettingsScreenUIAction.NavigateToExplore) }
+                        onToggle2Click = { onUIAction(SettingsScreenUIAction.NavigateToExplore) },
+                        onToggle3Click = {  }
                     )
                 }
             },

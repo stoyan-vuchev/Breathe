@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.proxima.breathe.core.ui.theme.backgroundBrush
@@ -29,12 +31,19 @@ import io.proxima.breathe.core.ui.components.topbar.TopBarDefaults
 import io.proxima.breathe.core.ui.components.topbar.basic_topbar.BasicTopBar
 import io.proxima.breathe.core.ui.theme.BreathTheme
 import sv.lib.squircleshape.SquircleShape
+import io.proxima.breathe.R
+import androidx.activity.compose.BackHandler
+
 
 @Composable
 fun HabitMainScreen(
     screenState: HabitMainScreenState,
     onUIAction: (HabitMainScreenUIAction) -> Unit
 ) {
+    BackHandler {
+        onUIAction(HabitMainScreenUIAction.NavigateUp)
+    }
+
 
     val topBarScrollBehavior = TopBarDefaults.exitUntilCollapsedScrollBehavior()
     val lazyListState = rememberLazyListState()
@@ -45,12 +54,15 @@ fun HabitMainScreen(
     ) {
 
         Scaffold(
+
             modifier = Modifier
                 .fillMaxSize()
                 .background(BreathTheme.colors.backgroundBrush())
                 .nestedScroll(topBarScrollBehavior.nestedScrollConnection),
             containerColor = Color.Unspecified,
-            contentColor = BreathTheme.colors.text,
+            contentColor = Color.White,
+
+
             topBar = {
 
                 BasicTopBar(
@@ -66,7 +78,7 @@ fun HabitMainScreen(
                                 modifier = Modifier.size(32.dp),
                                 imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
                                 contentDescription = "Navigate Up.",
-                                tint = BreathTheme.colors.text
+                                tint = Color.White
                             )
 
                         }
@@ -79,6 +91,13 @@ fun HabitMainScreen(
 
             Box(modifier = Modifier.fillMaxSize()) {
 
+                androidx.compose.foundation.Image(
+                    painter = painterResource(id = R.drawable.backgroundfakeblur), // Replace with your actual background image
+                    contentDescription = "Habit Background",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+
                 Box(
                     modifier = Modifier
                         .padding(
@@ -88,7 +107,7 @@ fun HabitMainScreen(
                         )
                         .fillMaxSize()
                         .clip(SquircleShape(topStart = 32.dp, topEnd = 32.dp))
-                        .background(BreathTheme.colors.background)
+                        //.background(BreathTheme.colors.background)
                 )
 
                 LazyColumn(
@@ -155,7 +174,7 @@ fun HabitMainScreen(
                                     .fillMaxWidth()
                                     .height(1.dp)
                                     .background(
-                                        color = BreathTheme.colors.text.copy(.5f),
+                                        color = Color.White.copy(.5f),
                                         shape = SquircleShape()
                                     )
                             )
@@ -183,7 +202,7 @@ fun HabitMainScreen(
                                     .fillMaxWidth()
                                     .height(1.dp)
                                     .background(
-                                        color = BreathTheme.colors.text.copy(.5f),
+                                        color = Color.White.copy(.5f),
                                         shape = SquircleShape()
                                     )
                             )

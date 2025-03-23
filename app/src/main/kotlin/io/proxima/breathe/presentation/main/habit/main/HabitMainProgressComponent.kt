@@ -24,10 +24,10 @@ fun HabitMainProgressComponent(
     modifier: Modifier = Modifier,
     goalDuration: Int,
     goalProgress: Int,
-    emptyProgressColor: Color = BreathTheme.colors.card,
-    currentProgressColor: Color = Color.Cyan,
+    emptyProgressColor: Color = BreathTheme.colors.card.copy(alpha = 0.2f),
+    currentProgressColor: Color = Color.White.copy(alpha = 0.5f),
     completedProgressColor: Color = Color.Green,
-    textColor: Color = BreathTheme.colors.text
+    textColor: Color = Color.White
 ) {
 
     val defaultFontFamilyResolver = LocalFontFamilyResolver.current

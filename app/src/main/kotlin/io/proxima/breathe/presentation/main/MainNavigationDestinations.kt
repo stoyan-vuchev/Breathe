@@ -27,6 +27,11 @@ sealed class MainNavigationDestinations(
     data object Explore : MainNavigationDestinations("main_explore_screen")
     data object Profile : MainNavigationDestinations("main_profile_screen")
 
+    data object FitnessSetup : MainNavigationDestinations("fitness_setup")
+    data object FitnessUnderweight : MainNavigationDestinations("fitness_underweight")
+    data object FitnessNormal : MainNavigationDestinations("fitness_normal")
+    data object FitnessOverweight : MainNavigationDestinations("fitness_overweight")
+    data object FitnessObese : MainNavigationDestinations("fitness_obese")
     companion object {
         const val NAV_ROUTE = "main_navigation"
     }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,12 +18,13 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
 import io.proxima.breathe.R
+import io.proxima.breathe.core.etc.Result
 import io.proxima.breathe.core.etc.transformFraction
 import io.proxima.breathe.core.ui.components.navbar.NavBar
 import io.proxima.breathe.core.ui.components.rememberBreathRipple
@@ -31,15 +33,10 @@ import io.proxima.breathe.core.ui.components.topbar.TopBarDefaults
 import io.proxima.breathe.core.ui.components.topbar.day_view_topbar.DayViewTopBar
 import io.proxima.breathe.core.ui.theme.BreathDefaultColors
 import io.proxima.breathe.core.ui.theme.BreathTheme
+import io.proxima.breathe.data.preferences.AppPreferences
 import io.proxima.breathe.domain.model.QuoteModel
 import io.proxima.breathe.presentation.main.pomodoro.PomodoroViewModel
-import sv.lib.squircleshape.SquircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
-
-
-
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -47,13 +44,26 @@ fun HomeScreen(
     snackBarHostState: SnackbarHostState,
     onUIAction: (HomeScreenUIAction) -> Unit
 ) {
-
-    //val pomodoroViewModel: PomodoroViewModel = viewModel()
     val pomodoroViewModel: PomodoroViewModel = hiltViewModel()
+    val homeViewModel: HomeScreenViewModel = hiltViewModel()
+    val appPreferences = homeViewModel.appPreferences
 
     val isFocusSession by pomodoroViewModel.isFocusSession.collectAsState()
     val timer by pomodoroViewModel.currentTimer.collectAsState()
     val pomodoroCount by pomodoroViewModel.pomodoroCount.collectAsState()
+
+    // Fetch username for HomeScreen use
+    var username by remember { mutableStateOf("Guest") }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        coroutineScope.launch {
+            val result = appPreferences.getUser()
+            if (result is Result.Success) {
+                username = result.data ?: "Guest"
+            }
+        }
+    }
 
     val topBarScrollBehavior = TopBarDefaults.exitUntilCollapsedScrollBehavior()
     val bgAlpha by remember(topBarScrollBehavior.state.collapsedFraction) {
@@ -89,6 +99,7 @@ fun HomeScreen(
                             blurRadius = 20.dp
                         )
                     ),
+                    appPreferences = appPreferences,
                     scrollBehavior = topBarScrollBehavior
                 )
             },
@@ -102,7 +113,6 @@ fun HomeScreen(
                         )
                     )
                 ) {
-                    // ma stupid navbar
                     NavBar(
                         toggle1Text = "Home",
                         toggle2Text = "Explore",
@@ -123,12 +133,14 @@ fun HomeScreen(
                 )
             }
         ) { insetsPadding ->
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(insetsPadding),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
+
                 // Suggested toggles
                 item(key = "suggested_header") {
                     Text(
@@ -145,7 +157,6 @@ fun HomeScreen(
                                 .padding(horizontal = 36.dp),
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
@@ -161,7 +172,6 @@ fun HomeScreen(
                                                 String.format(" :  %02d m : %02d s", timer / 60, timer % 60) + ", Count $pomodoroCount",
                                         textAlign = TextAlign.Center
                                     )
-
                                 }
                             }
                         }
@@ -178,7 +188,7 @@ fun HomeScreen(
                                     .weight(1f)
                                     .clip(RoundedCornerShape(23.dp))
                                     .background(Color.White.copy(alpha = 0.3f))
-                                    .clickable {  }
+                                    .clickable { }
                                     .padding(vertical = 16.dp),
                                 contentAlignment = Alignment.Center
                             ) {
@@ -188,7 +198,7 @@ fun HomeScreen(
                     }
                 }
 
-                // quick toggls
+                // Quick toggles
                 item(key = "quick_access_header") {
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(

@@ -10,7 +10,8 @@ data class SoundScapeItem(
     val id: Int = 1,
     val name: String,
     @RawRes val audioSrc: Int,
-    @DrawableRes val image: Int
+    @DrawableRes val image: Int,
+    val tags: List<String> = emptyList()  // <-- new property for filtering
 )
 
 val soundScapeItemsList = listOf(
@@ -18,50 +19,63 @@ val soundScapeItemsList = listOf(
         id = 1,
         name = "Dreamy Night",
         audioSrc = R.raw.midnight,
-        image = R.drawable.dreamy_night
+        image = R.drawable.dreamy_night,
+        tags = listOf("sleep", "focus") // example tags
     ),
     SoundScapeItem(
         id = 2,
         name = "Rain",
         audioSrc = R.raw.rain_with_thunderstorms,
-        image = R.drawable.rain
+        image = R.drawable.rain,
+        tags = listOf("sleep", "focus")
     ),
     SoundScapeItem(
         id = 3,
         name = "Fireplace",
         audioSrc = R.raw.fireplace,
-        image = R.drawable.fireplace
+        image = R.drawable.fireplace,
+        tags = listOf("focus")
     ),
     SoundScapeItem(
         id = 4,
-        name = "Birds",
-        audioSrc = R.raw.birds,
-        image = R.drawable.birds
+        name = "Distant Thunder",
+        audioSrc = R.raw.stormy_weather,
+        image = R.drawable.stormy_weather,
+        tags = listOf("sleep")
     ),
-
     SoundScapeItem(
         id = 5,
-        name = "Beach",
-        audioSrc = R.raw.beach,
-        image = R.drawable.beach
+        name = "Birds",
+        audioSrc = R.raw.birds,
+        image = R.drawable.birds,
+        tags = listOf("sad")
     ),
     SoundScapeItem(
         id = 6,
-        name = "White noise",
-        audioSrc = R.raw.white_noise,
-        image = R.drawable.white_noise
+        name = "Beach",
+        audioSrc = R.raw.beach,
+        image = R.drawable.beach,
+        tags = listOf("sad")
     ),
-
     SoundScapeItem(
         id = 7,
-        name = "Pink noise",
-        audioSrc = R.raw.pink_noise,
-        image = R.drawable.pink_noise
+        name = "White noise",
+        audioSrc = R.raw.white_noise,
+        image = R.drawable.white_noise,
+        tags = listOf("focus")
     ),
     SoundScapeItem(
         id = 8,
+        name = "Pink noise",
+        audioSrc = R.raw.pink_noise,
+        image = R.drawable.pink_noise,
+        tags = listOf("sleep")
+    ),
+    SoundScapeItem(
+        id = 9,
         name = "Brown noise",
         audioSrc = R.raw.brown_noise,
-        image = R.drawable.brown_noise
-    ),
+        image = R.drawable.brown_noise,
+        tags = listOf("sleep", "focus")
+    )
 )
