@@ -20,11 +20,11 @@ fun getExploreTiles(onUIAction: (ExploreScreenUIAction) -> Unit): List<ExploreTi
 
         ExploreTileData(
             header = "Effective Learning",
-            description = "null?",
+            description = "Tells you to focus on what",
             imageRes = R.drawable.effective_blur,
             backgroundColor = Color(0xFF4CAF50).copy(alpha = 0f),
             progress = 0.5f,
-            onClick = {  }
+            onClick = { onUIAction(ExploreScreenUIAction.NavigateToStudy()) }
         ),
         ExploreTileData(
             header = "Mindfulness",

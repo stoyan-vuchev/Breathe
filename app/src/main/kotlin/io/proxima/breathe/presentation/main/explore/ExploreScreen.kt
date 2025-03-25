@@ -38,7 +38,7 @@ fun ExploreScreen(
     Box(modifier = Modifier.fillMaxSize()) {
         // Background image fills the entire screen
         Image(
-            painter = painterResource(id = R.drawable.backgroundfakeblur),
+            painter = painterResource(id = R.drawable.figmafakeblur),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop

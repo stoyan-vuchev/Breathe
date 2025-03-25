@@ -72,7 +72,7 @@ fun SettingsScreen(
     Box(modifier = Modifier.fillMaxSize()) {
         // Background Image
         Image(
-            painter = painterResource(id = R.drawable.backgroundfakeblur),
+            painter = painterResource(id = R.drawable.figmafakeblur),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
@@ -130,7 +130,7 @@ fun SettingsScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Column {
-
+                            Spacer(modifier = Modifier.height(20.dp))
                             Text(
                                 text = "- Profile -",
                                 style = MaterialTheme.typography.titleLarge,
@@ -246,7 +246,7 @@ fun LazyListScope.settingsScreenMainCategory(onUIAction: (SettingsScreenUIAction
             label = "Edit Profile",
             onClick = { onUIAction(SettingsScreenUIAction.Profile) }
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
     }
 
     item(key = "main_notifications_item") {
@@ -259,7 +259,7 @@ fun LazyListScope.settingsScreenMainCategory(onUIAction: (SettingsScreenUIAction
             label = "Notifications",
             onClick = { onUIAction(SettingsScreenUIAction.Notifications) }
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
     }
 
     item(key = "main_delete_data_item") {
@@ -273,7 +273,7 @@ fun LazyListScope.settingsScreenMainCategory(onUIAction: (SettingsScreenUIAction
             textColor = Color.Red,
             onClick = { onUIAction(SettingsScreenUIAction.ShowDeleteDataDialog) }
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }
 

@@ -5,9 +5,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,18 +12,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.haze
@@ -41,19 +34,22 @@ import io.proxima.breathe.presentation.main.productivity.ProductivityReminders
 import io.proxima.breathe.presentation.main.productivity.ProductivityScreenState
 import io.proxima.breathe.presentation.main.productivity.ProductivityScreenUIAction
 import sv.lib.squircleshape.SquircleShape
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.layout.ContentScale
-
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.Spring
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 
 @Composable
 fun ProductivityScreen(
     screenState: ProductivityScreenState,
     onUIAction: (ProductivityScreenUIAction) -> Unit
 ) {
-
+    // For notifications permission check (if needed)
     CheckForNotificationPermission()
 
-    var isScreenShown by rememberSaveable { mutableStateOf(false) }
+    var isScreenShown by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { isScreenShown = true }
 
     val gradientAlpha by animateFloatAsState(
@@ -61,43 +57,24 @@ fun ProductivityScreen(
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioNoBouncy,
             stiffness = Spring.StiffnessVeryLow
-        ),
-        label = ""
+        )
     )
 
     val scrollBehavior = TopBarDefaults.exitUntilCollapsedScrollBehavior()
-
     val bgAlpha by remember(scrollBehavior.state.collapsedFraction) {
         derivedStateOf { scrollBehavior.state.collapsedFraction }
     }
-
     val topBarBgAlpha by remember(bgAlpha) {
         derivedStateOf {
-            transformFraction(
-                value = bgAlpha,
-                startX = .8f,
-                endX = 1f,
-                startY = 0f,
-                endY = .5f
-            )
+            transformFraction(bgAlpha, 0.8f, 1f, 0f, 0.5f)
         }
     }
-
-    val topBarTitle by remember(scrollBehavior.state.collapsedFraction) {
-        derivedStateOf {
-            if (scrollBehavior.state.collapsedFraction in .75f..1f)
-                "Productivity Reminders" else "Productivity\nReminders"
-        }
-    }
-
     val hazeState = remember { HazeState() }
 
     Box(modifier = Modifier.fillMaxSize()) {
-
-        // ✅ Background Image
         Image(
-            painter = painterResource(id = R.drawable.productivity_background),  // Replace with your image
-            contentDescription = "Productivity Background",
+            painter = painterResource(id = R.drawable.productivity_background),
+            contentDescription = "Background",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
@@ -106,7 +83,7 @@ fun ProductivityScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
-            containerColor = Color.Transparent, // Transparent to show image background
+            containerColor = Color.Transparent,
             contentColor = BreathTheme.colors.text,
             topBar = {
                 BasicTopBar(
@@ -117,14 +94,14 @@ fun ProductivityScreen(
                             blurRadius = 20.dp
                         )
                     ),
-                    titleText = topBarTitle,
+                    titleText = "Productivity Reminders",
                     scrollBehavior = scrollBehavior,
                     navigationIcon = {
                         IconButton(onClick = { onUIAction(ProductivityScreenUIAction.NavigateUp) }) {
                             Icon(
-                                modifier = Modifier.size(32.dp),
                                 imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
-                                contentDescription = "Navigate back to Home."
+                                contentDescription = "Back",
+                                modifier = Modifier.size(32.dp)
                             )
                         }
                     },
@@ -146,12 +123,9 @@ fun ProductivityScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .haze(hazeState),
-                contentPadding = insetsPadding,
+                contentPadding = insetsPadding
             ) {
-                reminderItems(
-                    screenState = screenState,
-                    onUIAction = onUIAction
-                )
+                reminderItems(screenState, onUIAction)
             }
         }
     }
@@ -161,16 +135,13 @@ private fun LazyListScope.reminderItems(
     screenState: ProductivityScreenState,
     onUIAction: (ProductivityScreenUIAction) -> Unit
 ) {
-
     item(key = "water_intake_reminder") {
         Spacer(modifier = Modifier.height(16.dp))
         ProductivityScreenReminder(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            state = ProductivityScreenReminderState(
-                enabled = screenState.isWaterIntakeReminderEnabled,
-            ),
+            state = ProductivityScreenReminderState(enabled = screenState.isWaterIntakeReminderEnabled),
             shape = SquircleShape(24.dp),
             id = ProductivityReminders.WATER_INTAKE,
             icon = painterResource(id = R.drawable.water_glass),
@@ -179,91 +150,93 @@ private fun LazyListScope.reminderItems(
             onUIAction = onUIAction
         )
     }
-
     item(key = "read_book_reminder") {
         Spacer(modifier = Modifier.height(16.dp))
         ProductivityScreenReminder(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            state = ProductivityScreenReminderState(
-                enabled = screenState.isReadBookReminderEnabled
-            ),
+            state = ProductivityScreenReminderState(enabled = screenState.isReadBookReminderEnabled),
             shape = SquircleShape(24.dp),
             id = ProductivityReminders.READ_BOOK,
             icon = painterResource(id = R.drawable.book),
             label = "Read a Book",
-            description = "Reading enhances cognitive abilities. Aim for 34 minutes of reading.",
+            description = "Enhance cognitive abilities. Aim for 34 minutes of reading.",
             onUIAction = onUIAction
         )
     }
-
     item(key = "basic_workout_reminder") {
         Spacer(modifier = Modifier.height(16.dp))
         ProductivityScreenReminder(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            state = ProductivityScreenReminderState(
-                enabled = screenState.isBasicWorkoutReminderEnabled
-            ),
+            state = ProductivityScreenReminderState(enabled = screenState.isBasicWorkoutReminderEnabled),
             shape = SquircleShape(24.dp),
             id = ProductivityReminders.BASIC_WORKOUT,
             icon = painterResource(id = R.drawable.activity),
             label = "Basic Workout",
-            description = "Do stretches, walking or jogging. Aim for minimum of 45 minutes.",
+            description = "Do stretches, walking or jogging. Aim for 45 minutes.",
             onUIAction = onUIAction
         )
     }
-
-    item(key = "Sleep_reminder") {
+    item(key = "touch_grass_reminder") {
         Spacer(modifier = Modifier.height(16.dp))
         ProductivityScreenReminder(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            state = ProductivityScreenReminderState(
-                enabled = screenState.isTouchGrassReminderEnabled
-            ),
+            state = ProductivityScreenReminderState(enabled = screenState.isTouchGrassReminderEnabled),
             shape = SquircleShape(24.dp),
             id = ProductivityReminders.TOUCH_GRASS,
             icon = painterResource(id = R.drawable.moon),
-            label = "Sleep Time",
-            description = "Reminds you to sleep at the time you do.",
+            label = "Touch Grass",
+            description = "Take a break for nature interaction.",
             onUIAction = onUIAction
         )
     }
-
     item(key = "bottom_spacer") {
         Spacer(modifier = Modifier.height(512.dp))
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun ProductivityScreenPreview() = BreathTheme(SkyBlueColors) {
-    ProductivityScreen(
-        screenState = ProductivityScreenState(),
-        onUIAction = {}
-    )
-}
-
 @Composable
 private fun CheckForNotificationPermission() {
+    // Implementation for checking notification permission...'
     val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { _ -> }
+
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { /* You can handle the result if needed */ }
+    )
 
     LaunchedEffect(Unit) {
-        if (
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            ContextCompat.checkSelfPermission(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val permissionCheck = ContextCompat.checkSelfPermission(
                 context,
                 Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            )
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun ProductivityScreenPreview() {
+    BreathTheme(SkyBlueColors) {
+        ProductivityScreen(
+            screenState = ProductivityScreenState(
+                isWaterIntakeReminderEnabled = true,
+                isReadBookReminderEnabled = true,
+                isBasicWorkoutReminderEnabled = false,
+                isTouchGrassReminderEnabled = true
+            ),
+            onUIAction = {} // No-op for preview
+        )
+    }
+}
+
+

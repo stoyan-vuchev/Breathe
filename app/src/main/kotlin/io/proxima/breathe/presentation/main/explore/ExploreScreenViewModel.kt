@@ -38,6 +38,7 @@ class ExploreScreenViewModel @Inject constructor() : ViewModel() {
             is ExploreScreenUIAction.NavigateToMlAssist -> sendUIAction(uiAction) // ✅ Added
             is ExploreScreenUIAction.NavigateToPomodoro -> sendUIAction(uiAction) // ✅ Added
             is ExploreScreenUIAction.NavigateToFitness -> sendUIAction(uiAction)
+            is ExploreScreenUIAction.NavigateToStudy -> sendUIAction(uiAction)
             else -> Unit // Ignore other actions
         }
     }

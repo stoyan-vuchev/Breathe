@@ -70,8 +70,19 @@
     <string name="user_screen_set_wakeup_time_description">Set usual wake up time</string>
     <string name="user_screen_greet_title">Hey Welcome!</string>
     <string name="user_screen_greet_description">To OPEN D LIFE</string>
+
     <string name="water_intake_reminder_channel_name">Water intake reminders</string>
     <string name="water_intake_reminder_text">Drink a glass of water</string>
     <string name="water_intake_reminder_title">Water intake reminder</string>
+    <string name="touch_grass_reminder_channel_name">Touch grass reminders</string>"
+    <string name="touch_grass_reminder_text">Touch grass</string>
+    <string name="touch_grass_reminder_title">Touch grass reminder</string>
+    <string name="basic_workout_reminder_channel_name">Basic workout reminders</string>"
+    <string name="basic_workout_reminder_text">Do some basic workout</string>
+    <string name="basic_workout_reminder_title">Basic workout reminder</string>
+    <string name="read_book_reminder_channel_name">Basic workout reminders</string>"
+    <string name="read_book_reminder_title">Basic workout reminder</string>
+    <string name="read_book_reminder_text">Do some basic workout</string>
+
 
 </resources>

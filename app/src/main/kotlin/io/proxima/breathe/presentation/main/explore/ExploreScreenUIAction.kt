@@ -46,5 +46,9 @@ sealed interface ExploreScreenUIAction {
     data class NavigateToSoundscapeFilter(
         val route: String = MainNavigationDestinations.SoundscapeFilter.route
     ) : ExploreScreenUIAction
+
+    data class NavigateToStudy(
+        val route: String = MainNavigationDestinations.StudyMain.route
+    ) : ExploreScreenUIAction
 }
 

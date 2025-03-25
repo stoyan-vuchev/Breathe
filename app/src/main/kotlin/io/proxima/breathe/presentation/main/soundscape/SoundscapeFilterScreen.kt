@@ -61,7 +61,7 @@ fun SoundscapeFilterScreenContent(
     Box(modifier = Modifier.fillMaxSize()) {
         // 🌄 Background Image Layer
         androidx.compose.foundation.Image(
-            painter = androidx.compose.ui.res.painterResource(id = R.drawable.backgroundfakeblur), // Replace with your drawable
+            painter = androidx.compose.ui.res.painterResource(id = R.drawable.figmafakeblur), // Replace with your drawable
             contentDescription = "Background",
             modifier = Modifier.fillMaxSize(),
             contentScale = androidx.compose.ui.layout.ContentScale.Crop

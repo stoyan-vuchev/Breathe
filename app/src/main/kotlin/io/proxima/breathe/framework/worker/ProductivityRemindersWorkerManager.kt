@@ -1,8 +1,12 @@
-package io.proxima.breathe.framework.worker
-
-import io.proxima.breathe.presentation.main.productivity.ProductivityReminders
+package io.proxima.breathe.framework.worker.productivity
 
 interface ProductivityRemindersWorkerManager {
     fun enqueueWaterIntakeReminder(interval: Long)
-    fun cancel(tag: String = ProductivityReminders.MAIN_TAG)
+    fun cancelWaterIntakeReminder()
+    fun enqueueReadBookReminder(interval: Long)
+    fun cancelReadBookReminder()
+    fun enqueueBasicWorkoutReminder(interval: Long)
+    fun cancelBasicWorkoutReminder()
+    fun enqueueTouchGrassReminder(interval: Long)
+    fun cancelTouchGrassReminder()
 }

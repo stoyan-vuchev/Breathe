@@ -79,6 +79,9 @@ import io.proxima.breathe.presentation.main.soundscape.SoundScapeScreen
 import io.proxima.breathe.presentation.main.soundscape.SoundscapeFilterScreen
 import io.proxima.breathe.presentation.main.soundscape.SoundscapeUIAction
 import io.proxima.breathe.presentation.main.soundscape.SoundscapeViewModel
+import io.proxima.breathe.presentation.study.StudyPlanerMainScreen
+import io.proxima.breathe.presentation.study.StudyPlanerSetupScreen
+import io.proxima.breathe.presentation.study.StudyPlanerViewModel
 import kotlinx.coroutines.flow.collectLatest
 //
 
@@ -236,6 +239,12 @@ fun NavGraphBuilder.mainNavigationGraph(
                             is ExploreScreenUIAction.NavigateToFitness ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.FitnessSetup.route)
 
+                            is ExploreScreenUIAction.NavigateToSoundscapeFilter -> navController
+                                .navigateSingleTop(route = MainNavigationDestinations.SoundscapeFilter.route)
+
+                            is ExploreScreenUIAction.NavigateToStudy -> navController
+                                .navigateSingleTop(route = MainNavigationDestinations.StudySetup.route)
+
                             else -> Unit
                         }
                     }
@@ -277,7 +286,29 @@ fun NavGraphBuilder.mainNavigationGraph(
 
             }
         )
+        composable(route = MainNavigationDestinations.StudyMain.route) {
+            val viewModel = hiltViewModel<StudyPlanerViewModel>()
+            val subjects by viewModel.subjectsFlow.collectAsStateWithLifecycle()
+            StudyPlanerMainScreen(
+                subjects = subjects,
+                currentFocusSubject = viewModel.currentFocusSubject,
+                onEditSubject = { /* navigate to an edit screen if needed */ }
+            )
+        }
 
+        composable(route = MainNavigationDestinations.StudySetup.route) {
+            val viewModel = hiltViewModel<StudyPlanerViewModel>()
+            StudyPlanerSetupScreen(
+                onAddSubject = { name, priority, examDate ->
+                    viewModel.addSubject(name, priority, examDate)
+                },
+                onDone = {
+                    navController.navigate(MainNavigationDestinations.StudyMain.route) {
+                        popUpTo(MainNavigationDestinations.StudySetup.route) { inclusive = true }
+                    }
+                }
+            )
+        }
         composable(
             route = MainNavigationDestinations.Pomodoro.route,
             content = {

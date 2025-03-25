@@ -9,6 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.proxima.breathe.data.local.AppDatabase
+import io.proxima.breathe.data.local.dao.StudySubjectDao
 import io.proxima.breathe.data.manager.SleepManager
 import io.proxima.breathe.data.preferences.AppPreferences
 import io.proxima.breathe.data.preferences.AppPreferencesImpl
@@ -46,6 +47,11 @@ object AppModule {
             sleepDao = appDatabase.sleepDao,
             ioDispatcher = Dispatchers.IO
         )
+    }
+
+    @Provides
+    fun provideStudySubjectDao(appDatabase: AppDatabase): StudySubjectDao {
+        return appDatabase.studySubjectDao()
     }
 
 }

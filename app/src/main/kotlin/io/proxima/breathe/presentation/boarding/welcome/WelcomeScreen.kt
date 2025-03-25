@@ -64,7 +64,7 @@ fun WelcomeScreen(
 
         // ✅ Background Image
         Image(
-            painter = painterResource(id = R.drawable.backgroundfakeblur), // Replace with your image resource
+            painter = painterResource(id = R.drawable.figmafakeblur), // Replace with your image resource
             contentDescription = "Background",
             modifier = Modifier.fillMaxSize(),
             contentScale = androidx.compose.ui.layout.ContentScale.Crop

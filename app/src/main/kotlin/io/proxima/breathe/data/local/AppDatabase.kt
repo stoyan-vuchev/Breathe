@@ -11,18 +11,21 @@ import io.proxima.breathe.data.local.dao.TaskDao
 import io.proxima.breathe.data.local.entity.QuoteEntity
 import io.proxima.breathe.data.local.entity.SleepEntity
 import io.proxima.breathe.data.local.entity.Task
+import io.proxima.breathe.data.local.dao.StudySubjectDao
+import io.proxima.breathe.data.local.entity.StudySubjectEntity
 
 @Database(
-    entities = [SleepEntity::class, QuoteEntity::class, Task::class],
-    version = 3,
+    entities = [SleepEntity::class, QuoteEntity::class, Task::class, StudySubjectEntity::class],
+    version = 4,
     exportSchema = true,
-    autoMigrations = [AutoMigration(from = 2, to = 3)]
+    //autoMigrations = [AutoMigration(from = 3, to = 4)]
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val sleepDao: SleepDao
     abstract val quotesDao: QuotesDao
     abstract val taskDao: TaskDao
+    abstract fun studySubjectDao(): StudySubjectDao
 
     companion object {
 

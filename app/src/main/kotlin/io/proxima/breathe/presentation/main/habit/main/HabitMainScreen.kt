@@ -92,7 +92,7 @@ fun HabitMainScreen(
             Box(modifier = Modifier.fillMaxSize()) {
 
                 androidx.compose.foundation.Image(
-                    painter = painterResource(id = R.drawable.backgroundfakeblur), // Replace with your actual background image
+                    painter = painterResource(id = R.drawable.figmafakeblur), // Replace with your actual background image
                     contentDescription = "Habit Background",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()

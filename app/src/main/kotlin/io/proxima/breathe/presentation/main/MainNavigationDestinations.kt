@@ -33,6 +33,10 @@ sealed class MainNavigationDestinations(
     data object FitnessNormal : MainNavigationDestinations("fitness_normal")
     data object FitnessOverweight : MainNavigationDestinations("fitness_overweight")
     data object FitnessObese : MainNavigationDestinations("fitness_obese")
+
+    object StudySetup : MainNavigationDestinations("study_setup")
+    object StudyMain : MainNavigationDestinations("study_main")
+
     companion object {
         const val NAV_ROUTE = "main_navigation"
     }

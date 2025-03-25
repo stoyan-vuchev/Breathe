@@ -19,20 +19,40 @@ class ProductivityRemindersPreferencesImpl @Inject constructor(
         preferences.edit { it[WATER_INTAKE_REMINDER_KEY] = enabled }
     }
 
-    override fun getWaterIntakeReminderEnabled(): Flow<Boolean> {
-        return preferences.data
-            .filter { it[WATER_INTAKE_REMINDER_KEY] != null }
-            .map { it[WATER_INTAKE_REMINDER_KEY]!! }
+    override fun getWaterIntakeReminderEnabled(): Flow<Boolean> =
+        preferences.data.filter { it.contains(WATER_INTAKE_REMINDER_KEY) }
+            .map { it[WATER_INTAKE_REMINDER_KEY] ?: false }
+
+    override suspend fun setReadBookReminderEnabled(enabled: Boolean) {
+        preferences.edit { it[READ_BOOK_REMINDER_KEY] = enabled }
     }
+
+    override fun getReadBookReminderEnabled(): Flow<Boolean> =
+        preferences.data.filter { it.contains(READ_BOOK_REMINDER_KEY) }
+            .map { it[READ_BOOK_REMINDER_KEY] ?: false }
+
+    override suspend fun setWorkoutReminderEnabled(enabled: Boolean) {
+        preferences.edit { it[WORKOUT_REMINDER_KEY] = enabled }
+    }
+
+    override fun getWorkoutReminderEnabled(): Flow<Boolean> =
+        preferences.data.filter { it.contains(WORKOUT_REMINDER_KEY) }
+            .map { it[WORKOUT_REMINDER_KEY] ?: false }
+
+    override suspend fun setTouchGrassReminderEnabled(enabled: Boolean) {
+        preferences.edit { it[TOUCH_GRASS_REMINDER_KEY] = enabled }
+    }
+
+    override fun getTouchGrassReminderEnabled(): Flow<Boolean> =
+        preferences.data.filter { it.contains(TOUCH_GRASS_REMINDER_KEY) }
+            .map { it[TOUCH_GRASS_REMINDER_KEY] ?: false }
 
     companion object {
-
         private val WATER_INTAKE_REMINDER_KEY = booleanPreferencesKey("water_intake_reminder")
+        private val READ_BOOK_REMINDER_KEY = booleanPreferencesKey("read_book_reminder")
+        private val WORKOUT_REMINDER_KEY = booleanPreferencesKey("workout_reminder")
+        private val TOUCH_GRASS_REMINDER_KEY = booleanPreferencesKey("touch_grass_reminder")
 
-        val Context.productivityRemindersPreferences by preferencesDataStore(
-            name = "productivity_reminders_preferences"
-        )
-
+        val Context.productivityRemindersPreferences by preferencesDataStore(name = "productivity_reminders_preferences")
     }
-
 }
