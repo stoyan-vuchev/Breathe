@@ -4,10 +4,30 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -15,9 +35,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.lerp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.proxima.breathe.core.etc.Result
 import io.proxima.breathe.core.etc.transformFraction
 import io.proxima.breathe.core.ui.components.topbar.TopBarDefaults
 import io.proxima.breathe.core.ui.components.topbar.TopBarScrollBehavior
@@ -28,11 +48,12 @@ import io.proxima.breathe.core.utils.TimestampUtils
 import io.proxima.breathe.data.preferences.AppPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 @Composable
 fun DayViewTopBar(
     modifier: Modifier = Modifier,
-    appPreferences: AppPreferences,  // ✅ AppPreferences injected
+    appPreferences: AppPreferences,
     actions: @Composable (RowScope.() -> Unit)? = null,
     scrollBehavior: TopBarScrollBehavior? = null,
     backgroundColor: Color = Color.Unspecified,
@@ -44,12 +65,12 @@ fun DayViewTopBar(
     var username by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
 
-    // ✅ Load user name from preferences
+    // Load the user name from preferences.
     LaunchedEffect(Unit) {
         coroutineScope.launch {
             when (val result = appPreferences.getUser()) {
-                is Result.Success -> username = result.data ?: "Guest"
-                is Result.Error -> username = "Guest"
+                is io.proxima.breathe.core.etc.Result.Success -> username = result.data ?: "Guest"
+                is io.proxima.breathe.core.etc.Result.Error -> username = "Guest"
             }
         }
     }
@@ -83,7 +104,6 @@ private fun DayViewTopBarLayout(
     scrollBehavior: TopBarScrollBehavior?,
     username: String
 ) = CompositionLocalProvider(LocalContentColor provides contentColor) {
-
     val density = LocalDensity.current
     val statusBarHeightPx = windowInsets.getTop(density).toFloat()
     val pinnedHeightPx = with(density) { pinnedHeight.toPx() } + statusBarHeightPx
@@ -116,7 +136,7 @@ private fun DayViewTopBarLayout(
 
     val collapsedSubTitleAlpha by remember(collapsedFraction) {
         derivedStateOf {
-            transformFraction(collapsedFraction().coerceIn(0f, 1f), .67f, .33f, 0f, 1f)
+            transformFraction(collapsedFraction().coerceIn(0f, 1f), 0.67f, 0.33f, 0f, 1f)
         }
     }
 
@@ -129,13 +149,27 @@ private fun DayViewTopBarLayout(
     val onDragStopped = remember<suspend CoroutineScope.(Float) -> Unit>(scrollBehavior) {
         { velocity ->
             if (scrollBehavior != null && !scrollBehavior.isPinned) {
-                settleAppBar(scrollBehavior.state, velocity, scrollBehavior.flingAnimationSpec, scrollBehavior.snapAnimationSpec)
+                settleAppBar(
+                    scrollBehavior.state,
+                    velocity,
+                    scrollBehavior.flingAnimationSpec,
+                    scrollBehavior.snapAnimationSpec
+                )
             }
         }
     }
 
     val timestamp = remember { System.currentTimeMillis() }
     val date by rememberUpdatedState(TimestampUtils.extractMonthOfTheYear(timestamp))
+
+    // Determine greeting based on current hour.
+    val currentHour = remember { Calendar.getInstance().get(Calendar.HOUR_OF_DAY) }
+    val greeting = when {
+        currentHour < 12 -> "Good Morning"
+        currentHour < 18 -> "Good Afternoon"
+        currentHour < 21 -> "Good Evening"
+        else -> "Good Night"
+    }
 
     Box(
         modifier = modifier
@@ -187,13 +221,13 @@ private fun DayViewTopBarLayout(
                 modifier = Modifier
                     .graphicsLayer {
                         alpha = expandedSubTitleAlpha
-                        translationY = with(density) { 32.dp.toPx() } // ✅ FIXED toPx
+                        translationY = with(density) { 32.dp.toPx() }
                     }
                     .padding(start = 40.dp)
                     .align(Alignment.BottomStart)
             ) {
                 ProvideTextStyle(value = smallTitleTextStyle) {
-                    Text(text = "Good Morning")
+                    Text(text = greeting)
                 }
             }
         }
