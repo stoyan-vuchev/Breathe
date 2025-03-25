@@ -76,6 +76,7 @@ import io.proxima.breathe.presentation.main.sleep.SleepScreen
 import io.proxima.breathe.presentation.main.sleep.SleepScreenUIAction
 import io.proxima.breathe.presentation.main.sleep.SleepScreenViewModel
 import io.proxima.breathe.presentation.main.soundscape.SoundScapeScreen
+import io.proxima.breathe.presentation.main.soundscape.SoundscapeFilterScreen
 import io.proxima.breathe.presentation.main.soundscape.SoundscapeUIAction
 import io.proxima.breathe.presentation.main.soundscape.SoundscapeViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -112,8 +113,8 @@ fun NavGraphBuilder.mainNavigationGraph(
                             is HomeScreenUIAction.NavigateToBreathe -> navController
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
 
-                            is HomeScreenUIAction.NavigateToSoundscape -> navController
-                                .navigateSingleTop(route = uiAction.route, inclusive = false)
+//                            is HomeScreenUIAction.NavigateToSoundscape -> navController
+//                                .navigateSingleTop(route = uiAction.route, inclusive = false)
 
                             is HomeScreenUIAction.NavigateToHabitControl -> navController
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
@@ -128,6 +129,9 @@ fun NavGraphBuilder.mainNavigationGraph(
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
 
                             is HomeScreenUIAction.NavigateToPomodoro -> navController
+                                .navigateSingleTop(route = uiAction.route, inclusive = false)
+
+                            is HomeScreenUIAction.NavigateToSoundscapeFilter -> navController
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
 
                             is HomeScreenUIAction.NavigateToExplore -> navController
@@ -214,8 +218,8 @@ fun NavGraphBuilder.mainNavigationGraph(
                             is ExploreScreenUIAction.NavigateToBreathe ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.Breathe.route)
 
-                            is ExploreScreenUIAction.NavigateToSoundscape ->
-                                navController.navigateSingleTop(route = MainNavigationDestinations.Soundscape.route)
+//                            is ExploreScreenUIAction.NavigateToSoundscape ->
+//                                navController.navigateSingleTop(route = MainNavigationDestinations.Soundscape.route)
 
                             is ExploreScreenUIAction.NavigateToHabitControl ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.HabitControlSetup.route)
@@ -323,10 +327,9 @@ fun NavGraphBuilder.mainNavigationGraph(
 
 
         composable(
-            route = MainNavigationDestinations.Soundscape.route,
+            route = MainNavigationDestinations.SoundscapeFilter.route,
             content = {
                 ProvideBreathColors(DreamyNightColors) {
-
                     val viewModel = hiltViewModel<SoundscapeViewModel>()
                     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
@@ -339,14 +342,15 @@ fun NavGraphBuilder.mainNavigationGraph(
                         }
                     }
 
-                    SoundScapeScreen(
-                        screenState = screenState,
+                    // Here, we call the filter screen instead of the original screen.
+                    SoundscapeFilterScreen(
+                        viewModel = viewModel,
                         onUIAction = viewModel::onUIAction
                     )
-
                 }
             }
         )
+
 
         composable(
             route = MainNavigationDestinations.HabitControlSetup.route,
@@ -493,6 +497,7 @@ fun NavGraphBuilder.mainNavigationGraph(
             content = {
 
                 val viewModel = hiltViewModel<SettingsScreenViewModel>()
+                val appPreferences = hiltViewModel<SettingsScreenViewModel>().appPreferences
                 val snackbarHostState = remember { SnackbarHostState() }
                 val context = LocalContext.current
 
@@ -501,7 +506,6 @@ fun NavGraphBuilder.mainNavigationGraph(
                 LaunchedEffect(viewModel.uiActionFlow) {
                     viewModel.uiActionFlow.collectLatest { uiAction ->
                         when (uiAction) {
-
                             is NavigateUp -> navController.navigateUp()
 
                             is SettingsScreenUIAction.Profile -> {
@@ -513,18 +517,13 @@ fun NavGraphBuilder.mainNavigationGraph(
                             }
 
                             is SettingsScreenUIAction.Notifications -> {
-                                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                                    .apply {
-                                        putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-                                    }.also { context.startActivity(it) }
+                                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                                    putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                                }.also { context.startActivity(it) }
                             }
 
-                            is SettingsScreenUIAction.ShowDeleteDataDialog -> isDeleteDataDialogVisible =
-                                true
-
-                            is SettingsScreenUIAction.DismissDeleteDataDialog -> isDeleteDataDialogVisible =
-                                false
-
+                            is SettingsScreenUIAction.ShowDeleteDataDialog -> isDeleteDataDialogVisible = true
+                            is SettingsScreenUIAction.DismissDeleteDataDialog -> isDeleteDataDialogVisible = false
                             is SettingsScreenUIAction.ConfirmDeleteData -> onRecreateActivity()
 
                             is SettingsScreenUIAction.About -> {
@@ -535,7 +534,6 @@ fun NavGraphBuilder.mainNavigationGraph(
                                 )
                             }
 
-                            // New cases for bottom navigation from Settings
                             is SettingsScreenUIAction.NavigateToHome -> {
                                 navController.navigateSingleTop(
                                     route = MainNavigationDestinations.Home.route,
@@ -561,7 +559,6 @@ fun NavGraphBuilder.mainNavigationGraph(
                             }
 
                             else -> Unit
-
                         }
                     }
                 }
@@ -573,11 +570,11 @@ fun NavGraphBuilder.mainNavigationGraph(
                 }
 
                 SettingsScreen(
+                    appPreferences = appPreferences,  // ✅ FIXED: Injected AppPreferences
                     snackbarHostState = snackbarHostState,
                     isDeleteDataDialogVisible = isDeleteDataDialogVisible,
                     onUIAction = viewModel::onUIAction
                 )
-
             }
         )
 

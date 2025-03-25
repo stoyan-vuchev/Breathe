@@ -48,7 +48,7 @@ fun getExploreTiles(onUIAction: (ExploreScreenUIAction) -> Unit): List<ExploreTi
             imageRes = R.drawable.soundscape_blur,
             Color(0xFF4CAF50).copy(alpha = 0f),
             progress = 0.5f,
-            onClick = { onUIAction(ExploreScreenUIAction.NavigateToSoundscape()) }
+            onClick = { onUIAction(ExploreScreenUIAction.NavigateToSoundscapeFilter()) }
         ),
         ExploreTileData(
             header = "Productivity Reminders",

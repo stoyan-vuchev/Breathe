@@ -20,7 +20,7 @@ val soundScapeItemsList = listOf(
         name = "Dreamy Night",
         audioSrc = R.raw.midnight,
         image = R.drawable.dreamy_night,
-        tags = listOf("sleep", "focus") // example tags
+        tags = listOf("sleep") // example tags
     ),
     SoundScapeItem(
         id = 2,

@@ -18,9 +18,9 @@ sealed interface ExploreScreenUIAction {
         val route: String = MainNavigationDestinations.Breathe.route
     ) : ExploreScreenUIAction
 
-    data class NavigateToSoundscape(
-        val route: String = MainNavigationDestinations.Soundscape.route
-    ) : ExploreScreenUIAction
+//    data class NavigateToSoundscape(
+//        val route: String = MainNavigationDestinations.Soundscape.route
+//    ) : ExploreScreenUIAction
 
     data class NavigateToHabitControl(
         val route: String = MainNavigationDestinations.HabitControlSetup.route
@@ -41,6 +41,10 @@ sealed interface ExploreScreenUIAction {
 
     data class NavigateToFitness(
         val route: String = MainNavigationDestinations.FitnessSetup.route
+    ) : ExploreScreenUIAction
+
+    data class NavigateToSoundscapeFilter(
+        val route: String = MainNavigationDestinations.SoundscapeFilter.route
     ) : ExploreScreenUIAction
 }
 

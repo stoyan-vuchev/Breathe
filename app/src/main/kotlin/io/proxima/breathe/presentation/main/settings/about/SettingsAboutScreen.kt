@@ -201,7 +201,7 @@ fun SettingsAboutScreen(
                     ) {
 
                         Text(
-                            text = "Version ${BuildConfig.VERSION_NAME}",
+                            text = "Version ${BuildConfig.VERSION_NAME} Beta",
                             style = BreathTheme.typography.labelLarge,
                             color = BreathTheme.colors.text
                         )
@@ -215,18 +215,9 @@ fun SettingsAboutScreen(
                 key = "item_open_source_licenses",
                 content = {
 
-                    Spacer(modifier = Modifier.height(64.dp))
+                    Spacer(modifier = Modifier.height(74.dp))
 
-                    UniqueButton(
-                        onClick = {}
-                    ) {
 
-                        Text(
-                            text = "Open Source Licenses",
-                            style = BreathTheme.typography.labelLarge
-                        )
-
-                    }
 
                 }
             )

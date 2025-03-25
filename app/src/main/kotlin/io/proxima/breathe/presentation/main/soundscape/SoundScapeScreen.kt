@@ -136,7 +136,7 @@
                             state = hazeState,
                             style = HazeStyle(
                                 tint = BreathTheme.colors.backgroundGradientStart.copy(topBarBgAlpha),
-                                blurRadius = 20.dp
+                                blurRadius = 40.dp
                             )
                         ),
                         titleText = "Soundscape",

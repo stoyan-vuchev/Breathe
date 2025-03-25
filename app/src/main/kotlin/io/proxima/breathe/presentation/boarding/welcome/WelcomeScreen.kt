@@ -133,7 +133,7 @@ fun WelcomeScreen(
                                 .fillMaxWidth()
                                 .padding(60.dp)
                                 .clip(RoundedCornerShape(50)),
-                            color = BreathDefaultColors.background
+                            color = BreathDefaultColors.background.copy(alpha = 0f)
                         )
                         Text(
                             ""

@@ -58,7 +58,7 @@ fun SoundScapeScreenItem(
                     )
                 }
             )
-            .clip(shape = SquircleShape(16.dp))
+            .clip(shape = SquircleShape(25.dp))
             .background(BreathTheme.colors.card)
     ) {
 
@@ -111,7 +111,7 @@ fun SoundScapeScreenItem(
                             )
                         }
                     )
-                    .clip(SquircleShape(24.dp))
+                    .clip(SquircleShape(100.dp))
                     .background(BreathTheme.colors.background),
                 contentAlignment = Alignment.Center
             ) {

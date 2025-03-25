@@ -146,6 +146,7 @@ fun FitnessNormalScreen(bmi: Float) {
                     style = BreathTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
                     color = Color.White
                 )
+                Spacer(modifier = Modifier.height(24.dp))
             }
             // Flexible Suggestions Box List
             Column(

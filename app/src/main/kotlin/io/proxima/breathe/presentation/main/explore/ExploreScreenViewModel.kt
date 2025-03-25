@@ -30,7 +30,7 @@ class ExploreScreenViewModel @Inject constructor() : ViewModel() {
             is ExploreScreenUIAction.NavigateToHome -> sendUIAction(uiAction)
             is ExploreScreenUIAction.NavigateToProfile -> sendUIAction(uiAction)
             is ExploreScreenUIAction.NavigateToSettings -> sendUIAction(uiAction)
-            is ExploreScreenUIAction.NavigateToSoundscape -> sendUIAction(uiAction)
+            is ExploreScreenUIAction.NavigateToSoundscapeFilter -> sendUIAction(uiAction)
             is ExploreScreenUIAction.NavigateToSleep -> sendUIAction(uiAction) // ✅ Added
             is ExploreScreenUIAction.NavigateToBreathe -> sendUIAction(uiAction) // ✅ Added
             is ExploreScreenUIAction.NavigateToHabitControl -> sendUIAction(uiAction) // ✅ Added

@@ -75,7 +75,8 @@ fun FitnessSetupScreen(
                     .animateContentSize(),
                 value = heightInput,
                 onValueChange = { heightInput = it },
-                label = { Text("Height (cm)") },
+                label = { Text("Height (cm)",
+                    color = Color.White) },
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.White,
@@ -110,7 +111,9 @@ fun FitnessSetupScreen(
                     .animateContentSize(),
                 value = weightInput,
                 onValueChange = { weightInput = it },
-                label = { Text("Weight (kg)") },
+                label = { Text("Weight (kg)",
+                    color = Color.White
+                ) },
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.White,
@@ -146,8 +149,10 @@ fun FitnessSetupScreen(
                     }
                 },
                 modifier = Modifier.padding(top = 0.dp)
+
             ) {
-                Text("Submit")
+                Text("Submit",
+                    color = Color.White)
             }
         }
     }

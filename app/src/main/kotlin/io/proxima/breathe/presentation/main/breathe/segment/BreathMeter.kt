@@ -30,10 +30,10 @@ fun BreathMeter(
     modifier: Modifier = Modifier,
     segmentState: BreatheScreenSegmentState,
     emptyLineColor: Color = BreathTheme.colors.background.copy(alpha = 0.3f),
-    expandedLineColor: Color = Color.Black.copy(.16f)
-        .compositeOver(BreathTheme.colors.secondarySoul),
-    shrunkLineColor: Color = Color.Black.copy(.32f)
-        .compositeOver(BreathTheme.colors.secondarySoul),
+    expandedLineColor: Color = Color.White.copy(.16f)
+        .compositeOver(Color.White),
+    shrunkLineColor: Color = Color.White.copy(.32f)
+        .compositeOver(Color.White.copy(alpha = 0.4f)),
 ) {
 
     val textStyle = BreathTheme.typography.labelMedium.copy(color = Color.White)
@@ -134,7 +134,7 @@ fun BreathMeter(
             defaultLayoutDirection = this.layoutDirection
         )
 
-        val text = "Breath Meter"
+        val text = "When it increases Lung pressure decreases"
         val textMeasurements = textMeasurer.measure(
             text = text,
             style = textStyle

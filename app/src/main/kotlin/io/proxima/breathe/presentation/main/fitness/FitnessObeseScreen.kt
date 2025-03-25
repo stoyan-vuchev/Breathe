@@ -106,7 +106,7 @@ fun FitnessObeseScreen(bmi: Float) {
             }
             // BMI Condition Box
 
-            Spacer(modifier = Modifier.height(7.dp))
+            Spacer(modifier = Modifier.height(2.dp))
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

@@ -38,7 +38,7 @@ class HomeScreenViewModel @Inject constructor(
     fun onUIAction(uiAction: HomeScreenUIAction) = when (uiAction) {
         is HomeScreenUIAction.NavigateToSleep,
         is HomeScreenUIAction.NavigateToBreathe,
-        is HomeScreenUIAction.NavigateToSoundscape,
+        is HomeScreenUIAction.NavigateToSoundscapeFilter,
         is HomeScreenUIAction.NavigateToHabitControl,
         is HomeScreenUIAction.NavigateToProductivity,
         is HomeScreenUIAction.NavigateToMlAssist,

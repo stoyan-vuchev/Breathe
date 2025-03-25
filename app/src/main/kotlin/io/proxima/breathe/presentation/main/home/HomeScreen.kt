@@ -188,11 +188,11 @@ fun HomeScreen(
                                     .weight(1f)
                                     .clip(RoundedCornerShape(23.dp))
                                     .background(Color.White.copy(alpha = 0.3f))
-                                    .clickable { }
+                                    .clickable { onUIAction(HomeScreenUIAction.NavigateToFitness()) }
                                     .padding(vertical = 16.dp),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(text = "No Suggestions", textAlign = TextAlign.Center)
+                                Text(text = "Remember to keep fitness on track", textAlign = TextAlign.Center)
                             }
                         }
                     }
@@ -231,7 +231,7 @@ fun HomeScreen(
                                     .weight(1f)
                                     .clip(RoundedCornerShape(23.dp))
                                     .background(Color.White.copy(alpha = 0.3f))
-                                    .clickable { onUIAction(HomeScreenUIAction.NavigateToSoundscape()) }
+                                    .clickable { onUIAction(HomeScreenUIAction.NavigateToSoundscapeFilter()) }
                                     .padding(vertical = 16.dp),
                                 contentAlignment = Alignment.Center
                             ) {
@@ -250,7 +250,7 @@ fun HomeScreen(
                                     .weight(1f)
                                     .clip(RoundedCornerShape(23.dp))
                                     .background(Color.White.copy(alpha = 0.3f))
-                                    .clickable { }
+                                    .clickable { onUIAction(HomeScreenUIAction.NavigateToPomodoro()) }
                                     .padding(vertical = 16.dp),
                                 contentAlignment = Alignment.Center
                             ) {

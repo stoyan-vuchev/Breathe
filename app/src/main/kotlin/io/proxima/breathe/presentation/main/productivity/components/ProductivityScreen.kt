@@ -175,7 +175,7 @@ private fun LazyListScope.reminderItems(
             id = ProductivityReminders.WATER_INTAKE,
             icon = painterResource(id = R.drawable.water_glass),
             label = "Water intake",
-            description = "Reminds you to drink water every interval to stay hydrated",
+            description = "Reminds you to drink water to stay hydrated",
             onUIAction = onUIAction
         )
     }
@@ -186,12 +186,14 @@ private fun LazyListScope.reminderItems(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            state = ProductivityScreenReminderState(),
+            state = ProductivityScreenReminderState(
+                enabled = screenState.isReadBookReminderEnabled
+            ),
             shape = SquircleShape(24.dp),
             id = ProductivityReminders.READ_BOOK,
             icon = painterResource(id = R.drawable.book),
             label = "Read a Book",
-            description = "Reading daily enhances brain strength and cognitive abilities.\nAim for at least 34 minutes of reading each day.",
+            description = "Reading enhances cognitive abilities. Aim for 34 minutes of reading.",
             onUIAction = onUIAction
         )
     }
@@ -202,28 +204,32 @@ private fun LazyListScope.reminderItems(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            state = ProductivityScreenReminderState(),
+            state = ProductivityScreenReminderState(
+                enabled = screenState.isBasicWorkoutReminderEnabled
+            ),
             shape = SquircleShape(24.dp),
             id = ProductivityReminders.BASIC_WORKOUT,
             icon = painterResource(id = R.drawable.activity),
             label = "Basic Workout",
-            description = "Include running, lunges, and stretches. Aim for a minimum of 45 minutes.",
+            description = "Do stretches, walking or jogging. Aim for minimum of 45 minutes.",
             onUIAction = onUIAction
         )
     }
 
-    item(key = "touch_grass_reminder") {
+    item(key = "Sleep_reminder") {
         Spacer(modifier = Modifier.height(16.dp))
         ProductivityScreenReminder(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            state = ProductivityScreenReminderState(),
+            state = ProductivityScreenReminderState(
+                enabled = screenState.isTouchGrassReminderEnabled
+            ),
             shape = SquircleShape(24.dp),
             id = ProductivityReminders.TOUCH_GRASS,
-            icon = painterResource(id = R.drawable.touch_grass),
-            label = "Touch Grass",
-            description = "Take breaks for nature interaction during long work periods. Boosts mood, oxygen levels, and alertness.",
+            icon = painterResource(id = R.drawable.moon),
+            label = "Sleep Time",
+            description = "Reminds you to sleep at the time you do.",
             onUIAction = onUIAction
         )
     }

@@ -20,9 +20,9 @@ sealed interface HomeScreenUIAction {
         val route: String = MainNavigationDestinations.Breathe.route
     ) : HomeScreenUIAction
 
-    data class NavigateToSoundscape(
-        val route: String = MainNavigationDestinations.Soundscape.route
-    ) : HomeScreenUIAction
+//    data class NavigateToSoundscape(
+//        val route: String = MainNavigationDestinations.Soundscape.route
+//    ) : HomeScreenUIAction
 
     data class NavigateToHabitControl(
         val route: String = MainNavigationDestinations.HabitControlSetup.route
@@ -44,5 +44,12 @@ sealed interface HomeScreenUIAction {
         val route: String = MainNavigationDestinations.Pomodoro.route
     ) : HomeScreenUIAction
 
+    data class NavigateToSoundscapeFilter(
+        val route: String = MainNavigationDestinations.SoundscapeFilter.route
+    ) : HomeScreenUIAction
+
+    data class NavigateToFitness(
+        val route: String = MainNavigationDestinations.FitnessSetup.route
+    ) : HomeScreenUIAction
 
 }

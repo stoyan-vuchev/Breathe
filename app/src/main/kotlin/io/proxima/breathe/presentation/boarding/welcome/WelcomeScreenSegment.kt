@@ -23,7 +23,7 @@ sealed class WelcomeScreenSegment(
     data object Welcome : WelcomeScreenSegment(
         title = R.string.welcome_screen_welcome_segment_title,
         description = R.string.welcome_screen_welcome_segment_description,
-        icon = R.drawable.trans_logo,
+        icon = R.drawable.app_glow,
         colors = BreathDefaultColors
     )
 

@@ -50,7 +50,7 @@ fun BreatheScreenSegment(
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = Color.Unspecified,
-        contentColor = BreathTheme.colors.text,
+        contentColor = Color.White,
         topBar = {
 
             BasicTopBar(
@@ -58,6 +58,7 @@ fun BreatheScreenSegment(
                 navigationIcon = {
 
                     IconButton(
+
                         onClick = {
 
                             onUIAction(
