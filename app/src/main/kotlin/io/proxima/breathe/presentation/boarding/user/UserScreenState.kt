@@ -1,7 +1,7 @@
 package io.proxima.breathe.presentation.boarding.user
 
 import androidx.compose.runtime.Stable
-import io.proxima.breathe.presentation.main.sleep.set_sleep_goal.SleepScreenSetSleepGoalUIComponentUIAction
+//import io.proxima.breathe.presentation.main.sleep.set_sleep_goal.SleepScreenSetSleepGoalUIComponentUIAction
 
 @Stable
 data class UserScreenState(

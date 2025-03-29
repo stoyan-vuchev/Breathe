@@ -2,14 +2,14 @@ package io.proxima.breathe.di
 
 import android.content.Context
 import androidx.work.WorkManager
-import io.proxima.breathe.data.preferences.productivity_reminders.ProductivityRemindersPreferences
-import io.proxima.breathe.data.preferences.productivity_reminders.ProductivityRemindersPreferencesImpl
-import io.proxima.breathe.data.preferences.productivity_reminders.ProductivityRemindersPreferencesImpl.Companion.productivityRemindersPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.proxima.breathe.data.preferences.productivity_reminders.ProductivityRemindersPreferences
+import io.proxima.breathe.data.preferences.productivity_reminders.ProductivityRemindersPreferencesImpl
+import io.proxima.breathe.data.preferences.productivity_reminders.ProductivityRemindersPreferencesImpl.Companion.productivityRemindersPreferences
 import io.proxima.breathe.framework.worker.productivity.ProductivityRemindersWorkerManager
 import io.proxima.breathe.framework.worker.productivity.ProductivityRemindersWorkerManagerImpl
 import javax.inject.Singleton
@@ -37,4 +37,5 @@ object ProductivityRemindersModule {
     fun provideWaterIntakeReminderWorkerManager(
         workManager: WorkManager
     ): ProductivityRemindersWorkerManager = ProductivityRemindersWorkerManagerImpl(workManager)
+
 }

@@ -3,6 +3,7 @@ package io.proxima.breathe.core.ui
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.EaseOutQuart
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -18,24 +19,34 @@ object ScreenTransitions {
     val enterTransition: EnterTransition =
         scaleIn(
             initialScale = .75f,
-            animationSpec = tween(easing = EaseOutQuart)
+            animationSpec = tween(
+                durationMillis = 500, // Adjust as needed
+                easing = FastOutSlowInEasing // Starts fast and slows down
+            )
         ) + fadeIn(
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessMedium
+            animationSpec = tween(
+                durationMillis = 500,
+                easing = FastOutSlowInEasing
             )
         )
+
+
 
     val exitTransition: ExitTransition =
         scaleOut(
             targetScale = 1.25f,
-            animationSpec = tween(easing = EaseOutQuart)
+            animationSpec = tween(
+                durationMillis = 500,
+                easing = FastOutSlowInEasing
+            )
         ) + fadeOut(
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessHigh
+            animationSpec = tween(
+                durationMillis = 500,
+                easing = FastOutSlowInEasing
             )
         )
+
+
 
     val popEnterTransition: EnterTransition =
         scaleIn(

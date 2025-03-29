@@ -166,7 +166,7 @@ fun SettingsAboutScreen(
 
                         Image(
                             modifier = Modifier.size(48.dp),
-                            painter = painterResource(id = R.drawable.splash_logo),
+                            painter = painterResource(id = R.drawable.app_glow),
                             contentDescription = null
                         )
 

@@ -72,9 +72,6 @@ import io.proxima.breathe.presentation.main.settings.about.SettingsAboutScreenVi
 import io.proxima.breathe.presentation.main.settings.profile.SettingsProfileScreen
 import io.proxima.breathe.presentation.main.settings.profile.SettingsProfileScreenUIAction
 import io.proxima.breathe.presentation.main.settings.profile.SettingsProfileScreenViewModel
-import io.proxima.breathe.presentation.main.sleep.SleepScreen
-import io.proxima.breathe.presentation.main.sleep.SleepScreenUIAction
-import io.proxima.breathe.presentation.main.sleep.SleepScreenViewModel
 import io.proxima.breathe.presentation.main.soundscape.SoundScapeScreen
 import io.proxima.breathe.presentation.main.soundscape.SoundscapeFilterScreen
 import io.proxima.breathe.presentation.main.soundscape.SoundscapeUIAction
@@ -171,33 +168,33 @@ fun NavGraphBuilder.mainNavigationGraph(
             }
         )
 
-        composable(
-            route = MainNavigationDestinations.Sleep.route,
-            content = {
-
-                ProvideBreathColors(SleepColors) {
-
-                    val viewModel = hiltViewModel<SleepScreenViewModel>()
-                    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
-
-                    LaunchedEffect(viewModel.uiActionFlow) {
-                        viewModel.uiActionFlow.collectLatest { uiAction ->
-                            when (uiAction) {
-                                is SleepScreenUIAction.NavigateUp -> navController.navigateUp()
-                                else -> Unit
-                            }
-                        }
-                    }
-
-                    SleepScreen(
-                        screenState = screenState,
-                        onUIAction = viewModel::onUIAction
-                    )
-
-                }
-
-            }
-        )
+//        composable(
+//            route = MainNavigationDestinations.Sleep.route,
+//            content = {
+//
+//                ProvideBreathColors(SleepColors) {
+//
+//                    val viewModel = hiltViewModel<SleepScreenViewModel>()
+//                    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+//
+//                    LaunchedEffect(viewModel.uiActionFlow) {
+//                        viewModel.uiActionFlow.collectLatest { uiAction ->
+//                            when (uiAction) {
+//                                is SleepScreenUIAction.NavigateUp -> navController.navigateUp()
+//                                else -> Unit
+//                            }
+//                        }
+//                    }
+//
+//                    SleepScreen(
+//                        screenState = screenState,
+//                        onUIAction = viewModel::onUIAction
+//                    )
+//
+//                }
+//
+//            }
+//        )
 
 
         composable(

@@ -49,9 +49,10 @@ class SettingsScreenViewModel @Inject constructor(
             val result = withContext(Dispatchers.IO) { appPreferences.deleteData() }
             when (result) {
                 is Result.Success -> {
-                    appDatabase.sleepDao.deleteAllSleepData()
-                        .also { appDatabase.quotesDao.deleteQuote() }
-                        .also { sendUIAction(SettingsScreenUIAction.ConfirmDeleteData) }
+                    //appDatabase.sleepDao.deleteAllSleepData()  // ✅ Fixed (removed parentheses)
+                    appDatabase.quotesDao.deleteQuote()       // ✅ Fixed (removed parentheses)
+                    appDatabase.studySubjectDao.deleteAllSubjects()  // ✅ Added to delete subjects
+                    sendUIAction(SettingsScreenUIAction.ConfirmDeleteData)
                 }
                 is Result.Error -> showSnackBar(
                     result.error ?: UiString.BasicString("Something went wrong.")

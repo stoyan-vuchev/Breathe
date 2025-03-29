@@ -64,28 +64,18 @@
 
         </service>
 
-        <receiver
-            android:name="io.proxima.breathe.framework.receiver.SleepDataReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.ACTIVITY_RECOGNITION" />
 
-        <receiver
-            android:name="io.proxima.breathe.framework.receiver.BootReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
 
-            <intent-filter>
+<!--            <intent-filter>-->
 
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+<!--&lt;!&ndash;                <action android:name="android.intent.action.BOOT_COMPLETED" />&ndash;&gt;-->
+<!--&lt;!&ndash;                <action android:name="android.intent.action.QUICKBOOT_POWERON" />&ndash;&gt;-->
 
-                <category android:name="android.intent.category.DEFAULT" />
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
 
-            </intent-filter>
+<!--            </intent-filter>-->
 
-        </receiver>
+
 
     </application>
 

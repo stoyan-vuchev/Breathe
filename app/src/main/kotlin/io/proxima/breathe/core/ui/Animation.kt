@@ -11,7 +11,7 @@ import androidx.compose.ui.util.lerp
 import kotlin.math.absoluteValue
 
 // The default animation duration.
-const val BASIC_ANIMATION_DURATION = 360
+const val BASIC_ANIMATION_DURATION = 1000
 
 fun Modifier.carouselTransition(
     itemPage: Int,

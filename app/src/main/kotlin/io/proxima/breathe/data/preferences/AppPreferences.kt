@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AppPreferences {
 
+
     suspend fun setUser(name: String)
     suspend fun getUser(): Result<String>
 

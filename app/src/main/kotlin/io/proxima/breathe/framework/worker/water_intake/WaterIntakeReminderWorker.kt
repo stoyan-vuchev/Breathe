@@ -18,11 +18,6 @@ import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import io.proxima.breathe.R
-import io.proxima.breathe.data.preferences.AppPreferences
-import java.time.Instant
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import javax.inject.Inject
 import kotlin.random.Random
 
 @HiltWorker
@@ -31,8 +26,6 @@ class WaterIntakeReminderWorker @AssistedInject constructor(
     @Assisted workerParameters: WorkerParameters
 ) : CoroutineWorker(context, workerParameters) {
 
-    @Inject
-    lateinit var appPreferences: AppPreferences
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
         return getForegroundInfo(applicationContext)
@@ -44,112 +37,60 @@ class WaterIntakeReminderWorker @AssistedInject constructor(
                     applicationContext,
                     Manifest.permission.POST_NOTIFICATIONS
                 ) == PackageManager.PERMISSION_GRANTED
-                && isWithinAwakeTime()
             ) {
-                NotificationManagerCompat
-                    .from(applicationContext)
+                NotificationManagerCompat.from(applicationContext)
                     .notify(Random.nextInt(), createNotificationChannel(applicationContext))
             }
             Result.success()
         } catch (e: Exception) {
-            if (runAttemptCount < 10) Result.retry()
-            else Result.failure()
+            if (runAttemptCount < 10) Result.retry() else Result.failure()
         }
-    }
-
-    private suspend fun isWithinAwakeTime(): Boolean {
-
-        val now = Instant.ofEpochMilli(System.currentTimeMillis())
-        val bedTime = appPreferences.getUsualBedtime().data
-        val wakeUpTime = appPreferences.getUsualWakeUpTime().data
-
-        val currentTime = ZonedDateTime.ofInstant(now, ZoneId.systemDefault())
-        val currentHour = currentTime.hour
-        val currentMinute = currentTime.minute
-
-        return if (bedTime != null && wakeUpTime != null) {
-            currentHour < bedTime.first
-                    && currentMinute < bedTime.second
-                    && currentHour > wakeUpTime.first
-                    && currentMinute > wakeUpTime.second
-        } else false
-
     }
 
     companion object {
-
         @Suppress("Deprecation")
         private fun getForegroundInfo(context: Context): ForegroundInfo {
-
-            val foregroundServiceNotification = {
-
-                val channelId = "water_intake_reminder_foreground_channel_id"
-                val channelName = "Water intake reminder foreground service"
-
-                val notificationBuilder = NotificationCompat.Builder(context, channelId)
-                    .setSmallIcon(R.drawable.water_glass)
-                    .setContentText(context.resources.getString(R.string.water_intake_reminder_text))
-                    .setContentTitle(context.resources.getString(R.string.water_intake_reminder_title))
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setOngoing(true)
-                    .setAutoCancel(true)
-
-                val notificationManager =
-                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-                val channel = NotificationChannel(
-                    channelId,
-                    channelName,
-                    NotificationManager.IMPORTANCE_HIGH
-                )
-
-                notificationManager.createNotificationChannel(channel)
-                notificationBuilder.build()
-
-            }
-
+            val notification = foregroundServiceNotification(context)
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                ForegroundInfo(
-                    1,
-                    foregroundServiceNotification(),
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE
-                )
-            } else ForegroundInfo(
-                1,
-                foregroundServiceNotification(),
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_NONE
-            )
+                ForegroundInfo(1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE)
+            } else {
+                ForegroundInfo(1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_NONE)
+            }
         }
 
-        private fun createNotificationChannel(context: Context): Notification {
-
-            val channelId = "water_intake_reminder_channel_id"
-            val channelName =
-                context.resources.getString(R.string.water_intake_reminder_channel_name)
-
-            val notificationBuilder = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.water_glass)
-                .setContentText(context.resources.getString(R.string.water_intake_reminder_text))
-                .setContentTitle(context.resources.getString(R.string.water_intake_reminder_title))
+        private fun foregroundServiceNotification(context: Context): Notification {
+            val channelId = "touch_grass_reminder_foreground_channel_id"
+            val channelName = "Touch Grass Reminder Foreground Service"
+            val builder = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.touch_grass) // Replace with your drawable
+                .setContentTitle(context.getString(R.string.touch_grass_reminder_title))
+                .setContentText(context.getString(R.string.touch_grass_reminder_text))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setOngoing(true)
                 .setAutoCancel(true)
-
             val notificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-            val channel = NotificationChannel(
-                channelId,
-                channelName,
-                NotificationManager.IMPORTANCE_HIGH
-            )
-
+            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
             notificationManager.createNotificationChannel(channel)
-            return notificationBuilder.build()
-
+            return builder.build()
         }
 
-
+        private fun createNotificationChannel(context: Context): Notification {
+            val channelId = "touch_grass_reminder_channel_id"
+            val channelName = context.getString(R.string.touch_grass_reminder_channel_name)
+            val builder = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.touch_grass) // Replace with your drawable
+                .setContentTitle(context.getString(R.string.touch_grass_reminder_title))
+                .setContentText(context.getString(R.string.touch_grass_reminder_text))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setOngoing(true)
+                .setAutoCancel(true)
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+            notificationManager.createNotificationChannel(channel)
+            return builder.build()
+        }
     }
 
 }
