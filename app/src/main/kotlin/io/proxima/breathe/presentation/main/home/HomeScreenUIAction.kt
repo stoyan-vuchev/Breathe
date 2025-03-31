@@ -36,9 +36,7 @@ sealed interface HomeScreenUIAction {
         val route: String = MainNavigationDestinations.Settings.route
     ) : HomeScreenUIAction
 
-    data class NavigateToMlAssist(
-        val route: String = MainNavigationDestinations.MlAssist.route
-    ) : HomeScreenUIAction
+
 
     data class NavigateToPomodoro(
         val route: String = MainNavigationDestinations.Pomodoro.route

@@ -20,12 +20,12 @@ object ScreenTransitions {
         scaleIn(
             initialScale = .75f,
             animationSpec = tween(
-                durationMillis = 500, // Adjust as needed
+                durationMillis = 650, // Adjust as needed
                 easing = FastOutSlowInEasing // Starts fast and slows down
             )
         ) + fadeIn(
             animationSpec = tween(
-                durationMillis = 500,
+                durationMillis = 650,
                 easing = FastOutSlowInEasing
             )
         )
@@ -36,12 +36,12 @@ object ScreenTransitions {
         scaleOut(
             targetScale = 1.25f,
             animationSpec = tween(
-                durationMillis = 500,
+                durationMillis = 650,
                 easing = FastOutSlowInEasing
             )
         ) + fadeOut(
             animationSpec = tween(
-                durationMillis = 500,
+                durationMillis = 650,
                 easing = FastOutSlowInEasing
             )
         )
@@ -55,7 +55,7 @@ object ScreenTransitions {
         ) + fadeIn(
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessMedium
+                stiffness = Spring.StiffnessLow
             )
         )
 

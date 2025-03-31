@@ -1,5 +1,6 @@
 package io.proxima.breathe.presentation.study
 
+import android.app.DatePickerDialog
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,15 +9,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -30,21 +28,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
-import sv.lib.squircleshape.SquircleShape
+import androidx.compose.ui.unit.dp
 import io.proxima.breathe.R
 import io.proxima.breathe.core.ui.components.button.UniqueButton
 import io.proxima.breathe.core.ui.theme.BreathTheme
+import sv.lib.squircleshape.SquircleShape
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-// ---------- StudyPlanerSetupScreen ----------
 @Composable
 fun StudyPlanerSetupScreen(
     onAddSubject: (subjectName: String, priority: Int, examDate: Long) -> Unit,
@@ -52,19 +49,19 @@ fun StudyPlanerSetupScreen(
 ) {
     var subjectName by remember { mutableStateOf("") }
     var priorityText by remember { mutableStateOf("") }
-    var examDateText by remember { mutableStateOf("") } // Expecting format "yyyy-MM-dd"
-    // Use a proper date format (note: "yyyy-MM-dd" is case-sensitive)
+    // Instead of examDateText being edited manually, we store a timestamp and a formatted string.
+    var examDate by remember { mutableStateOf<Long?>(null) }
+    var examDateText by remember { mutableStateOf("") }
+    val context = LocalContext.current
     val dateFormat = remember { SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) }
 
-    // Full-screen container with background image
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(id = R.drawable.backgroundfakeblur), // your background image
+            painter = painterResource(id = R.drawable.effective_bg),
             contentDescription = "Study Setup Background",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
-        // Centered column for inputs and buttons
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -77,8 +74,7 @@ fun StudyPlanerSetupScreen(
                 style = BreathTheme.typography.headlineSmall,
                 color = Color.White
             )
-            // Spacer between title and inputs
-            androidx.compose.foundation.layout.Spacer(modifier = Modifier.height(35.dp))
+            Spacer(modifier = Modifier.height(35.dp))
             // Subject Name input
             TextField(
                 modifier = Modifier
@@ -97,16 +93,13 @@ fun StudyPlanerSetupScreen(
                     unfocusedContainerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = Color.White,
-                    errorIndicatorColor = Color.Red,
-                    errorContainerColor = Color.Transparent
+                    cursorColor = Color.White
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Done,
-                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Text
+                    imeAction = ImeAction.Done
                 )
             )
-            androidx.compose.foundation.layout.Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             // Priority input
             TextField(
                 modifier = Modifier
@@ -125,60 +118,57 @@ fun StudyPlanerSetupScreen(
                     unfocusedContainerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = Color.White,
-                    errorIndicatorColor = Color.Red,
-                    errorContainerColor = Color.Transparent
+                    cursorColor = Color.White
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done,
                     keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
                 )
             )
-            androidx.compose.foundation.layout.Spacer(modifier = Modifier.height(8.dp))
-            // Exam Date input
-            TextField(
+            Spacer(modifier = Modifier.height(8.dp))
+            // Exam Date input: Instead of a TextField, use a clickable Box.
+            Box(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
                     .clip(SquircleShape())
                     .background(BreathTheme.colors.card.copy(alpha = 0.2f))
-                    .padding(horizontal = 6.dp)
-                    .animateContentSize(),
-                value = examDateText,
-                onValueChange = { examDateText = it },
-                label = { Text("Exam Date (yyyy-MM-dd)", color = Color.White) },
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = Color.White,
-                    errorIndicatorColor = Color.Red,
-                    errorContainerColor = Color.Transparent
-                ),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Done,
-                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
+                    .clickable {
+                        val calendar = Calendar.getInstance()
+                        // If a date is already selected, show it
+                        examDate?.let { calendar.timeInMillis = it }
+                        DatePickerDialog(
+                            context,
+                            { _, year, month, dayOfMonth ->
+                                calendar.set(year, month, dayOfMonth)
+                                examDate = calendar.timeInMillis
+                                examDateText = dateFormat.format(Date(calendar.timeInMillis))
+                            },
+                            calendar.get(Calendar.YEAR),
+                            calendar.get(Calendar.MONTH),
+                            calendar.get(Calendar.DAY_OF_MONTH)
+                        ).show()
+                    }
+                    .padding(16.dp),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                Text(
+                    text = if (examDateText.isEmpty()) "Select Exam Date" else examDateText,
+                    color = Color.White
                 )
-            )
-            androidx.compose.foundation.layout.Spacer(modifier = Modifier.height(16.dp))
-            // Row for Add Subject and Done buttons
+            }
+            Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(0.9f),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 UniqueButton(onClick = {
                     val priority = priorityText.toIntOrNull() ?: 0
-                    val examDate: Long = try {
-                        dateFormat.parse(examDateText)?.time ?: 0L
-                    } catch (e: Exception) {
-                        0L
-                    }
-                    if (subjectName.isNotBlank() && priority > 0 && examDate > 0) {
-                        onAddSubject(subjectName, priority, examDate)
+                    val examTimestamp = examDate ?: 0L
+                    if (subjectName.isNotBlank() && priority > 0 && examTimestamp > 0) {
+                        onAddSubject(subjectName, priority, examTimestamp)
                         subjectName = ""
                         priorityText = ""
+                        examDate = null
                         examDateText = ""
                     }
                 }) {
@@ -202,6 +192,3 @@ fun StudyPlanerSetupScreenPreview() {
         )
     }
 }
-
-
-

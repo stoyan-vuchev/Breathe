@@ -20,20 +20,14 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.compose.rememberNavController
 import io.proxima.breathe.core.etc.UiString.Companion.asString
 import io.proxima.breathe.core.ui.navigateSingleTop
 import io.proxima.breathe.core.ui.theme.DreamyNightColors
 import io.proxima.breathe.core.ui.theme.MelonColors
 import io.proxima.breathe.core.ui.theme.ProvideBreathColors
 import io.proxima.breathe.core.ui.theme.SkyBlueColors
-import io.proxima.breathe.core.ui.theme.SleepColors
 import io.proxima.breathe.core.ui.theme.ZoneColors
-import io.proxima.breathe.presentation.fitness.FitnessNormalScreen
-import io.proxima.breathe.presentation.fitness.FitnessObeseScreen
-import io.proxima.breathe.presentation.fitness.FitnessOverweightScreen
-import io.proxima.breathe.presentation.fitness.FitnessSetupScreen
-import io.proxima.breathe.presentation.fitness.FitnessUnderweightScreen
+import io.proxima.breathe.data.local.entity.StudySubjectEntity
 import io.proxima.breathe.presentation.fitness.FitnessViewModel
 import io.proxima.breathe.presentation.main.breathe.BreatheScreen
 import io.proxima.breathe.presentation.main.breathe.BreatheScreenUIAction
@@ -41,10 +35,9 @@ import io.proxima.breathe.presentation.main.breathe.BreatheScreenViewModel
 import io.proxima.breathe.presentation.main.explore.ExploreScreen
 import io.proxima.breathe.presentation.main.explore.ExploreScreenUIAction
 import io.proxima.breathe.presentation.main.explore.ExploreScreenViewModel
-import io.proxima.breathe.presentation.main.habit.checkpoint.HabitCheckpointScreen
-import io.proxima.breathe.presentation.main.habit.checkpoint.HabitCheckpointScreenSegment
-import io.proxima.breathe.presentation.main.habit.checkpoint.HabitCheckpointScreenViewModel
-import io.proxima.breathe.presentation.main.habit.checkpoint.HabitCheckpointUIAction
+import io.proxima.breathe.presentation.main.fitness.FitnessEditScreen
+import io.proxima.breathe.presentation.main.fitness.FitnessSetupScreen
+import io.proxima.breathe.presentation.main.fitness.FitnessUnderweightScreen
 import io.proxima.breathe.presentation.main.habit.main.HabitMainScreen
 import io.proxima.breathe.presentation.main.habit.main.HabitMainScreenUIAction
 import io.proxima.breathe.presentation.main.habit.main.HabitMainScreenViewModel
@@ -62,9 +55,7 @@ import io.proxima.breathe.presentation.main.productivity.ProductivityScreenViewM
 import io.proxima.breathe.presentation.main.productivity.components.ProductivityScreen
 import io.proxima.breathe.presentation.main.settings.SettingsScreen
 import io.proxima.breathe.presentation.main.settings.SettingsScreenUIAction
-import io.proxima.breathe.presentation.main.settings.SettingsScreenUIAction.DismissDeleteDataDialog
 import io.proxima.breathe.presentation.main.settings.SettingsScreenUIAction.NavigateUp
-import io.proxima.breathe.presentation.main.settings.SettingsScreenUIAction.ShowDeleteDataDialog
 import io.proxima.breathe.presentation.main.settings.SettingsScreenViewModel
 import io.proxima.breathe.presentation.main.settings.about.SettingsAboutScreen
 import io.proxima.breathe.presentation.main.settings.about.SettingsAboutScreenUIAction
@@ -72,7 +63,6 @@ import io.proxima.breathe.presentation.main.settings.about.SettingsAboutScreenVi
 import io.proxima.breathe.presentation.main.settings.profile.SettingsProfileScreen
 import io.proxima.breathe.presentation.main.settings.profile.SettingsProfileScreenUIAction
 import io.proxima.breathe.presentation.main.settings.profile.SettingsProfileScreenViewModel
-import io.proxima.breathe.presentation.main.soundscape.SoundScapeScreen
 import io.proxima.breathe.presentation.main.soundscape.SoundscapeFilterScreen
 import io.proxima.breathe.presentation.main.soundscape.SoundscapeUIAction
 import io.proxima.breathe.presentation.main.soundscape.SoundscapeViewModel
@@ -80,6 +70,9 @@ import io.proxima.breathe.presentation.study.StudyPlanerMainScreen
 import io.proxima.breathe.presentation.study.StudyPlanerSetupScreen
 import io.proxima.breathe.presentation.study.StudyPlanerViewModel
 import kotlinx.coroutines.flow.collectLatest
+
+
+
 //
 
 
@@ -124,9 +117,6 @@ fun NavGraphBuilder.mainNavigationGraph(
 
 //                            is HomeScreenUIAction.NavigateToSettings -> navController
 //                                .navigateSingleTop(route = uiAction.route, inclusive = false)
-
-                            is HomeScreenUIAction.NavigateToMlAssist -> navController
-                                .navigateSingleTop(route = uiAction.route, inclusive = false)
 
                             is HomeScreenUIAction.NavigateToPomodoro -> navController
                                 .navigateSingleTop(route = uiAction.route, inclusive = false)
@@ -227,9 +217,6 @@ fun NavGraphBuilder.mainNavigationGraph(
                             is ExploreScreenUIAction.NavigateToProductivity ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.Productivity.route)
 
-                            is ExploreScreenUIAction.NavigateToMlAssist ->
-                                navController.navigateSingleTop(route = MainNavigationDestinations.MlAssist.route)
-
                             is ExploreScreenUIAction.NavigateToPomodoro ->
                                 navController.navigateSingleTop(route = MainNavigationDestinations.Pomodoro.route)
 
@@ -289,7 +276,9 @@ fun NavGraphBuilder.mainNavigationGraph(
             StudyPlanerMainScreen(
                 subjects = subjects,
                 currentFocusSubject = viewModel.currentFocusSubject,
-                onEditSubject = { /* navigate to an edit screen if needed */ }
+                onEditSubject = { subject: StudySubjectEntity ->
+                    navController.navigate("studyEdit/${subject.id}")
+                }
             )
         }
 
@@ -550,8 +539,12 @@ fun NavGraphBuilder.mainNavigationGraph(
                                 }.also { context.startActivity(it) }
                             }
 
-                            is SettingsScreenUIAction.ShowDeleteDataDialog -> isDeleteDataDialogVisible = true
-                            is SettingsScreenUIAction.DismissDeleteDataDialog -> isDeleteDataDialogVisible = false
+                            is SettingsScreenUIAction.ShowDeleteDataDialog -> isDeleteDataDialogVisible =
+                                true
+
+                            is SettingsScreenUIAction.DismissDeleteDataDialog -> isDeleteDataDialogVisible =
+                                false
+
                             is SettingsScreenUIAction.ConfirmDeleteData -> onRecreateActivity()
 
                             is SettingsScreenUIAction.About -> {
@@ -667,6 +660,47 @@ fun NavGraphBuilder.mainNavigationGraph(
             }
         )
 
+
+        composable(route = MainNavigationDestinations.FitnessEdit.route) {
+            val viewModel = hiltViewModel<FitnessViewModel>()
+            val screenState by viewModel.screenState.collectAsState()
+            FitnessEditScreen(
+                screenState = screenState,
+                onSubmit = { height, weight ->
+                    viewModel.onSubmitFitnessData(height, weight)
+                },
+                onNavigateBack = {
+                    // After editing, navigate to the corresponding screen based on updated BMI category.
+                    when (screenState.bmiCategory) {
+                        "Underweight" -> navController.navigate(MainNavigationDestinations.FitnessUnderweight.route) {
+                            popUpTo(MainNavigationDestinations.FitnessEdit.route) {
+                                inclusive = true
+                            }
+                        }
+
+                        "Normal" -> navController.navigate(MainNavigationDestinations.FitnessNormal.route) {
+                            popUpTo(MainNavigationDestinations.FitnessEdit.route) {
+                                inclusive = true
+                            }
+                        }
+
+                        "Overweight" -> navController.navigate(MainNavigationDestinations.FitnessOverweight.route) {
+                            popUpTo(MainNavigationDestinations.FitnessEdit.route) {
+                                inclusive = true
+                            }
+                        }
+
+                        "Obesity" -> navController.navigate(MainNavigationDestinations.FitnessObese.route) {
+                            popUpTo(MainNavigationDestinations.FitnessEdit.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                }
+            )
+        }
+
+
         // Fitness Module Route
         composable(route = MainNavigationDestinations.FitnessSetup.route) {
             val viewModel = hiltViewModel<FitnessViewModel>()
@@ -677,18 +711,31 @@ fun NavGraphBuilder.mainNavigationGraph(
                 if (screenState.isSetupCompleted) {
                     when (screenState.bmiCategory) {
                         "Underweight" -> navController.navigate(MainNavigationDestinations.FitnessUnderweight.route) {
-                            popUpTo(MainNavigationDestinations.FitnessSetup.route) { inclusive = true }
+                            popUpTo(MainNavigationDestinations.FitnessSetup.route) {
+                                inclusive = true
+                            }
                         }
+
                         "Normal" -> navController.navigate(MainNavigationDestinations.FitnessNormal.route) {
-                            popUpTo(MainNavigationDestinations.FitnessSetup.route) { inclusive = true }
+                            popUpTo(MainNavigationDestinations.FitnessSetup.route) {
+                                inclusive = true
+                            }
                         }
+
                         "Overweight" -> navController.navigate(MainNavigationDestinations.FitnessOverweight.route) {
-                            popUpTo(MainNavigationDestinations.FitnessSetup.route) { inclusive = true }
+                            popUpTo(MainNavigationDestinations.FitnessSetup.route) {
+                                inclusive = true
+                            }
                         }
+
                         "Obesity" -> navController.navigate(MainNavigationDestinations.FitnessObese.route) {
-                            popUpTo(MainNavigationDestinations.FitnessSetup.route) { inclusive = true }
+                            popUpTo(MainNavigationDestinations.FitnessSetup.route) {
+                                inclusive = true
+                            }
                         }
-                        else -> { /* Fallback, if needed */ }
+
+                        else -> { /* Fallback, if needed */
+                        }
                     }
                 }
             }
@@ -707,26 +754,43 @@ fun NavGraphBuilder.mainNavigationGraph(
         composable(route = MainNavigationDestinations.FitnessUnderweight.route) {
             val viewModel = hiltViewModel<FitnessViewModel>()
             val screenState by viewModel.screenState.collectAsState()
-            FitnessUnderweightScreen(bmi = screenState.bmi)
+            FitnessUnderweightScreen(
+                fitnessState = screenState,
+                onEditClick = { navController.navigate(MainNavigationDestinations.FitnessEdit.route) }
+            )
         }
+
         composable(route = MainNavigationDestinations.FitnessNormal.route) {
             val viewModel = hiltViewModel<FitnessViewModel>()
             val screenState by viewModel.screenState.collectAsState()
-            FitnessNormalScreen(bmi = screenState.bmi)
+            FitnessUnderweightScreen(
+                fitnessState = screenState,
+                onEditClick = { navController.navigate(MainNavigationDestinations.FitnessEdit.route) }
+            )
         }
+
         composable(route = MainNavigationDestinations.FitnessOverweight.route) {
             val viewModel = hiltViewModel<FitnessViewModel>()
             val screenState by viewModel.screenState.collectAsState()
-            FitnessOverweightScreen(bmi = screenState.bmi)
+            FitnessUnderweightScreen(
+                fitnessState = screenState,
+                onEditClick = { navController.navigate(MainNavigationDestinations.FitnessEdit.route) }
+            )
         }
+
         composable(route = MainNavigationDestinations.FitnessObese.route) {
             val viewModel = hiltViewModel<FitnessViewModel>()
             val screenState by viewModel.screenState.collectAsState()
-            FitnessObeseScreen(bmi = screenState.bmi)
+            FitnessUnderweightScreen(
+                fitnessState = screenState,
+                onEditClick = { navController.navigate(MainNavigationDestinations.FitnessEdit.route) }
+            )
         }
 
-        // ... Other composable routes (Settings, etc.) ...
+
+            // ... Other composable routes (Settings, etc.) ...
+        }
     }
-}
+
 
 

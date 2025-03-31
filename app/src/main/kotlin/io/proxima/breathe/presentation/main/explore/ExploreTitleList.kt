@@ -12,7 +12,7 @@ fun getExploreTiles(onUIAction: (ExploreScreenUIAction) -> Unit): List<ExploreTi
         ExploreTileData(
             header = "Do you know?",
             description = "\nGetting sunlight for atleast 5 minuites can keep you stay feel energetic throughout the day",
-            backgroundColor = Color(0xFFFFFFFF).copy(alpha = 0.6f),
+            backgroundColor = Color(0xFFFFFFFF).copy(alpha = 1f),
             progress = 0.5f,
             imageRes = R.drawable.nulltoggleoverlay,
             onClick = {  }

@@ -41,7 +41,6 @@ class HomeScreenViewModel @Inject constructor(
         is HomeScreenUIAction.NavigateToSoundscapeFilter,
         is HomeScreenUIAction.NavigateToHabitControl,
         is HomeScreenUIAction.NavigateToProductivity,
-        is HomeScreenUIAction.NavigateToMlAssist,
         is HomeScreenUIAction.NavigateToPomodoro,
         is HomeScreenUIAction.NavigateToSettings,
         is HomeScreenUIAction.NavigateToExplore -> sendUIAction(uiAction)

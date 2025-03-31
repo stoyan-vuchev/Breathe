@@ -8,7 +8,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,8 +33,7 @@ class ExploreScreenViewModel @Inject constructor() : ViewModel() {
             is ExploreScreenUIAction.NavigateToSleep -> sendUIAction(uiAction) // ✅ Added
             is ExploreScreenUIAction.NavigateToBreathe -> sendUIAction(uiAction) // ✅ Added
             is ExploreScreenUIAction.NavigateToHabitControl -> sendUIAction(uiAction) // ✅ Added
-            is ExploreScreenUIAction.NavigateToProductivity -> sendUIAction(uiAction) // ✅ Added
-            is ExploreScreenUIAction.NavigateToMlAssist -> sendUIAction(uiAction) // ✅ Added
+            is ExploreScreenUIAction.NavigateToProductivity -> sendUIAction(uiAction) // ✅ Added // ✅ Added
             is ExploreScreenUIAction.NavigateToPomodoro -> sendUIAction(uiAction) // ✅ Added
             is ExploreScreenUIAction.NavigateToFitness -> sendUIAction(uiAction)
             is ExploreScreenUIAction.NavigateToStudy -> sendUIAction(uiAction)

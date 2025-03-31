@@ -24,6 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
   //  abstract val taskDao: TaskDao
     abstract val studySubjectDao: StudySubjectDao  // ✅ Now consistent
 
+
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null

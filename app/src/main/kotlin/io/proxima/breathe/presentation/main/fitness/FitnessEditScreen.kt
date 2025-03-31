@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -35,7 +34,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.proxima.breathe.R
@@ -46,27 +44,24 @@ import sv.lib.squircleshape.SquircleShape
 
 
 @Composable
-fun FitnessSetupScreen(
+fun FitnessEditScreen(
     screenState: FitnessScreenState,
     onSubmit: (Float, Float) -> Unit,
-    onNavigateResult: () -> Unit
+    onNavigateBack: () -> Unit
 ) {
-    // Local state for input fields.
-    var heightInput by remember { mutableStateOf("") }
-    var weightInput by remember { mutableStateOf("") }
+    var heightInput by remember { mutableStateOf(screenState.height.toString()) }
+    var weightInput by remember { mutableStateOf(screenState.weight.toString()) }
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current // Retrieves the current context in Compose
 
     Box(modifier = Modifier.fillMaxSize()) {
-        // Background image filling the whole screen.
         Image(
-            painter = painterResource(id = R.drawable.fitness_bg), // Replace with your actual background drawable
-            contentDescription = "Fitness Background",
+            painter = painterResource(id = R.drawable.fitness_bg),
+            contentDescription = "Edit Background",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-        // Centered content
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -74,38 +69,16 @@ fun FitnessSetupScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(27.dp)
-            ) {
-                Text(
-                    text = "Fitness Assist",
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 27.sp
-                    ),
-                    modifier = Modifier.align(Alignment.Start)
+            Text(
+                text = "Update Fitness Data",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 27.sp
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
-                        .background(Color.White.copy(alpha = 0.5f))
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Enter your Height and Weight to calculate your Fitness Status",
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color.White.copy(alpha = 0.8f),
-                        fontSize = 17.sp
-                    ),
-                    modifier = Modifier.align(Alignment.Start)
-                )
-            }
-            Spacer(modifier = Modifier.height(50.dp))
-
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            // Height TextField
             TextField(
                 modifier = Modifier
                     .padding(horizontal = 32.dp)
@@ -115,8 +88,7 @@ fun FitnessSetupScreen(
                     .animateContentSize(),
                 value = heightInput,
                 onValueChange = { heightInput = it },
-                label = { Text("Height (m)",
-                    color = Color.White) },
+                label = { Text("Height (m)", color = Color.White) },
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.White,
@@ -124,9 +96,7 @@ fun FitnessSetupScreen(
                     unfocusedContainerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = Color.White,
-                    errorIndicatorColor = Color.Red,
-                    errorContainerColor = Color.Transparent
+                    cursorColor = Color.White
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done,
@@ -139,9 +109,8 @@ fun FitnessSetupScreen(
                     }
                 )
             )
-
             Spacer(modifier = Modifier.height(16.dp))
-
+            // Weight TextField
             TextField(
                 modifier = Modifier
                     .padding(horizontal = 32.dp)
@@ -151,9 +120,7 @@ fun FitnessSetupScreen(
                     .animateContentSize(),
                 value = weightInput,
                 onValueChange = { weightInput = it },
-                label = { Text("Weight (kg)",
-                    color = Color.White
-                ) },
+                label = { Text("Weight (kg)", color = Color.White) },
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.White,
@@ -161,9 +128,7 @@ fun FitnessSetupScreen(
                     unfocusedContainerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = Color.White,
-                    errorIndicatorColor = Color.Red,
-                    errorContainerColor = Color.Transparent
+                    cursorColor = Color.White
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done,
@@ -176,15 +141,14 @@ fun FitnessSetupScreen(
                     }
                 )
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
+            Spacer(modifier = Modifier.height(24.dp))
             UniqueButton(
                 onClick = {
                     val height = heightInput.toFloatOrNull() ?: 0f
                     val weight = weightInput.toFloatOrNull() ?: 0f
                     if ( weight >= 14 && height >= 0.54 ) {
                         onSubmit(height, weight)
+                        onNavigateBack()
                     } else {
                         Toast.makeText(
                             context, // Pass your context here
@@ -194,28 +158,9 @@ fun FitnessSetupScreen(
                     }
                 },
                 modifier = Modifier.padding(top = 0.dp)
-
             ) {
-                Text("Submit",
-                    color = Color.White)
+                Text("Update", color = Color.White)
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun FitnessSetupScreenPreview() {
-    val dummyState = FitnessScreenState(
-        height = 0f,
-        weight = 0f,
-        bmi = 0f,
-        bmiCategory = "",
-        isSetupCompleted = false
-    )
-    FitnessSetupScreen(
-        screenState = dummyState,
-        onSubmit = { _, _ -> },
-        onNavigateResult = {}
-    )
 }

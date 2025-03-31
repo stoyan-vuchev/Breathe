@@ -12,7 +12,6 @@ sealed class MainNavigationDestinations(
     data object Breathe : MainNavigationDestinations("main_breathe_screen")
    // data object Soundscape : MainNavigationDestinations("main_soundscape_screen")
     data object Productivity : MainNavigationDestinations("main_productivity_screen")
-    data object MlAssist : MainNavigationDestinations("main_mlassist_chat_activity")
     data object SoundscapeFilter : MainNavigationDestinations("soundscape_filter")
 
     data object HabitControlSetup : MainNavigationDestinations("main_habit_control_setup_screen")
@@ -33,6 +32,7 @@ sealed class MainNavigationDestinations(
     data object FitnessNormal : MainNavigationDestinations("fitness_normal")
     data object FitnessOverweight : MainNavigationDestinations("fitness_overweight")
     data object FitnessObese : MainNavigationDestinations("fitness_obese")
+    data object FitnessEdit : MainNavigationDestinations("fitness_edit")
 
     object StudySetup : MainNavigationDestinations("study_setup")
     object StudyMain : MainNavigationDestinations("study_main")

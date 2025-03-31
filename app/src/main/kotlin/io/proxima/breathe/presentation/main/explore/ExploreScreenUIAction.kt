@@ -31,9 +31,6 @@ sealed interface ExploreScreenUIAction {
     ) : ExploreScreenUIAction
 
 
-    data class NavigateToMlAssist(
-        val route: String = MainNavigationDestinations.MlAssist.route
-    ) : ExploreScreenUIAction
 
     data class NavigateToPomodoro(
         val route: String = MainNavigationDestinations.Pomodoro.route

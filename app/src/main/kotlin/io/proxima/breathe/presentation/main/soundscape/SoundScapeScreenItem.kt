@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -96,40 +94,40 @@ fun SoundScapeScreenItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clickable(
-                        indication = rememberBreathRipple(),
-                        interactionSource = remember { MutableInteractionSource() },
-                        onClick = {
-                            onUIAction(
-                                SoundscapeUIAction.PlayOrPauseSound(
-                                    soundscapeItem.audioSrc,
-                                    soundscapeItem
-                                )
-                            )
-                        }
-                    )
-                    .clip(SquircleShape(100.dp))
-                    .background(BreathTheme.colors.background),
-                contentAlignment = Alignment.Center
-            ) {
-
-                AsyncImage(
-                    modifier = Modifier.size(32.dp),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(
-                            if (isPlaying) R.drawable.round_pause_24
-                            else R.drawable.round_play_arrow_24
-                        )
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(BreathTheme.colors.text)
-                )
-
-            }
+//            Box(
+//                modifier = Modifier
+//                    .size(48.dp)
+//                    .clickable(
+//                        indication = rememberBreathRipple(),
+//                        interactionSource = remember { MutableInteractionSource() },
+//                        onClick = {
+//                            onUIAction(
+//                                SoundscapeUIAction.PlayOrPauseSound(
+//                                    soundscapeItem.audioSrc,
+//                                    soundscapeItem
+//                                )
+//                            )
+//                        }
+//                    )
+//                    .clip(SquircleShape(100.dp))
+//                    .background(BreathTheme.colors.background),
+//                contentAlignment = Alignment.Center
+//            ) {
+//
+//                AsyncImage(
+//                    modifier = Modifier.size(32.dp),
+//                    model = ImageRequest.Builder(LocalContext.current)
+//                        .data(
+//                            if (isPlaying) R.drawable.round_pause_24
+//                            else R.drawable.round_play_arrow_24
+//                        )
+//                        .crossfade(true)
+//                        .build(),
+//                    contentDescription = null,
+//                    colorFilter = ColorFilter.tint(BreathTheme.colors.text)
+//                )
+//
+//            }
 
             Text(
                 modifier = Modifier

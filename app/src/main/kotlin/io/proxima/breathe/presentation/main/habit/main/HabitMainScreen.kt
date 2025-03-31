@@ -1,5 +1,6 @@
 package io.proxima.breathe.presentation.main.habit.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,13 +27,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.proxima.breathe.core.ui.theme.backgroundBrush
+import io.proxima.breathe.R
 import io.proxima.breathe.core.ui.components.topbar.TopBarDefaults
 import io.proxima.breathe.core.ui.components.topbar.basic_topbar.BasicTopBar
 import io.proxima.breathe.core.ui.theme.BreathTheme
+import io.proxima.breathe.core.ui.theme.backgroundBrush
 import sv.lib.squircleshape.SquircleShape
-import io.proxima.breathe.R
-import androidx.activity.compose.BackHandler
 
 
 @Composable
@@ -92,7 +92,7 @@ fun HabitMainScreen(
             Box(modifier = Modifier.fillMaxSize()) {
 
                 androidx.compose.foundation.Image(
-                    painter = painterResource(id = R.drawable.figmafakeblur), // Replace with your actual background image
+                    painter = painterResource(id = R.drawable.habit_bg), // Replace with your actual background image
                     contentDescription = "Habit Background",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
@@ -190,7 +190,7 @@ fun HabitMainScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(top = 32.dp, start = 48.dp),
-                                text = "Your goal: ${screenState.habitName} " +
+                                text = "Your goal: Quit ${screenState.habitName} " +
                                         "for ${screenState.habitDuration} days",
                                 style = BreathTheme.typography.titleSmall,
                                 textAlign = TextAlign.Start

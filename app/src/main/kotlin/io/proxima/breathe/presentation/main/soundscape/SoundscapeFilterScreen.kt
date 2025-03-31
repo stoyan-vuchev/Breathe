@@ -1,75 +1,83 @@
-// File: SoundscapeFilterScreen.kt
 package io.proxima.breathe.presentation.main.soundscape
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import io.proxima.breathe.core.ui.theme.BreathTheme
-import io.proxima.breathe.domain.model.SoundScapeItem
-import io.proxima.breathe.domain.model.soundScapeItemsList
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import io.proxima.breathe.R
+import io.proxima.breathe.core.ui.components.rememberBreathRipple
+import io.proxima.breathe.core.ui.theme.BreathTheme
+import io.proxima.breathe.domain.model.soundScapeItemsList
 
-// A simple toggle button implementation
-@Composable
-fun ToggleButton(
-    text: String,
-    selected: Boolean,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .padding(4.dp)
-            .background(
-                color = if (selected) Color.White.copy(alpha = 0.5f) else Color.Gray.copy(alpha = 0.2f),
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(100.dp)
-            )
-            .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = text, color = Color.White)
-    }
-}
-
-// This composable contains all the UI logic and accepts the state as a parameter.
-// It can be used for previewing as well as in production.
 @Composable
 fun SoundscapeFilterScreenContent(
     screenState: SoundscapeScreenState,
     onUIAction: (SoundscapeUIAction) -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        // 🌄 Background Image Layer
-        androidx.compose.foundation.Image(
-            painter = androidx.compose.ui.res.painterResource(id = R.drawable.figmafakeblur), // Replace with your drawable
+        // Background Image Layer
+        Image(
+            painter = painterResource(id = R.drawable.soundscape_bg),
             contentDescription = "Background",
             modifier = Modifier.fillMaxSize(),
-            contentScale = androidx.compose.ui.layout.ContentScale.Crop
+            contentScale = ContentScale.Crop
         )
 
-        
-        // 🌟 Foreground Content
-        Column(modifier = Modifier.fillMaxSize()) {
+        // Foreground Content without outer verticalScroll:
+        // The header stays fixed while the LazyVerticalGrid scrolls on its own.
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
             Spacer(modifier = Modifier.height(45.dp))
             Row(
                 modifier = Modifier
@@ -90,6 +98,7 @@ fun SoundscapeFilterScreenContent(
                     selected = screenState.selectedMood == "Sad"
                 ) { onUIAction(SoundscapeUIAction.MoodSelected("Sad")) }
             }
+            // LazyVerticalGrid handles its own scrolling.
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = Modifier
@@ -107,11 +116,139 @@ fun SoundscapeFilterScreenContent(
                 }
             }
         }
+        // Playback Feedback: Animated Visibility block at bottom of the screen.
+        AnimatedVisibility(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(256.dp)
+                .align(Alignment.BottomCenter),
+            visible = screenState.isPlaying,
+            enter = slideInVertically { it } + fadeIn() + scaleIn(initialScale = 0.5f),
+            exit = slideOutVertically { it } + fadeOut() + scaleOut(targetScale = 0.5f),
+            label = "PlaybackFeedback"
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .padding(bottom = 32.dp)
+                        .padding(horizontal = 32.dp)
+                        .shadow(
+                            elevation = 12.dp,
+                            shape = RoundedCornerShape(100),
+                            ambientColor = BreathTheme.colors.secondarySoul,
+                            spotColor = BreathTheme.colors.secondarySoul,
+                            clip = false
+                        )
+                        .clip(RoundedCornerShape(100))
+                        .background(BreathTheme.colors.card)
+                        .padding(12.dp)
+                        .align(Alignment.BottomCenter)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(32.dp)
+                    ) {
+                        AnimatedContent(
+                            targetState = screenState.currentMediaItem?.mediaMetadata?.artworkUri,
+                            label = "Artwork"
+                        ) { uri ->
+                            AsyncImage(
+                                modifier = Modifier
+                                    .size(80.dp)
+                                    .clip(CircleShape)
+                                    .border(
+                                        color = BreathTheme.colors.secondarySoul.copy(alpha = 0.5f),
+                                        shape = CircleShape,
+                                        width = 1.dp
+                                    ),
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(uri)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        AnimatedContent(
+                            targetState = screenState.currentMediaItem?.mediaMetadata?.title,
+                            label = "Title"
+                        ) { title ->
+                            Text(
+                                modifier = Modifier.width(IntrinsicSize.Min),
+                                text = title?.toString() ?: "Playing Now",
+                                style = BreathTheme.typography.labelLarge,
+                                color = BreathTheme.colors.text,
+                                textAlign = TextAlign.Start
+                            )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .padding(end = 16.dp)
+                                .size(48.dp)
+                                .clickable(
+                                    indication = rememberBreathRipple(),
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    onClick = {
+                                        if (screenState.isPlaying) {
+                                            onUIAction(SoundscapeUIAction.PausePlayback)
+                                        } else {
+                                            onUIAction(
+                                                SoundscapeUIAction.PlayOrPauseSound(
+                                                    screenState.currentMediaItem?.mediaMetadata?.extras?.getInt("audioSrc")
+                                                )
+                                            )
+                                        }
+                                    }
+                                )
+                                .clip(RoundedCornerShape(24.dp))
+                                .background(BreathTheme.colors.secondarySoul),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            AsyncImage(
+                                modifier = Modifier.size(32.dp),
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(
+                                        if (screenState.isPlaying) R.drawable.round_pause_24
+                                        else R.drawable.round_play_arrow_24
+                                    )
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(BreathTheme.colors.background)
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
+@Composable
+fun ToggleButton(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .padding(4.dp)
+            .background(
+                color = if (selected) Color.White.copy(alpha = 0.5f) else Color.Gray.copy(alpha = 0.2f),
+                shape = RoundedCornerShape(100.dp)
+            )
+            .clickable { onClick() }
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = text, color = Color.White)
+    }
+}
 
-// Production composable that uses the ViewModel to observe state and then calls the content composable.
+// ----------------------
+// New wrapper composable
+// ----------------------
 @Composable
 fun SoundscapeFilterScreen(
     viewModel: SoundscapeViewModel,
@@ -121,16 +258,14 @@ fun SoundscapeFilterScreen(
     SoundscapeFilterScreenContent(screenState, onUIAction)
 }
 
-
-
-// Preview: using a dummy state
 @Preview(showBackground = true)
 @Composable
 fun SoundscapeFilterScreenPreview() {
     // Create a dummy state for preview
     val dummyState = SoundscapeScreenState(
         selectedMood = "Enhance Sleep",
-        // For preview, we use a filtered list (for example, items with even IDs)
+        isPlaying = true,
+        currentMediaItem = null, // or provide a dummy media item if needed
         filteredSounds = soundScapeItemsList.filter { it.id % 2 == 0 }
     )
     BreathTheme {
