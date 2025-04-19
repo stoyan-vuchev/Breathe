@@ -3,14 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
     <application
-        android:name=".HiltBreatheApp"
+        android:name="io.duckcat.d.HiltBreatheApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
@@ -25,7 +24,7 @@
         tools:targetApi="33">
 
         <activity
-            android:name=".presentation.MainActivity"
+            android:name="io.duckcat.d.presentation.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Breathe"
@@ -52,7 +51,7 @@
         </provider>
 
         <service
-            android:name="io.proxima.breathe.framework.service.SoundscapePlaybackService"
+            android:name="io.duckcat.d.framework.service.SoundscapePlaybackService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback">
 

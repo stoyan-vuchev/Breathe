@@ -9,7 +9,7 @@
 
     <!-- Welcome Segment -->
     <string name="welcome_screen_welcome_segment_title">OPEN\nD\n- LIFE -</string>
-    <string name="welcome_screen_welcome_segment_description">Explore the possibilities of Life</string>
+    <string name="welcome_screen_welcome_segment_description"> A Better You, Every Day.</string>
 
     <!-- Track Sleep Segment -->
     <string name="welcome_screen_track_sleep_segment_title">DEPRICATED</string>

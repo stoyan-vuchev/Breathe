@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-03-25T03:45:15.154654800Z">
+        <DropdownSelection timestamp="2025-04-05T01:56:33.800401600Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=RZ8R30MS5ZB" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=2b85fe3f" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -20,6 +20,9 @@
             </Target>
           </targets>
         </DialogSelection>
+      </SelectionState>
+      <SelectionState runConfigName="Opendlife.app">
+        <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
   </component>

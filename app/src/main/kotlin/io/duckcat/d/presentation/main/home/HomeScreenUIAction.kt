@@ -1,0 +1,56 @@
+package io.duckcat.d.presentation.main.home
+
+import androidx.compose.runtime.Immutable
+import io.duckcat.d.presentation.main.MainNavigationDestinations
+
+@Immutable
+sealed interface HomeScreenUIAction {
+
+    data object ExpandQuote : HomeScreenUIAction
+    data object ShrinkQuote : HomeScreenUIAction
+    data object NavigateToExplore : HomeScreenUIAction
+
+
+
+    data class NavigateToSleep(
+        val route: String = MainNavigationDestinations.Sleep.route
+    ) : HomeScreenUIAction
+
+    data class NavigateToBreathe(
+        val route: String = MainNavigationDestinations.Breathe.route
+    ) : HomeScreenUIAction
+
+//    data class NavigateToSoundscape(
+//        val route: String = MainNavigationDestinations.Soundscape.route
+//    ) : HomeScreenUIAction
+
+    data class NavigateToHabitControl(
+        val route: String = MainNavigationDestinations.HabitControlSetup.route
+    ) : HomeScreenUIAction
+
+    data class NavigateToProductivity(
+        val route: String = MainNavigationDestinations.Productivity.route
+    ) : HomeScreenUIAction
+
+    data class NavigateToSettings(
+        val route: String = MainNavigationDestinations.Settings.route
+    ) : HomeScreenUIAction
+
+
+
+    data class NavigateToPomodoro(
+        val route: String = MainNavigationDestinations.Pomodoro.route
+    ) : HomeScreenUIAction
+
+    data class NavigateToSoundscapeFilter(
+        val route: String = MainNavigationDestinations.SoundscapeFilter.route
+    ) : HomeScreenUIAction
+
+    data class NavigateToFitness(
+        val route: String = MainNavigationDestinations.FitnessSetup.route
+    ) : HomeScreenUIAction
+
+    data class NavigateToStudy(
+        val route: String = MainNavigationDestinations.StudyPlaner.route
+    ) : HomeScreenUIAction
+}
