@@ -8,42 +8,49 @@ plugins {
 }
 
 android {
-
-    namespace = "io.proxima.breathe"
+    namespace = "io.duckcat.d"
     compileSdk = 35
 
     defaultConfig {
-
-        applicationId = "io.proxima.breathe"
-        minSdk = 29
+        applicationId = "io.duckcat.d"
+        minSdk = 28
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "io.duckcat.d.HiltTestRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
 
-        testInstrumentationRunner = "io.proxima.breathe.HiltTestRunner"
-        vectorDrawables.useSupportLibrary = true
-
+    signingConfigs {
+        create("release") {
+            // These properties must be defined in your gradle.properties file.
+            storeFile = file(properties["RELEASE_STORE_FILE"] as String)
+            storePassword = properties["RELEASE_STORE_PASSWORD"] as String
+            keyAlias = properties["RELEASE_KEY_ALIAS"] as String
+            keyPassword = properties["RELEASE_KEY_PASSWORD"] as String
+        }
     }
 
     buildTypes {
-
         release {
-
             isMinifyEnabled = true
             isShrinkResources = true
             isDebuggable = false
-
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
-
+            signingConfig = signingConfigs.getByName("release")
         }
-
+        debug {
+            // Optionally, add debug configuration here if needed.
+        }
     }
 
     compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
@@ -61,38 +68,31 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-
 }
 
 dependencies {
+    // Accompanist
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
 
-    // Puzzle Module
-
-    implementation(project(":puzzle"))
-
-    // GMS Dependencies
-
+    // GMS
     implementation(libs.gms.location)
 
-    // Core Dependencies
-
+    // Core AndroidX, lifecycle, and material
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.material)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    // Coil for image loading
     implementation(libs.coil)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
-    // Media3 Dependencies
-
+    // Media3
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.exoplayer.dash)
     implementation(libs.media3.ui)
     implementation(libs.media3.mediasession)
 
-    // Jetpack Compose Dependencies
-
+    // Compose BOM and libraries
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.runtime)
     implementation(libs.compose.foundation)
@@ -115,66 +115,62 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 
-    // Fancy UI Stuff Dependencies :d
-
+    // Fancy UI and Animations
     implementation(libs.chrisbanes.haze)
     implementation(libs.stoyanvuchev.squircleShape)
     implementation(libs.stoyanvuchev.systemUiBarsTweaker)
     implementation(libs.lottie.compose)
 
-    // Coroutines Dependencies
-
+    // Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
-    // Storage Dependencies
-
+    // Storage and Room
     implementation(libs.datastore.preferences)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
-    // Dependency Injection Dependencies
-
+    // Dependency Injection
     implementation(libs.dagger.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.hilt.work)
-
     ksp(libs.androidx.hilt.compiler)
     ksp(libs.dagger.hilt.compiler)
-
     androidTestImplementation(libs.dagger.hilt.android.testing)
 
-    // Networking Dependencies
-
+    // Networking
     implementation(libs.retrofit.android)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.retrofit.converter.moshi)
     implementation(libs.okhttp.okhttp)
     implementation(libs.okhttp.logging.interceptor)
 
-    // Serialization Dependencies
-
+    // Serialization
     implementation(libs.gson)
     implementation(libs.kotlinx.serialization.json)
 
-    // Work Manager Dependency
-
+    // Work Manager
     implementation(libs.workManager.runtime)
     implementation(libs.workManager.runtime.ktx)
     implementation(libs.workManager.multiprocess)
 
-    // Testing Dependencies
-
+    // Testing libraries
+    testImplementation(libs.junit)
     testImplementation(libs.assertK)
-    androidTestImplementation(libs.assertK)
-
     testImplementation(libs.appCash.turbine)
-    androidTestImplementation(libs.appCash.turbine)
-
     testImplementation(libs.coroutinesTest)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.assertK)
+    androidTestImplementation(libs.appCash.turbine)
     androidTestImplementation(libs.coroutinesTest)
 
+    // Retrofit + Moshi
+    implementation(libs.retrofit.android)
+    implementation(libs.retrofit.converter.moshi)
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.2")
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.2")
 }
 
 ksp {

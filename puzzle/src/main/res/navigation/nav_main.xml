@@ -18,7 +18,7 @@
         android:id="@+id/puzzleFragment"
         android:name="com.arash.altafi.puzzle.PuzzleFragment"
         android:label="PuzzleFragment"
-        tools:layout="@layout/fragment_puzzle" >
+        tools:layout="@layout/fragment_puzzle">
         <argument
             android:name="number"
             app:argType="integer" />

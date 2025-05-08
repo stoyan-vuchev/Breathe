@@ -3,28 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
     <application
-        android:name=".HiltBreatheApp"
+        android:name="io.duckcat.d.HiltBreatheApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+
+
         android:supportsRtl="true"
         android:theme="@style/Theme.Breathe"
         android:usesCleartextTraffic="false"
         tools:targetApi="33">
 
         <activity
-            android:name=".presentation.MainActivity"
+            android:name="io.duckcat.d.presentation.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Breathe"
@@ -36,10 +36,6 @@
             </intent-filter>
 
         </activity>
-
-        <activity
-            android:name="com.arash.altafi.puzzle.PuzzleActivity"
-            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"
@@ -55,7 +51,7 @@
         </provider>
 
         <service
-            android:name="io.proxima.breathe.framework.service.SoundscapePlaybackService"
+            android:name="io.duckcat.d.framework.service.SoundscapePlaybackService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback">
 
@@ -67,28 +63,18 @@
 
         </service>
 
-        <receiver
-            android:name="io.proxima.breathe.framework.receiver.SleepDataReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.ACTIVITY_RECOGNITION" />
 
-        <receiver
-            android:name="io.proxima.breathe.framework.receiver.BootReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
 
-            <intent-filter>
+<!--            <intent-filter>-->
 
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+<!--&lt;!&ndash;                <action android:name="android.intent.action.BOOT_COMPLETED" />&ndash;&gt;-->
+<!--&lt;!&ndash;                <action android:name="android.intent.action.QUICKBOOT_POWERON" />&ndash;&gt;-->
 
-                <category android:name="android.intent.category.DEFAULT" />
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
 
-            </intent-filter>
+<!--            </intent-filter>-->
 
-        </receiver>
+
 
     </application>
 

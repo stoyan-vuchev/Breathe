@@ -1,0 +1,71 @@
+package io.duckcat.d.presentation.main.settings
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.duckcat.d.core.etc.Result
+import io.duckcat.d.core.etc.UiString
+import io.duckcat.d.data.local.AppDatabase
+import io.duckcat.d.data.preferences.AppPreferences
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
+@HiltViewModel
+class SettingsScreenViewModel @Inject constructor(
+    val appPreferences: AppPreferences,
+    private val appDatabase: AppDatabase
+) : ViewModel() {
+
+    private val _uiActionChannel = Channel<SettingsScreenUIAction>()
+    val uiActionFlow = _uiActionChannel.receiveAsFlow()
+
+    private val _snackBarChannel = Channel<UiString>()
+    val snackBarFlow = _snackBarChannel.receiveAsFlow()
+
+    fun onUIAction(uiAction: SettingsScreenUIAction) = when (uiAction) {
+        // Existing actions:
+        is SettingsScreenUIAction.NavigateUp -> sendUIAction(uiAction)
+        is SettingsScreenUIAction.Profile -> sendUIAction(uiAction)
+        is SettingsScreenUIAction.Notifications -> sendUIAction(uiAction)
+        is SettingsScreenUIAction.ShowDeleteDataDialog -> sendUIAction(uiAction)
+        is SettingsScreenUIAction.DismissDeleteDataDialog -> sendUIAction(uiAction)
+        is SettingsScreenUIAction.ConfirmDeleteData -> deleteData()
+        is SettingsScreenUIAction.About -> sendUIAction(uiAction)
+        // New navigation actions from bottom nav:
+        is SettingsScreenUIAction.NavigateToHome -> sendUIAction(uiAction)
+        is SettingsScreenUIAction.NavigateToExplore -> sendUIAction(uiAction)
+        is SettingsScreenUIAction.NavigateToProfile -> sendUIAction(uiAction)
+        else -> showSnackBar(
+            msg = UiString.BasicString("Coming soon! :)")
+        )
+    }
+
+    private fun deleteData() {
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) { appPreferences.deleteData() }
+            when (result) {
+                is Result.Success -> {
+                    //appDatabase.sleepDao.deleteAllSleepData()  // ✅ Fixed (removed parentheses)
+                    appDatabase.quotesDao.deleteQuote()       // ✅ Fixed (removed parentheses)
+                    appDatabase.studySubjectDao.deleteAllSubjects()  // ✅ Added to delete subjects
+                    sendUIAction(SettingsScreenUIAction.ConfirmDeleteData)
+                }
+                is Result.Error -> showSnackBar(
+                    result.error ?: UiString.BasicString("Something went wrong.")
+                )
+            }
+        }
+    }
+
+    private fun sendUIAction(uiAction: SettingsScreenUIAction) {
+        viewModelScope.launch { _uiActionChannel.send(uiAction) }
+    }
+
+    private fun showSnackBar(msg: UiString) {
+        viewModelScope.launch { _snackBarChannel.send(msg) }
+    }
+}

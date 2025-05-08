@@ -24,4 +24,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Breathe"
 include(":app")
-include(":puzzle")
