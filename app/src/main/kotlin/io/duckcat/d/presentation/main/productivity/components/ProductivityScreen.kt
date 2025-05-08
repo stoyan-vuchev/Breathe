@@ -5,24 +5,46 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
+import io.duckcat.d.R
 import io.duckcat.d.core.etc.transformFraction
 import io.duckcat.d.core.ui.components.topbar.TopBarDefaults
 import io.duckcat.d.core.ui.components.topbar.basic_topbar.BasicTopBar
@@ -32,13 +54,6 @@ import io.duckcat.d.presentation.main.productivity.ProductivityReminders
 import io.duckcat.d.presentation.main.productivity.ProductivityScreenState
 import io.duckcat.d.presentation.main.productivity.ProductivityScreenUIAction
 import sv.lib.squircleshape.SquircleShape
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.Spring
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat
-import io.duckcat.d.R
 
 @Composable
 fun ProductivityScreen(
@@ -189,8 +204,8 @@ private fun LazyListScope.reminderItems(
             shape = SquircleShape(24.dp),
             id = ProductivityReminders.TOUCH_GRASS,
             icon = painterResource(id = R.drawable.moon),
-            label = "Touch Grass",
-            description = "Take a break for nature interaction.",
+            label = "Bedtime",
+            description = "Get a reminder if you bedtime is near",
             onUIAction = onUIAction
         )
     }

@@ -7,5 +7,5 @@ data class ProductivityScreenState(
     val isWaterIntakeReminderEnabled: Boolean = false,
     val isReadBookReminderEnabled: Boolean = false,
     val isBasicWorkoutReminderEnabled: Boolean = false,
-    val isTouchGrassReminderEnabled: Boolean = false
+    val isTouchGrassReminderEnabled: Boolean = true,
 )
